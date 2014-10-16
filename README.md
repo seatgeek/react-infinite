@@ -125,7 +125,7 @@ var InfiniteList = React.createClass({
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
                          >
-            {elements}
+            {this.state.elements}
         </Infinite>;
     }
 });
