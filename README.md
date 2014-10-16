@@ -48,7 +48,7 @@ Defaults to `this.props.containerHeight`. The total height of the area in which 
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
 
 #### **Number** `infiniteLoadBeginBottomOffset`
-When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, set this to a negative value.
+When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
 
 #### Function `onInfiniteLoad()`
 Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginBottomOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
@@ -68,12 +68,78 @@ Defaults to `false`. This property determines whether the infinite spinner is sh
 #### String `className`
 Allows a CSS class to be set on the scrollable container.
 
+## Sample Code
+To get you started, here is some sample code that implements an infinite scroll with an simulated delay of 2.5 seconds. A [live demo of this example is available](http://chairnerd.seatgeek.com/react-infinite-a-browser-ready-efficient-scrolling-container-based-on-uitableview/) on our blog.
+
+```javascript
+var ListItem = React.createClass({
+    render: function() {
+        return <div className="infinite-list-item">
+        List Item {this.props.key}
+        </div>;
+    }
+});
+
+var InfiniteList = React.createClass({
+    getInitialState: function() {
+        return {
+            elements: this.buildElements(0, 20),
+            isInfiniteLoading: false
+        }
+    },
+
+    buildElements: function(start, end) {
+        var elements = [];
+        for (var i = start; i < end; i++) {
+            elements.push(<ListItem key={i}/>)
+        }
+        return elements;
+    },
+
+    handleInfiniteLoad: function() {
+        var that = this;
+        this.setState({
+            isInfiniteLoading: true
+        });
+        setTimeout(function() {
+            var elemLength = that.state.elements.length,
+                newElements = that.buildElements(elemLength, elemLength + 1000);
+            that.setState({
+                isInfiniteLoading: false,
+                elements: that.state.elements.concat(newElements)
+            });
+        }, 2500);
+    },
+
+    elementInfiniteLoad: function() {
+        return <div className="infinite-list-item">
+            Loading...
+        </div>;
+    },
+
+    render: function() {
+        return <Infinite elementHeight={40}
+                         containerHeight={250}
+                         infiniteLoadingBeginBottomOffset={200}
+                         onInfiniteLoad={this.handleInfiniteLoad}
+                         loadingSpinnerDelegate={this.elementInfiniteLoad()}
+                         isInfiniteLoading={this.state.isInfiniteLoading}
+                         >
+            {elements}
+        </Infinite>;
+    }
+});
+
+React.renderComponent(<InfiniteList/>,
+        document.getElementById('react-example-one'));
+```
+
 ## Developing
 React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
 
 ## Future Development
 
-It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
+Tests, possibly with Jest, are next on the agenda. It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
 
 ## License
 
