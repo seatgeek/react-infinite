@@ -1,0 +1,29 @@
+{
+  "name": "react-infinite",
+  "version": "0.1.0",
+  "authors": [
+    "Gareth Tan <garethwtan@gmail.com>"
+  ],
+  "description": "A browser-ready efficient scrolling container based on UITableView",
+  "main": "dist/react-infinite.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "scrolling",
+    "uitableview",
+    "infinite"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
