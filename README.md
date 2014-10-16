@@ -29,28 +29,28 @@ To use React Infinite, call it with a list of children that should be rendered b
 
 ## Configuration Options
 
-### Children
+#### Children
 The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire, and each
 
-### (Required) Number `elementHeight`
+#### (Required) Number `elementHeight`
 The height of each row in pixels.
 
-### (Required) **Number** `containerHeight`
+#### (Required) **Number** `containerHeight`
 The height of the scrolling container in pixels.
 
-### Number `preloadBatchSize`
+#### Number `preloadBatchSize`
 Defaults to `this.props.containerHeight / 2`. Imagine the total height of the scrollable divs. Now divide this equally into blocks `preloadBatchSize` pixels high. Every time the container's scrollTop enters each of these blocks the set of elements rendered in full are those contained within the block and elements that are within `preloadAdditionalHeight` above and below it.
 
-### Number `preloadAdditionalHeight`
+#### Number `preloadAdditionalHeight`
 Defaults to `this.props.containerHeight`. The total height of the area in which elements are rendered in full is height of the current scroll block (see `preloadBatchSize`) as well as `preloadAdditionalHeight` above and below it.
 
-### **Function** `handleScroll(DOMNode node)`
+#### **Function** `handleScroll(DOMNode node)`
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
 
-### **Number** `infiniteLoadBeginBottomOffset`
+#### **Number** `infiniteLoadBeginBottomOffset`
 When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, set this to a negative value.
 
-### Function `onInfiniteLoad()`
+#### Function `onInfiniteLoad()`
 Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginBottomOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
 
 1. Fetch a new page of records from the appropriate API
@@ -59,13 +59,13 @@ Defaults to `function(){}`. This function is called when the scroll exceeds `inf
 
 `onInfiniteLoad` relies heavily on passing props as a means of communication in the style of idiomatic React.
 
-### Renderable `loadingSpinnerDelegate`
+#### Renderable `loadingSpinnerDelegate`
 Defaults to `<div/>`. The element that is provided is used to render the loading view when React Infinite's `isInfiniteLoading` property is set to `true`.
 
-### Bool `isInfiniteLoading`
+#### Bool `isInfiniteLoading`
 Defaults to `false`. This property determines whether the infinite spinner is showing.
 
-### String `className`
+#### String `className`
 Allows a CSS class to be set on the scrollable container.
 
 ## Developing
@@ -74,3 +74,5 @@ React Infinite is built with Gulp. To get started, install the development depen
 ## Future Development
 
 It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
+
+## License
