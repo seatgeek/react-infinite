@@ -131,12 +131,12 @@
       // component should be in. The goal is to abstract all of this
       // from any actual representation in the DOM.
       setStateFromScrollTop: function(scrollTop) {
-        var blockNumber = Math.floor(scrollTop / this.props.preloadBatchSize),
-            blockStart = this.props.preloadBatchSize * blockNumber,
-            blockEnd = blockStart + this.props.preloadBatchSize,
-            windowTop = Math.max(0, blockStart - this.props.preloadAdditionalHeight),
+        var blockNumber = Math.floor(scrollTop / this.state.preloadBatchSize),
+            blockStart = this.state.preloadBatchSize * blockNumber,
+            blockEnd = blockStart + this.state.preloadBatchSize,
+            windowTop = Math.max(0, blockStart - this.state.preloadAdditionalHeight),
             windowBottom = Math.min(this.computeTotalScrollableHeight(),
-                            blockEnd + this.props.preloadAdditionalHeight);
+                            blockEnd + this.state.preloadAdditionalHeight);
 
         var displayIndexStart = Math.floor(windowTop / this.props.elementHeight),
             displayIndexEnd = Math.ceil(windowBottom / this.props.elementHeight);
