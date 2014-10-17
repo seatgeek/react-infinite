@@ -8,7 +8,7 @@
     } else if (typeof exports === 'object') {
         module.exports = factory(require('react'));
     } else {
-        root.returnExports = factory(root.React);
+        root.Infinite = factory(root.React);
     }
 }(this, function (React) {
     var Infinite = React.createClass({

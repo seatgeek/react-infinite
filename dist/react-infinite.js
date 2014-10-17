@@ -4,11 +4,11 @@
 
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['React'], factory);
+        define(['react'], factory);
     } else if (typeof exports === 'object') {
-        module.exports = factory(require('React'));
+        module.exports = factory(require('react'));
     } else {
-        root.returnExports = factory(root.React);
+        root.Infinite = factory(root.React);
     }
 }(this, function (React) {
     var Infinite = React.createClass({displayName: 'Infinite',
