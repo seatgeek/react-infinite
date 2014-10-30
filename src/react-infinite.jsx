@@ -84,19 +84,22 @@
       },
 
       componentWillReceiveProps: function(nextProps) {
-        var newStateObject = {};
+        var that = this,
+            newStateObject = {};
 
         if (nextProps.isInfiniteLoading !== undefined) {
           newStateObject.isInfiniteLoading = nextProps.isInfiniteLoading;
         }
 
         var nextPBS = nextProps.preloadBatchSize;
-        newStateObject.preloadBatchSize = nextPBS ? nextPBS : this.props.containerHeight / 2;
+        newStateObject.preloadBatchSize = nextPBS ? nextPBS : nextProps.containerHeight / 2;
 
         var nextPAH = nextProps.preloadAdditionalHeight;
-        newStateObject.preloadAdditionalHeight = nextPAH ? nextPAH : this.props.containerHeight;
+        newStateObject.preloadAdditionalHeight = nextPAH ? nextPAH : nextProps.containerHeight;
 
-        this.setState(newStateObject);
+        this.setState(newStateObject, function() {
+          that.setStateFromScrollTop(that.getScrollTop());
+        });
       },
 
       componentDidUpdate: function(prevProps, prevState) {
