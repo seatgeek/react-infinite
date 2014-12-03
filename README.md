@@ -120,7 +120,7 @@ var InfiniteList = React.createClass({
     render: function() {
         return <Infinite elementHeight={40}
                          containerHeight={250}
-                         infiniteLoadingBeginBottomOffset={200}
+                         infiniteLoadBeginBottomOffset={200}
                          onInfiniteLoad={this.handleInfiniteLoad}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
