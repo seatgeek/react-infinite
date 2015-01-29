@@ -40,6 +40,8 @@
         loadingSpinnerDelegate: React.PropTypes.renderable,
 
         isInfiniteLoading: React.PropTypes.bool,
+        timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
+        disableSmoothScrolling: React.PropTypes.bool,
 
         className: React.PropTypes.string
       },
@@ -49,7 +51,9 @@
           handleScroll: function(){},
           loadingSpinnerDelegate: React.DOM.div(null),
           onInfiniteLoad: function(){},
-          isInfiniteLoading: false
+          isInfiniteLoading: false,
+          timeScrollStateLastsForAfterUserScrolls: 150,
+          disableSmoothScrolling: false
         };
       },
 
@@ -79,7 +83,10 @@
           previousScrollTop: undefined,
 
           preloadBatchSize: preloadBatchSize,
-          preloadAdditionalHeight: preloadAdditionalHeight
+          preloadAdditionalHeight: preloadAdditionalHeight,
+
+          scrollTimeout: undefined,
+          isScrolling: false
         };
       },
 
@@ -157,9 +164,31 @@
         this.handleScroll(e.target.scrollTop);
       },
 
+      manageScrollTimeouts: function() {
+        // Maintains a series of timeouts to set this.state.isScrolling
+        // to be true when the element is scrolling.
+
+        if (this.state.scrollTimeout) {
+          clearTimeout(this.state.scrollTimeout);
+        }
+
+        var that = this,
+            scrollTimeout = setTimeout(function() {
+              that.setState({
+                isScrolling: false,
+                scrollTimeout: undefined
+              })
+            }, this.props.timeScrollStateLastsForAfterUserScrolls);
+
+        this.setState({
+          isScrolling: true,
+          scrollTimeout: scrollTimeout
+        });
+      },
+
       handleScroll: function(scrollTop) {
         var that = this;
-
+        this.manageScrollTimeouts();
         this.setStateFromScrollTop(scrollTop);
         var infiniteScrollBottomLimit = scrollTop >
             (this.computeTotalScrollableHeight() -
@@ -199,10 +228,23 @@
         var topHeight = this.state.displayIndexStart * this.props.elementHeight,
             bottomHeight = (this.props.children.length -
                              this.state.displayIndexEnd) *
-                              this.props.elementHeight;
+                              this.props.elementHeight,
+            that = this;
 
         var displayables = this.props.children.slice(this.state.displayIndexStart,
                                                      this.state.displayIndexEnd);
+
+        if (!this.props.disableSmoothScrolling && this.state.isScrolling) {
+          displayables = displayables.map(function(child) {
+            var newStyle = child.props.style || {};
+            newStyle.pointerEvents = 'none';
+            return React.addons.cloneWithProps(child, {
+              key: child.props.key,
+              ref: child.props.ref,
+              style: newStyle
+            });
+          });
+        }
 
         // topSpacer and bottomSpacer take up the amount of space that the
         // rendered elements would have taken up otherwise
