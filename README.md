@@ -15,7 +15,7 @@ SeatGeek currently uses React Infinite in production on our event pages; because
 
 ## Basic Use
 
-React Infinite currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
+React Infinite **requires React with Addons** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
 
 To use React Infinite, call it with a list of children that should be rendered by the component:
 
@@ -27,10 +27,33 @@ To use React Infinite, call it with a list of children that should be rendered b
 </Infinite>
 ```
 
+## Smooth Scrolling
+Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`.
+
+By default (since 0.2.0), a `style` prop is now passed into each of the components you pass provide containing `pointer-events: none` if the parent container is scrolling. To use this with your child components, you should apply that style property to the top level of each child component.
+
+**Example**
+For example, you were using several `ListItems` as children, you could apply the automatically-passed-in `style` prop as follows:
+
+```javascript
+var ListItem = React.createClass({
+    // The parent
+    render: function() {
+        return <div className="infinite-list-item" style={this.props.style}>
+        List Item {this.props.key}
+        </div>;
+    }
+});
+```
+Given an array of `ListItems`, `<Infinite>{listItems}</Infinite>` will now automatically pass the style prop to each of the `ListItems`
+
+To turn this automatic passing off, set `disableSmoothScrolling` to `true`. To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
+
+
 ## Configuration Options
 
 #### Children
-The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire, and each
+The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire. When rendering children, the `<Infinite>` element passes down a `style` prop to each child containing `pointer-events: none` if the `<Infinite>` element is scrolling. You can apply that style prop to your component to prevent it from receiving pointer events.
 
 #### (Required) Number `elementHeight`
 The height of each row in pixels.
@@ -64,6 +87,12 @@ Defaults to `<div/>`. The element that is provided is used to render the loading
 
 #### Bool `isInfiniteLoading`
 Defaults to `false`. This property determines whether the infinite spinner is showing.
+
+#### String `disableSmoothScrolling`
+Defaults to `false`. See the "smooth scrolling" section above. This prevents a style property from being set on the children you pass in with `pointer-events` corresponding to whether the parent container is scrolling.
+
+#### Number `timeScrollStateLastsForAfterUserScrolls`
+Defaults to `150` (in milliseconds). On Apple and some other devices, scroll is inertial. This means that the window continues to scroll for several hundred milliseconds after an `onScroll` event is fired. To prevent janky behavior, we do not want `pointer-events` to reactivate before the window has finished moving. Setting this parameter causes the `Infinite` component to think that the user is still scrolling for the specified number of milliseconds after the last `onScroll` event is received.
 
 #### String `className`
 Allows a CSS class to be set on the scrollable container.

@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     given = require('gulp-if'),
     jsx = require('gulp-react'),
     rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
     minifyjs = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps');
 
@@ -24,7 +25,14 @@ gulp.task('buildp', function() {
       .pipe(jsx())
       .pipe(minifyjs())
       .pipe(gulp.dest('dist'));
-})
+});
+
+gulp.task('example', function() {
+  gulp.src(["bower_components/react/react-with-addons.js", "src/react-infinite.jsx", "examples/index.jsx"])
+      .pipe(jsx())
+      .pipe(concat("bundle_scripts.js"))
+      .pipe(gulp.dest('examples'))
+});
 
 gulp.task('default', ['build', 'buildp']);
 
