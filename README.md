@@ -28,26 +28,9 @@ To use React Infinite, call it with a list of children that should be rendered b
 ```
 
 ## Smooth Scrolling
-Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`.
+Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the scrollbar for a default 150 milliseconds after the last user scroll action.
 
-By default (since 0.2.0), a `style` prop is now passed into each of the components you pass provide containing `pointer-events: none` if the parent container is scrolling. To use this with your child components, you should apply that style property to the top level of each child component.
-
-**Example**
-For example, you were using several `ListItems` as children, you could apply the automatically-passed-in `style` prop as follows:
-
-```javascript
-var ListItem = React.createClass({
-    // The parent
-    render: function() {
-        return <div className="infinite-list-item" style={this.props.style}>
-        List Item {this.props.key}
-        </div>;
-    }
-});
-```
-Given an array of `ListItems`, `<Infinite>{listItems}</Infinite>` will now automatically pass the style prop to each of the `ListItems`
-
-To turn this automatic passing off, set `disableSmoothScrolling` to `true`. To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
+To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
 
 
 ## Configuration Options
@@ -87,9 +70,6 @@ Defaults to `<div/>`. The element that is provided is used to render the loading
 
 #### Bool `isInfiniteLoading`
 Defaults to `false`. This property determines whether the infinite spinner is showing.
-
-#### String `disableSmoothScrolling`
-Defaults to `false`. See the "smooth scrolling" section above. This prevents a style property from being set on the children you pass in with `pointer-events` corresponding to whether the parent container is scrolling.
 
 #### Number `timeScrollStateLastsForAfterUserScrolls`
 Defaults to `150` (in milliseconds). On Apple and some other devices, scroll is inertial. This means that the window continues to scroll for several hundred milliseconds after an `onScroll` event is fired. To prevent janky behavior, we do not want `pointer-events` to reactivate before the window has finished moving. Setting this parameter causes the `Infinite` component to think that the user is still scrolling for the specified number of milliseconds after the last `onScroll` event is received.
