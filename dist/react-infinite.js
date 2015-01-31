@@ -11,6 +11,7 @@
         root.Infinite = factory(root.React);
     }
 }(this, function (React) {
+    var cx = React.addons.classSet;
     var Infinite = React.createClass({displayName: 'Infinite',
 
       propTypes: {
@@ -41,7 +42,6 @@
 
         isInfiniteLoading: React.PropTypes.bool,
         timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
-        disableSmoothScrolling: React.PropTypes.bool,
 
         className: React.PropTypes.string
       },
@@ -52,8 +52,7 @@
           loadingSpinnerDelegate: React.DOM.div(null),
           onInfiniteLoad: function(){},
           isInfiniteLoading: false,
-          timeScrollStateLastsForAfterUserScrolls: 150,
-          disableSmoothScrolling: false
+          timeScrollStateLastsForAfterUserScrolls: 150
         };
       },
 
@@ -234,30 +233,28 @@
         var displayables = this.props.children.slice(this.state.displayIndexStart,
                                                      this.state.displayIndexEnd);
 
-        if (!this.props.disableSmoothScrolling && this.state.isScrolling) {
-          displayables = displayables.map(function(child) {
-            var newStyle = child.props.style || {};
-            newStyle.pointerEvents = 'none';
-            return React.addons.cloneWithProps(child, {
-              key: child.props.key,
-              ref: child.props.ref,
-              style: newStyle
-            });
-          });
+        var infiniteClassSet = {};
+        infiniteClassSet[this.props.classNames] = !!this.props.classNames;
+
+        var infiniteScrollStyles = {};
+        if (this.state.isScrolling) {
+          infiniteScrollStyles.pointerEvents = 'none';
         }
 
         // topSpacer and bottomSpacer take up the amount of space that the
         // rendered elements would have taken up otherwise
-        return React.DOM.div({className: this.props.className ? this.props.className : '', 
+        return React.DOM.div({className: cx(infiniteClassSet), 
                     ref: "scrollable", 
                     style: this.buildScrollableStyle(), 
                     onScroll: this.infiniteHandleScroll}, 
-          React.DOM.div({ref: "topSpacer", style: this.buildHeightStyle(topHeight)}), 
-              displayables, 
-          React.DOM.div({ref: "bottomSpacer", style: this.buildHeightStyle(bottomHeight)}), 
-          React.DOM.div({ref: "loadingSpinner", 
-               style: this.loadingSpinnerDisplay()}, 
-               this.props.loadingSpinnerDelegate
+          React.DOM.div({ref: "smoothScrollingWrapper", style: infiniteScrollStyles}, 
+            React.DOM.div({ref: "topSpacer", style: this.buildHeightStyle(topHeight)}), 
+                displayables, 
+            React.DOM.div({ref: "bottomSpacer", style: this.buildHeightStyle(bottomHeight)}), 
+            React.DOM.div({ref: "loadingSpinner", 
+                 style: this.loadingSpinnerDisplay()}, 
+                 this.props.loadingSpinnerDelegate
+            )
           )
         );
       }
