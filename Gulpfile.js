@@ -28,7 +28,7 @@ gulp.task('buildp', function() {
 });
 
 gulp.task('example', function() {
-  gulp.src(["bower_components/react/react-with-addons.js", "src/react-infinite.jsx", "examples/index.jsx"])
+  gulp.src(["bower_components/react/react.js", "src/react-infinite.jsx", "examples/index.jsx"])
       .pipe(jsx())
       .pipe(concat("bundle_scripts.js"))
       .pipe(gulp.dest('examples'))

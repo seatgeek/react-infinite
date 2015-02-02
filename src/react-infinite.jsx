@@ -11,7 +11,6 @@
         root.Infinite = factory(root.React);
     }
 }(this, function (React) {
-    var cx = React.addons.classSet;
     var Infinite = React.createClass({
 
       propTypes: {
@@ -233,9 +232,6 @@
         var displayables = this.props.children.slice(this.state.displayIndexStart,
                                                      this.state.displayIndexEnd);
 
-        var infiniteClassSet = {};
-        infiniteClassSet[this.props.classNames] = !!this.props.classNames;
-
         var infiniteScrollStyles = {};
         if (this.state.isScrolling) {
           infiniteScrollStyles.pointerEvents = 'none';
@@ -243,7 +239,7 @@
 
         // topSpacer and bottomSpacer take up the amount of space that the
         // rendered elements would have taken up otherwise
-        return <div className={cx(infiniteClassSet)}
+        return <div className={this.props.className ? this.props.className : ''}
                     ref="scrollable"
                     style={this.buildScrollableStyle()}
                     onScroll={this.infiniteHandleScroll}>
