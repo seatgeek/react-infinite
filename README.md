@@ -15,7 +15,7 @@ SeatGeek currently uses React Infinite in production on our event pages; because
 
 ## Basic Use
 
-React Infinite **requires React with Addons** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
+React Infinite **only requires React (addons are not required)** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
 
 To use React Infinite, call it with a list of children that should be rendered by the component:
 
