@@ -17,6 +17,9 @@ SeatGeek currently uses React Infinite in production on our event pages; because
 
 React Infinite **only requires React (addons are not required)** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
 
+### Installing
+React Infinite uses a Universal Module Definition so it can be used in Node or in the browser. Concatenating it or importing it in the browser produces the global variable `Infinite`, while you can use it in Node (or Browserify) by calling `require('react-infinite')`.
+
 To use React Infinite, call it with a list of children that should be rendered by the component:
 
 ```xml
