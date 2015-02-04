@@ -28,7 +28,7 @@ To use React Infinite, call it with a list of children that should be rendered b
 ```
 
 ## Smooth Scrolling
-Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the scrollbar for a default 150 milliseconds after the last user scroll action.
+Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the children for a default 150 milliseconds after the last user scroll action.
 
 To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
 
