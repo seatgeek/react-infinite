@@ -183,7 +183,6 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
         </Infinite>
       );
 
-    // console.log(rootNode.getDOMNode())
     TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
       target: {
         scrollTop: 1500
@@ -212,13 +211,45 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
       }).not.toThrow();
     }
 
-    // Below the batcn and its preloadAdditionalHeight
+    // Below the batch and its preloadAdditionalHeight
     for (var i = 12; i < 20; i++) {
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
     }
-
   });
 
-})
+  it("functions correctly at the end of its range", function() {
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+    // The total scrollable height here is 4000 pixels
+    TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+      target: {
+        scrollTop: 3600
+      }
+    });
+
+    // Above the batch and its preloadAdditionalHeight
+    for (var i = 0; i < 14; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+      }).toThrow();
+    }
+
+    // Within the batch and its preloadAdditionalHeight, top and bottom
+    for (var i = 14; i < 20; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+      }).not.toThrow();
+    }
+
+
+  })
+});
