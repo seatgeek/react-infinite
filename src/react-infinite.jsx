@@ -37,7 +37,7 @@
 
         infiniteLoadBeginBottomOffset: React.PropTypes.number,
         onInfiniteLoad: React.PropTypes.func,
-        loadingSpinnerDelegate: React.PropTypes.renderable,
+        loadingSpinnerDelegate: React.PropTypes.node,
 
         isInfiniteLoading: React.PropTypes.bool,
         timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
@@ -110,6 +110,12 @@
       componentDidUpdate: function(prevProps, prevState) {
         if (this.props.children.length !== prevProps.children.length) {
           this.setStateFromScrollTop(this.getScrollTop());
+        }
+      },
+
+      componentWillMount: function() {
+        if (React.Children.count(this.props.children) === 1) {
+          throw new Error("Infinite does not do anything with only one child.")
         }
       },
 
