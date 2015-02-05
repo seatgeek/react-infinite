@@ -253,9 +253,8 @@
             React.DOM.div({ref: "topSpacer", style: this.buildHeightStyle(topHeight)}), 
                 displayables, 
             React.DOM.div({ref: "bottomSpacer", style: this.buildHeightStyle(bottomHeight)}), 
-            React.DOM.div({ref: "loadingSpinner", 
-                 style: this.loadingSpinnerDisplay()}, 
-                 this.props.loadingSpinnerDelegate
+            React.DOM.div({ref: "loadingSpinner"}, 
+                 this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null
             )
           )
         );

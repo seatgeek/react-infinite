@@ -222,12 +222,6 @@
         };
       },
 
-      loadingSpinnerDisplay: function() {
-        return {
-          display: this.state.isInfiniteLoading ? 'block' : 'none'
-        };
-      },
-
       render: function() {
         var topHeight = this.state.displayIndexStart * this.props.elementHeight,
             bottomHeight = (this.props.children.length -
@@ -253,9 +247,8 @@
             <div ref="topSpacer" style={this.buildHeightStyle(topHeight)}></div>
                 {displayables}
             <div ref="bottomSpacer" style={this.buildHeightStyle(bottomHeight)}></div>
-            <div ref="loadingSpinner"
-                 style={this.loadingSpinnerDisplay()}>
-                 {this.props.loadingSpinnerDelegate}
+            <div ref="loadingSpinner">
+                 {this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null}
             </div>
           </div>
         </div>;

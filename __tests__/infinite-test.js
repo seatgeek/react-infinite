@@ -254,6 +254,28 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
 
 describe("React Infinite's Infinite Scroll Capabilities", function() {
 
+  it("infiniteLoadBeginBottomOffset does not always trigger infinite load on scroll", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  onInfiniteLoad={infiniteSpy}
+                  infiniteLoadBeginBottomOffset={1000}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+    TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+      target: {
+        scrollTop: 300 // past the bottom offset
+      }
+    });
+
+    expect(infiniteSpy).not.toHaveBeenCalled();
+  });
+
   it("triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginBottomOffset", function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
@@ -274,5 +296,55 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     });
 
     expect(infiniteSpy).toHaveBeenCalled();
+  });
+
+  it("does not always display the loadingSpinnerDelegate", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  onInfiniteLoad={infiniteSpy}
+                  infiniteLoadBeginBottomOffset={1000}
+                  loadingSpinnerDelegate={<div className={"delegate-div"} />}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+    TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+      target: {
+        scrollTop: 100 // past the bottom offset
+      }
+    });
+
+    expect(function() {
+      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div')
+    }).toThrow();
+  });
+
+  it("displays the loadingSpinnerDelegate when isInfiniteLoading", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  onInfiniteLoad={infiniteSpy}
+                  infiniteLoadBeginBottomOffset={1000}
+                  loadingSpinnerDelegate={<div className={"delegate-div"} />}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+    TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+      target: {
+        scrollTop: 3600 // past the bottom offset
+      }
+    });
+
+    expect(function() {
+      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div')
+    }).not.toThrow();
   });
 })
