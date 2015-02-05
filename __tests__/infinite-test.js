@@ -347,4 +347,43 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
       TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div')
     }).not.toThrow();
   });
+});
+
+describe("Maintaining React Infinite's internal scroll state", function() {
+  it("has does not have pointer-events: none by default", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  timeScrollStateLastsForAfterUserScrolls={10000}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+  var wrapper = rootNode.refs.smoothScrollingWrapper;
+  expect(wrapper.props.style.pointerEvents).toBeUndefined();
+  });
+
+  it("has pointer-events: none upon scroll", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  timeScrollStateLastsForAfterUserScrolls={10000}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+  TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+    target: {
+      scrollTop: 100 // past the bottom offset
+    }
+  });
+
+  var wrapper = rootNode.refs.smoothScrollingWrapper;
+  expect(wrapper.props.style.pointerEvents).toEqual('none');
+  });
 })
