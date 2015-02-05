@@ -1,5 +1,6 @@
 React Infinite
 ===
+[![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/garetht/sublime-scss-expander)
 
 **A browser-ready efficient scrolling container based on UITableView**
 
@@ -144,9 +145,9 @@ React.renderComponent(<InfiniteList/>,
 ```
 
 ### Infinite Jest
-I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library, which provides automatic mocking and JSDOM testing.
+I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<sup>1</sup>, which provides automatic mocking and jsdom testing.
 
-Tests are located in the `__tests__` directory, and can be run with `npm test` after `npm install`.
+Tests are located in the `__tests__` directory<sup>2</sup>, and can be run with `npm test` after `npm install`.
 
 ## Developing
 React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
@@ -178,3 +179,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+<sup>1</sup> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
+<sup>2</sup> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
