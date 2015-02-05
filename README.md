@@ -16,7 +16,10 @@ SeatGeek currently uses React Infinite in production on our event pages; because
 
 ## Basic Use
 
-React Infinite **requires React with Addons** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
+React Infinite **only requires React (addons are not required)** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
+
+### Installing
+React Infinite uses a Universal Module Definition so it can be used in Node or in the browser. Concatenating it or importing it in the browser produces the global variable `Infinite`, while you can use it in Node (or Browserify) by calling `require('react-infinite')`.
 
 To use React Infinite, call it with a list of children that should be rendered by the component:
 
@@ -154,31 +157,7 @@ React Infinite is built with Gulp. To get started, install the development depen
 
 ## Future Development
 
-Tests, possibly with Jest, are next on the agenda. It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
-
-## License
-
-**The MIT License (MIT)**
-
-Copyright (c) 2014 SeatGeek
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
 
 <sup>1</sup> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
 <sup>2</sup> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
