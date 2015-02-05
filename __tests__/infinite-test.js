@@ -249,7 +249,30 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
-
-
   })
 });
+
+describe("React Infinite's Infinite Scroll Capabilities", function() {
+
+  it("triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginBottomOffset", function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  onInfiniteLoad={infiniteSpy}
+                  infiniteLoadBeginBottomOffset={1000}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+    TestUtils.Simulate.scroll(rootNode.getDOMNode(), {
+      target: {
+        scrollTop: 3600 // past the bottom offset
+      }
+    });
+
+    expect(infiniteSpy).toHaveBeenCalled();
+  });
+})
