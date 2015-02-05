@@ -1,5 +1,6 @@
 React Infinite
 ===
+[![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/garetht/sublime-scss-expander)
 
 **A browser-ready efficient scrolling container based on UITableView**
 
@@ -31,7 +32,7 @@ To use React Infinite, call it with a list of children that should be rendered b
 ```
 
 ## Smooth Scrolling
-Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the scrollbar for a default 150 milliseconds after the last user scroll action.
+Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the children for a default 150 milliseconds after the last user scroll action.
 
 To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
 
@@ -146,9 +147,17 @@ React.renderComponent(<InfiniteList/>,
         document.getElementById('react-example-one'));
 ```
 
+## Infinite Jest
+I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<sup>1</sup>, which provides automatic mocking and jsdom testing.
+
+Tests are located in the `__tests__` directory<sup>2</sup>, and can be run with `npm test` after `npm install`.
+
 ## Developing
 React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
 
 ## Future Development
 
-Tests, possibly with Jest, are next on the agenda. It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
+It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
+
+<sup>1</sup> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
+<sup>2</sup> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.

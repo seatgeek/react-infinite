@@ -37,7 +37,7 @@
 
         infiniteLoadBeginBottomOffset: React.PropTypes.number,
         onInfiniteLoad: React.PropTypes.func,
-        loadingSpinnerDelegate: React.PropTypes.renderable,
+        loadingSpinnerDelegate: React.PropTypes.node,
 
         isInfiniteLoading: React.PropTypes.bool,
         timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
@@ -110,6 +110,12 @@
       componentDidUpdate: function(prevProps, prevState) {
         if (this.props.children.length !== prevProps.children.length) {
           this.setStateFromScrollTop(this.getScrollTop());
+        }
+      },
+
+      componentWillMount: function() {
+        if (React.Children.count(this.props.children) === 1) {
+          throw new Error("Infinite does not do anything with only one child.")
         }
       },
 
@@ -239,7 +245,7 @@
 
         // topSpacer and bottomSpacer take up the amount of space that the
         // rendered elements would have taken up otherwise
-        return React.DOM.div({className: this.props.classNames ? this.props.classNames : '', 
+        return React.DOM.div({className: this.props.className ? this.props.className : '', 
                     ref: "scrollable", 
                     style: this.buildScrollableStyle(), 
                     onScroll: this.infiniteHandleScroll}, 
@@ -247,9 +253,8 @@
             React.DOM.div({ref: "topSpacer", style: this.buildHeightStyle(topHeight)}), 
                 displayables, 
             React.DOM.div({ref: "bottomSpacer", style: this.buildHeightStyle(bottomHeight)}), 
-            React.DOM.div({ref: "loadingSpinner", 
-                 style: this.loadingSpinnerDisplay()}, 
-                 this.props.loadingSpinnerDelegate
+            React.DOM.div({ref: "loadingSpinner"}, 
+                 this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null
             )
           )
         );
