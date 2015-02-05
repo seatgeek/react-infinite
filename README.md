@@ -143,6 +143,11 @@ React.renderComponent(<InfiniteList/>,
         document.getElementById('react-example-one'));
 ```
 
+### Infinite Jest
+I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library, which provides automatic mocking and JSDOM testing.
+
+Tests are located in the `__tests__` directory, and can be run with `npm test` after `npm install`.
+
 ## Developing
 React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
 
