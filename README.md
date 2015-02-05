@@ -1,6 +1,6 @@
 React Infinite
 ===
-[![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/garetht/sublime-scss-expander)
+[![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/seatgeek/react-infinite.svg)
 
 **A browser-ready efficient scrolling container based on UITableView**
 
