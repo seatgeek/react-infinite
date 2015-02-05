@@ -147,7 +147,7 @@ React.renderComponent(<InfiniteList/>,
         document.getElementById('react-example-one'));
 ```
 
-### Infinite Jest
+## Infinite Jest
 I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<sup>1</sup>, which provides automatic mocking and jsdom testing.
 
 Tests are located in the `__tests__` directory<sup>2</sup>, and can be run with `npm test` after `npm install`.
