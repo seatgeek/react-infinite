@@ -160,4 +160,5 @@ React Infinite is built with Gulp. To get started, install the development depen
 It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
 
 <small><sup>1</sup></small> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
+
 <small><sup>2</sup></small> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
