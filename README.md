@@ -148,9 +148,9 @@ React.renderComponent(<InfiniteList/>,
 ```
 
 ## Infinite Jest
-I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<sup>1</sup>, which provides automatic mocking and jsdom testing.
+I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<small><sup>1</sup></small>, which provides automatic mocking and jsdom testing.
 
-Tests are located in the `__tests__` directory<sup>2</sup>, and can be run with `npm test` after `npm install`.
+Tests are located in the `__tests__` directory<small><sup>2</sup></small>, and can be run with `npm test` after `npm install`.
 
 ## Developing
 React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
@@ -159,5 +159,5 @@ React Infinite is built with Gulp. To get started, install the development depen
 
 It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
 
-<sup>1</sup> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
-<sup>2</sup> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
+<small><sup>1</sup></small> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
+<small><sup>2</sup></small> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
