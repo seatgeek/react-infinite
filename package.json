@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "dist/react-infinite.js",
   "repository": {
@@ -42,6 +42,6 @@
     "react-tools": "*"
   },
   "dependencies": {
-    "react": "*"
+    "react": ">= 0.11.2 < 0.13.0"
   }
 }
