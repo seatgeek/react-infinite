@@ -15,7 +15,10 @@ var args = require('yargs').alias('P', 'production')
 gulp.task('build', function() {
   gulp.src('./src/react-infinite.jsx')
       .pipe(given(development,sourcemaps.init()))
-      .pipe(jsx())
+      .pipe(jsx({
+        harmony: true,
+        stripTypes: true
+      }))
       .pipe(given(development, sourcemaps.write('.')))
       .pipe(gulp.dest('dist'));
 });
@@ -23,7 +26,10 @@ gulp.task('build', function() {
 gulp.task('buildp', function() {
   gulp.src("./src/react-infinite.jsx")
       .pipe(rename("react-infinite.min.jsx"))
-      .pipe(jsx())
+      .pipe(jsx({
+        harmony: true,
+        stripTypes: true
+      }))
       .pipe(minifyjs())
       .pipe(gulp.dest('dist'));
 });
