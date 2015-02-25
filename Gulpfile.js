@@ -7,15 +7,16 @@ var gulp = require('gulp'),
     minifyjs = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps');
 
-var args = require('yargs').alias('P', 'production').argv,
+var args = require('yargs').alias('P', 'production')
+                           .alias('D', 'development').argv,
     production = args.production,
-    development = !production;
+    development = args.development;
 
 gulp.task('build', function() {
   gulp.src('./src/react-infinite.jsx')
-      .pipe(sourcemaps.init())
+      .pipe(given(development,sourcemaps.init()))
       .pipe(jsx())
-      .pipe(sourcemaps.write('.'))
+      .pipe(given(development, sourcemaps.write('.')))
       .pipe(gulp.dest('dist'));
 });
 
