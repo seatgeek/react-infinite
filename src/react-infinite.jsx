@@ -17,35 +17,46 @@
   //  2. getDisplayIndexStart()
   //  3. getDisplayIndexEnd()
   class InfiniteComputer {
-    constructor(data, children) {
-      this.data = data;
+    constructor(heightData, children) {
+      this.heightData = heightData;
       this.children = children;
     }
   }
 
   class ConstantInfiniteComputer extends InfiniteComputer {
     getTotalScrollableHeight() {
-      return this.data * this.children.length;
+      return this.heightData * this.children.length;
     }
 
-    getDisplayIndexStart() {
+    getDisplayIndexStart(windowTop) {
+      return Math.floor(windowTop / this.heightData);
+    }
 
+    getDisplayIndexEnd(windowBottom) {
+      return Math.ceil(windowBottom / this.heightData);
     }
   }
 
   class ArrayInfiniteComputer extends InfiniteComputer {
+    construtor(heightData, children) {
+      super(heightData, children);
+      this.prefixHeightData = this.heightData.reduce((acc, next) => {
+        if (acc.length === 0) {
+          return [next];
+        } else {
+          return acc.push(acc[acc.length - 1] + next);
+        }
+      }, [])
+    }
+
     getTotalScrollableHeight() {
-      return this.data.reduce((acc, next) => {
-        return acc + next;
-      }, 0)
+      return this.prefixHeightData[this.prefixHeightData.length - 1];
     }
 
-    getDisplayIndexStart() {
-
+    getDisplayIndexStart(windowTop) {
     }
 
-    getDisplayIndexEnd() {
-
+    getDisplayIndexEnd(windowBottom) {
     }
   }
 
@@ -183,6 +194,8 @@
     // Given the scrollTop of the container, computes the state the
     // component should be in. The goal is to abstract all of this
     // from any actual representation in the DOM.
+    // The window is the block with any preloadAdditionalHeight
+    // added to it.
     setStateFromScrollTop(scrollTop) {
       var blockNumber = Math.floor(scrollTop / this.state.preloadBatchSize),
           blockStart = this.state.preloadBatchSize * blockNumber,
