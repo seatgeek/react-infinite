@@ -10,7 +10,7 @@ class ArrayInfiniteComputer extends InfiniteComputer {
         acc.push(acc[acc.length - 1] + next);
         return acc;
       }
-    }, [])
+    }, []);
   }
 
   getTotalScrollableHeight() {
@@ -18,6 +18,7 @@ class ArrayInfiniteComputer extends InfiniteComputer {
   }
 
   getDisplayIndexStart(windowTop) {
+
   }
 
   getDisplayIndexEnd(windowBottom) {

@@ -18,4 +18,9 @@ describe("Array Infinite Computer", function() {
     var aic = new ArrayInfiniteComputer([100, 100, 100, 100], []);
     expect(aic.getTotalScrollableHeight()).toEqual(400);
   });
+
+  it("provides the correct empty sum of its children", function() {
+    var aic = new ArrayInfiniteComputer([], []);
+    expect(aic.getTotalScrollableHeight()).toEqual(0);
+  });
 })
