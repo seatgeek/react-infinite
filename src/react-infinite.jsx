@@ -248,4 +248,5 @@ var Infinite = React.createClass({
   }
 });
 
+module.exports = Infinite;
 global.Infinite = Infinite;

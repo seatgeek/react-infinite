@@ -1,8 +1,8 @@
-jest.dontMock('../dist/react-infinite.js');
+jest.dontMock('../src/react-infinite.jsx');
 
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
-var Infinite = require('../dist/react-infinite.js');
+var Infinite = require('../src/react-infinite.jsx');
 
 var renderHelpers = {
   divGenerator: function(number, height) {
