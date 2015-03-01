@@ -20,19 +20,19 @@ class ArrayInfiniteComputer extends InfiniteComputer {
   }
 
   getDisplayIndexStart(windowTop) {
-    return bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_LOWER);
+    return bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
   }
 
   getDisplayIndexEnd(windowBottom) {
-    return bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
+    return bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_LOWER);
   }
 
-  getTopSpacerHeight() {
-    return this.prefixHeightData[this.getDisplayIndexStart()];
+  getTopSpacerHeight(displayIndexStart) {
+    return this.prefixHeightData[displayIndexStart];
   }
 
-  getBottomSpacerHeight() {
-    return this.getTotalScrollableHeight() - this.prefixHeightData[this.getDisplayIndexEnd()];
+  getBottomSpacerHeight(displayIndexEnd) {
+    return this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd];
   }
 }
 
