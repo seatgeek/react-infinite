@@ -19,10 +19,11 @@ var Infinite = React.createClass({
     // is equal to the entire height of the list.
     preloadAdditionalHeight: React.PropTypes.number, // page to screen ratio
 
-    // elementHeight is the height of each element in the
-    // array. This must be provided so that no measurements
-    // of rendered elements are necessary.
-    elementHeight: React.PropTypes.number.isRequired,
+    // The provided elementHeight
+    elementHeight: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.arrayOf(React.PropTypes.number)
+    ]).isRequired,
     // This is the total height of the visible window.
     containerHeight: React.PropTypes.number.isRequired,
 
