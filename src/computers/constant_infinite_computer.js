@@ -13,12 +13,12 @@ class ConstantInfiniteComputer extends InfiniteComputer {
     return Math.ceil(windowBottom / this.heightData);
   }
 
-  getTopSpacerHeight() {
-    return this.getDisplayIndexStart * this.heightData;
+  getTopSpacerHeight(displayIndexStart) {
+    return displayIndexStart * this.heightData;
   }
 
-  getBottomSpacerHeight() {
-    return (this.numberOfChildren - this.getDisplayIndexEnd()) * this.heightData;
+  getBottomSpacerHeight(displayIndexEnd) {
+    return Math.max(0, (this.numberOfChildren - displayIndexEnd) * this.heightData);
   }
 }
 

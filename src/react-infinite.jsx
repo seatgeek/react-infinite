@@ -243,6 +243,9 @@ var Infinite = React.createClass({
       infiniteScrollStyles.pointerEvents = 'none';
     }
 
+    var topSpacerHeight = this.state.infiniteComputer.getTopSpacerHeight(this.state.displayIndexStart),
+        bottomSpacerHeight = this.state.infiniteComputer.getBottomSpacerHeight(this.state.displayIndexEnd);
+
     // topSpacer and bottomSpacer take up the amount of space that the
     // rendered elements would have taken up otherwise
     return <div className={this.props.className ? this.props.className : ''}
@@ -251,10 +254,10 @@ var Infinite = React.createClass({
                 onScroll={this.infiniteHandleScroll}>
       <div ref="smoothScrollingWrapper" style={infiniteScrollStyles}>
         <div ref="topSpacer"
-             style={this.buildHeightStyle(this.state.infiniteComputer.getTopSpacerHeight())}/>
+             style={this.buildHeightStyle(topSpacerHeight)}/>
             {displayables}
         <div ref="bottomSpacer"
-             style={this.buildHeightStyle(this.state.infiniteComputer.getBottomSpacerHeight())}/>
+             style={this.buildHeightStyle(bottomSpacerHeight)}/>
         <div ref="loadingSpinner">
              {this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null}
         </div>
