@@ -13,21 +13,21 @@ class InfiniteComputer {
     throw new Error("getTotalScrollableHeight not implemented.");
   }
 
-  getDisplayIndexStart() {
+  getDisplayIndexStart(windowTop) {
     throw new Error("getDisplayIndexStart not implemented.");
   }
 
-  getDisplayIndexEnd() {
+  getDisplayIndexEnd(windowBottom) {
     throw new Error("getDisplayIndexEnd not implemented.");
   }
 
   // These are helper methods, and can be calculated from
   // the above details.
-  getTopSpacerHeight() {
+  getTopSpacerHeight(displayIndexStart) {
     throw new Error("getTopSpacerHeight not implemented.");
   }
 
-  getBottomSpacerHeight() {
+  getBottomSpacerHeight(displayIndexEnd) {
     throw new Error("getBottomSpacerHeight not implemented.");
   }
 }
