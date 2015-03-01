@@ -2,8 +2,8 @@ var InfiniteComputer = require('./infinite_computer.js'),
     bs = require('../utils/binary_index_search.js');
 
 class ArrayInfiniteComputer extends InfiniteComputer {
-  constructor(heightData, children) {
-    super(heightData, children);
+  constructor(heightData, numberOfChildren) {
+    super(heightData, numberOfChildren);
     this.prefixHeightData = this.heightData.reduce((acc, next) => {
       if (acc.length === 0) {
         return [next];
@@ -25,6 +25,14 @@ class ArrayInfiniteComputer extends InfiniteComputer {
 
   getDisplayIndexEnd(windowBottom) {
     return bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
+  }
+
+  getTopSpacerHeight() {
+    return this.prefixHeightData[this.getDisplayIndexStart()];
+  }
+
+  getBottomSpacerHeight() {
+    return this.getTotalScrollableHeight() - this.prefixHeightData[this.getDisplayIndexEnd()];
   }
 }
 
