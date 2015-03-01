@@ -69,7 +69,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
 
 describe('The Children of the React Infinite Component', function() {
   it ("renders its children when no hiding behavior is required", function() {
-    var infinite = TestUtils.renderIntoDocument(
+    var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"correct-class-name"}>
@@ -78,19 +78,25 @@ describe('The Children of the React Infinite Component', function() {
         </Infinite>
       );
 
-    expect(TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-0')).not.toBeUndefined();
-    expect(TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-1')).not.toBeUndefined();
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("0px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("0px");
+
+    expect(TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')).not.toBeUndefined();
+    expect(TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')).not.toBeUndefined();
   });
 
   it ("renders its children when some DOM nodes are hidden", function() {
     var elementHeight = 200;
-    var infinite = TestUtils.renderIntoDocument(
+    var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(10, elementHeight)}
         </Infinite>
       );
+
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("0px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("800px");
 
     // Why are six nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
@@ -102,13 +108,13 @@ describe('The Children of the React Infinite Component', function() {
     // Their sum is 1200 pixels, or 6 200-pixel elements.
     for (var i = 0; i < 6; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
 
     for (var i = 6; i < 10; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
     }
   });
@@ -179,7 +185,7 @@ describe('The Children of the React Infinite Component', function() {
 })
 
 describe('The Scrolling Behavior of the React Infinite Component', function() {
-  it('hides visible elements when the user scrolls sufficiently', function() {
+  iit('hides visible elements when the user scrolls sufficiently', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -195,13 +201,16 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
       }
     });
 
-    // Schematic
-    //   600 pixels: start of preloadAdditionalHeight above batch of 800 pixels
-    //   1400 pixels: start of batch that the scrollTop of 1500 pixels is in
-    //   1500 pixels: scrollTop of React Infinite container
-    //   1800 pixels: end of batch
-    //   2300 pixels: end of React Infinite container
-    //   2600 pixels: end of preloadAdditionalHeight above batch of 800 pixels
+    //  Schematic
+    //  0 pixels: start of topSpacer element
+    //  400 pixels: windowTop, start of first displayed element
+    //  1200 pixels: blockStart, start of the block that scrollTop of 1500 pixels is in
+    //    (the block size default is containerHeight / 2)
+    //  1600 pixels: blockEnd, end of block that scrollTop of 1500 pixels is in
+    //  2400 pixels: windowBottom, end of first displayed element
+    //  4000 pixels: end of bottomSpacer element
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("400px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("1600px");
 
     // Above the batch and its preloadAdditionalHeight
     for (var i = 0; i < 2; i++) {
@@ -241,6 +250,9 @@ describe('The Scrolling Behavior of the React Infinite Component', function() {
         scrollTop: 3600
       }
     });
+
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("2800px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("0px");
 
     // Above the batch and its preloadAdditionalHeight
     for (var i = 0; i < 14; i++) {
