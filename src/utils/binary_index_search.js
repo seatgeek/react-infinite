@@ -4,7 +4,7 @@ var opts = {
 }
 
 var binaryIndexSearch = function(array, item, opt) {
-  var index = undefined;
+  var index;
 
   var high = array.length - 1,
       low = 0,
