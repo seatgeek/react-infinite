@@ -65,22 +65,26 @@ describe("Array Infinite Computer", () => {
 
   describe("getTopSpacerHeight()", () => {
     it("correctly computes a zero top spacer height", () => {
-      var aic = new ArrayInfiniteComputer([50, 50, 50, 50], 4);
-      expect(aic.getTopSpacerHeight(0)).toEqual(0)
+      var aic = new ArrayInfiniteComputer([40, 80, 160, 320], 4);
+      expect(aic.getTopSpacerHeight(0)).toEqual(0);
     });
 
     it("correctly computes a regular top spacer height", () => {
-
+      var aic = new ArrayInfiniteComputer([40, 80, 160, 320], 4);
+      expect(aic.getTopSpacerHeight(2)).toEqual(120);
     });
   });
 
   describe("getBottomSpacerHeight()", () => {
     it("correctly computes a zero bottom spacer height", () => {
-
+      // Note the displayIndexEnd is not inclusive
+      var aic = new ArrayInfiniteComputer([20, 40, 80, 160], 4);
+      expect(aic.getBottomSpacerHeight(4)).toEqual(0);
     });
 
     it("correctly computes a regular bottom spacer height", () => {
-
+      var aic = new ArrayInfiniteComputer([20, 40, 80, 160], 4);
+      expect(aic.getBottomSpacerHeight(3)).toEqual(160);
     });
   });
 });

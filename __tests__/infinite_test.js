@@ -185,7 +185,7 @@ describe('The Children of the React Infinite Component', function() {
 })
 
 describe('The Scrolling Behavior of the React Infinite Component', function() {
-  iit('hides visible elements when the user scrolls sufficiently', function() {
+  it('hides visible elements when the user scrolls sufficiently', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
