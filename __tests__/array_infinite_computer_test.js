@@ -51,12 +51,12 @@ describe("Array Infinite Computer", () => {
   describe("getDisplayIndexEnd()", () => {
     it("computes the correct display index when precisely at element border", () => {
       var aic = new ArrayInfiniteComputer([130, 120, 110, 100, 90, 80, 70], 7);
-      expect(aic.getDisplayIndexEnd(550)).toEqual(4);
+      expect(aic.getDisplayIndexEnd(550)).toEqual(5);
     });
 
-    it("computes the correct display index when precisely at element border", () => {
+    it("computes the correct display index when not precisely at element border", () => {
       var aic = new ArrayInfiniteComputer([130, 120, 110, 100, 90, 80, 70], 7);
-      expect(aic.getDisplayIndexEnd(660)).toEqual(5);
+      expect(aic.getDisplayIndexEnd(444)).toEqual(4);
     });
 
     xit("computes indexes correctly with zero-height elements", () => {

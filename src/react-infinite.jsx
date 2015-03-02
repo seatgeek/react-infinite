@@ -63,7 +63,6 @@ var Infinite = React.createClass({
                                   this.props.preloadAdditionalHeight :
                                   this.props.containerHeight;
 
-
     return {
       infiniteComputer: computer,
 
