@@ -1,39 +1,44 @@
 var gulp = require('gulp'),
-    yargs = require('yargs'),
-    given = require('gulp-if'),
-    jsx = require('gulp-react'),
-    rename = require('gulp-rename'),
-    concat = require('gulp-concat'),
-    minifyjs = require('gulp-uglify'),
-    sourcemaps = require('gulp-sourcemaps');
+  given = require('gulp-if'),
+  jsx = require('gulp-react'),
+  reactify = require('reactify'),
+  buffer = require('vinyl-buffer'),
+  minifyjs = require('gulp-uglify'),
+  browserify = require('browserify'),
+  sourcemaps = require('gulp-sourcemaps'),
+  browserifyShim = require('browserify-shim'),
+  sourcestream = require('vinyl-source-stream');
 
 var args = require('yargs').alias('P', 'production')
-                           .alias('D', 'development').argv,
-    production = args.production,
-    development = args.development;
+               .alias('D', 'development')
+               .alias('E', 'example').argv,
+  production = args.production,
+  development = args.development,
+  example = args.example;
 
 gulp.task('build', function() {
-  gulp.src('./src/react-infinite.jsx')
-      .pipe(given(development,sourcemaps.init()))
-      .pipe(jsx())
-      .pipe(given(development, sourcemaps.write('.')))
-      .pipe(gulp.dest('dist'));
-});
+  var b = browserify({
+        entries: './src/react-infinite.jsx',
+        standalone: 'Infinite'
+      })
+      .transform(reactify, {
+        es6: true
+      })
+     .transform(browserifyShim)
+     .bundle()
+     .pipe(sourcestream('react-infinite.' + (production ? 'min.' : '') + 'js'))
+     .pipe(buffer())
+     .pipe(given(development, sourcemaps.init()))
+     .pipe(given(production, minifyjs()))
+     .pipe(given(development, sourcemaps.write('.')))
+     .pipe(gulp.dest('dist'));
 
-gulp.task('buildp', function() {
-  gulp.src("./src/react-infinite.jsx")
-      .pipe(rename("react-infinite.min.jsx"))
+  if (example) {
+    gulp.src('./examples/index.jsx')
       .pipe(jsx())
-      .pipe(minifyjs())
-      .pipe(gulp.dest('dist'));
-});
-
-gulp.task('example', function() {
-  gulp.src(["bower_components/react/react.js", "src/react-infinite.jsx", "examples/index.jsx"])
-      .pipe(jsx())
-      .pipe(concat("bundle_scripts.js"))
       .pipe(gulp.dest('examples'))
+  }
 });
 
-gulp.task('default', ['build', 'buildp']);
+gulp.task('default', ['build']);
 
