@@ -17,7 +17,10 @@ var args = require('yargs').alias('P', 'production')
   example = args.example;
 
 gulp.task('build', function() {
-  var b = browserify('./src/react-infinite.jsx')
+  var b = browserify({
+        entries: './src/react-infinite.jsx',
+        standalone: 'Infinite'
+      })
       .transform(reactify, {
         es6: true
       })
