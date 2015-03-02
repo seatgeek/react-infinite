@@ -2,26 +2,32 @@ React Infinite
 ===
 [![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/seatgeek/react-infinite.svg)
 
-**A browser-ready efficient scrolling container based on UITableView**
+**A browser-ready efficient scrolling container based on UITableView. Now supports elements of variable heights!**
 
-In the browser, when a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM tree even when they are scrolled out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long; the number of additional nodes may well reach the millions.
+In the browser, when a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM even when they are scrolled out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long; the number of additional nodes may well reach the millions.
 
-React Infinite solves this with some inspiration from iOS's UITableView and AirBnB's Infinity.js. In sum, DOM nodes that are not visible to the user at the top and the bottom of the container are rendered as a single blank node that takes up the space those nodes would otherwise have taken up. With React, this becomes even easier. Its virtual DOM allows the same set of nodes to be reused; only their content is changed.
+React Infinite solves this with some inspiration from iOS's UITableView and AirBnB's Infinity.js by rendering only DOM nodes that the user is able to see or might soon see. Other DOM nodes are clustered and rendered as a single blank node.
 
-React Infinite is ready for use with both browsers and Node.js. Its only dependency is React, and minified and development versions are available to be dropped in.
+## Installation
 
-SeatGeek currently uses React Infinite in production on our event pages; because we only have pages for events in the future, a link would not be appropriate. To see one, head to one of our team pages for the [New York Giants](https://seatgeek.com/new-york-giants-tickets), or the [New York Mets](https://seatgeek.com/new-york-mets-tickets), or the [New York Knicks](https://seatgeek.com/new-york-knicks-tickets), and click on the green button for an event to see them in action in the Omnibox.
+### In the Browser
+The relevant files are `dist/react-infinite.js` and `dist/react-infinite.min.js`. You **must** have React available as a global variable named `React` on the `window`. Including either file, through concatenation or a script tag, will produce a global variable named **`Infinite`** representing the component.
 
-![](http://cl.ly/image/0y0L04220U2T/Screen%20Shot%202014-10-16%20at%2010.56.19%20AM.png)
+### In NPM
+React Infinite uses a Universal Module Definition so you can use it in NPM as well. `npm install` this package and
+```
+var React = require('react');
+var Infinite = require('react-infinite');
+```
+
+### In Browserify
+If you want to use the source Browserify, the relevant file to include is `src/react_infinite.jsx`. You **must** create the bundle with a compiler that supports both ES6 and JSX compilation. `reactify` with the `harmony` option turned on will suffice - examine the `preprocessor.js` tools to see an example of the compilation for tests.
+
+Otherwise, you can follow the instructions for NPM.
 
 ## Basic Use
-
-React Infinite **only requires React (addons are not required)** and currently supports displaying a container with numerous rows of items of equal height. Each row should also take up the full width of the container. It also supports downwards infinite scrolling; it will display an infinite loading spinner at the bottom.
-
-### Installing
-React Infinite uses a Universal Module Definition so it can be used in Node or in the browser. Concatenating it or importing it in the browser produces the global variable `Infinite`, while you can use it in Node (or Browserify) by calling `require('react-infinite')`.
-
-To use React Infinite, call it with a list of children that should be rendered by the component:
+### Elements of Equal Height
+To use React Infinite with a list of elements you want to make scrollable, provide them to React Infinite as children.
 
 ```xml
 <Infinite containerHeight={200} elementHeight={40}>
@@ -31,19 +37,27 @@ To use React Infinite, call it with a list of children that should be rendered b
 </Infinite>
 ```
 
-## Smooth Scrolling
-Some browsers do not take kindly to our manipulation of scroll views. This causes janky scrolling behavior. To counter this, I've taken inspiration from [this article](http://www.thecssninja.com/css/pointer-events-60fps) that encourages the use of `pointer-events: none`. A wrapper `div` is now applied that disables pointer events on the children for a default 150 milliseconds after the last user scroll action.
+### Elements of Varying Heights
+If not all of the children have the same height, you must provide an array of integers to the `elementHeight` prop instead.
+```xml
+<Infinite containerHeight={200} elementHeight={[111, 252, 143]}>
+    <div className="111-px"/>
+    <div className="252-px"/>
+    <div className="143-px"/>
+</Infinite>
+```
 
-To configure the amount of time that we consider the parent container to be scrolling after the last scroll event has been fired, set `timeScrollStateLastsForAfterUserScrolls` to the desired time in milliseconds.
+### Note on Smooth Scrolling
+A wrapper `div` is applied that disables pointer events on the children for a default of 150 milliseconds after the last user scroll action for browsers with inertial scrolling. To configure this, set `timeScrollStateLastsForAfterUserScrolls`.
 
 
 ## Configuration Options
 
 #### Children
-The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire. When rendering children, the `<Infinite>` element passes down a `style` prop to each child containing `pointer-events: none` if the `<Infinite>` element is scrolling. You can apply that style prop to your component to prevent it from receiving pointer events.
+The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire. If you wish to render a set of children not all of which have the same height, you must map each component in the children array to an number representing its height and pass it in as the `elementHeight` prop.
 
-#### (Required) Number `elementHeight`
-The height of each row in pixels.
+#### (Required) Number | [Number] `elementHeight`
+If each child element has the same height, you can pass a number representing that height as the `elementHeight` prop. If the children do not all have the same height, you can pass an array which is a map the children to numbers representing their heights to the `elementHeight` prop.
 
 #### (Required) **Number** `containerHeight`
 The height of the scrolling container in pixels.
@@ -69,8 +83,8 @@ Defaults to `function(){}`. This function is called when the scroll exceeds `inf
 
 `onInfiniteLoad` relies heavily on passing props as a means of communication in the style of idiomatic React.
 
-#### Renderable `loadingSpinnerDelegate`
-Defaults to `<div/>`. The element that is provided is used to render the loading view when React Infinite's `isInfiniteLoading` property is set to `true`.
+#### React Node `loadingSpinnerDelegate`
+Defaults to `<div/>`. The element that is provided is used to render the loading view when React Infinite's `isInfiniteLoading` property is set to `true`. A React Node is anything that satisfies `React.PropTypes.node`.
 
 #### Bool `isInfiniteLoading`
 Defaults to `false`. This property determines whether the infinite spinner is showing.
@@ -82,6 +96,9 @@ Defaults to `150` (in milliseconds). On Apple and some other devices, scroll is 
 Allows a CSS class to be set on the scrollable container.
 
 ## Sample Code
+
+Code samples are now available in the `/examples` directory for your perusal. Two examples are provided, one for constant height with infinite loading and another with random variable heights with infinite loading. To generate the files necessary for the examples, execute `npm install && gulp build -E`. You may need to first install `gulp` with `npm install -g gulp`.
+
 To get you started, here is some sample code that implements an infinite scroll with an simulated delay of 2.5 seconds. A [live demo of this example is available](http://chairnerd.seatgeek.com/react-infinite-a-browser-ready-efficient-scrolling-container-based-on-uitableview/) on our blog.
 
 ```javascript
@@ -147,13 +164,17 @@ React.renderComponent(<InfiniteList/>,
         document.getElementById('react-example-one'));
 ```
 
+SeatGeek also currently uses React Infinite in production on our event pages; because we only have pages for events in the future, a link would not be appropriate. To see one, head to one of our team pages for the [New York Giants](https://seatgeek.com/new-york-giants-tickets), or the [New York Mets](https://seatgeek.com/new-york-mets-tickets), or the [New York Knicks](https://seatgeek.com/new-york-knicks-tickets), and click on the green button for an event to see them in action in the Omnibox.
+
+![](http://cl.ly/image/0y0L04220U2T/Screen%20Shot%202014-10-16%20at%2010.56.19%20AM.png)
+
 ## Infinite Jest
 I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<small><sup>1</sup></small>, which provides automatic mocking and jsdom testing.
 
 Tests are located in the `__tests__` directory<small><sup>2</sup></small>, and can be run with `npm test` after `npm install`.
 
 ## Developing
-React Infinite is built with Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
+React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
 
 ## Future Development
 
