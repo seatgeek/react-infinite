@@ -105,6 +105,9 @@ var Infinite = React.createClass({
     var that = this,
         newStateObject = {};
 
+    // TODO: more efficient elementHeight change detection
+    newStateObject.infiniteComputer = this.createInfiniteComputer(nextProps.elementHeight);
+
     if (nextProps.isInfiniteLoading !== undefined) {
       newStateObject.isInfiniteLoading = nextProps.isInfiniteLoading;
     }
