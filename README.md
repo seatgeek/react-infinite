@@ -174,7 +174,11 @@ I am seated in an office, surrounded by heads and bodies. There I've written som
 Tests are located in the `__tests__` directory<small><sup>2</sup></small>, and can be run with `npm test` after `npm install`.
 
 ## Developing
-React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp`, which builds both the production and development versions. To build just the former, run `gulp buildp`, and to build just the latter, run `gulp build`.
+React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp build -D`, which builds the development version. To build the production version, run `gulp build -P`, and to build the non-minified release version, run `gulp`.
+
+### Infinite Computers
+
+Extending React Infinite to support different specifications of `elementHeight`s is now much easier. To do so, write a class that extends and satisfies the `InfiniteComputer` interface of five methods (see `src/computers/infinite_computer.js`). You can consult `ConstantInfiniteComputer` and `ArrayInfiniteComputer` to see how constant and variable heights are handled respectively.
 
 ## Future Development
 
