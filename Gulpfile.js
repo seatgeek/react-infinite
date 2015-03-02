@@ -1,33 +1,40 @@
 var gulp = require('gulp'),
-    given = require('gulp-if'),
-    reactify = require('reactify'),
-    buffer = require('vinyl-buffer'),
-    minifyjs = require('gulp-uglify'),
-    browserify = require('browserify'),
-    sourcemaps = require('gulp-sourcemaps'),
-    browserifyShim = require('browserify-shim'),
-    sourcestream = require('vinyl-source-stream');
+  given = require('gulp-if'),
+  jsx = require('gulp-react'),
+  reactify = require('reactify'),
+  buffer = require('vinyl-buffer'),
+  minifyjs = require('gulp-uglify'),
+  browserify = require('browserify'),
+  sourcemaps = require('gulp-sourcemaps'),
+  browserifyShim = require('browserify-shim'),
+  sourcestream = require('vinyl-source-stream');
 
 var args = require('yargs').alias('P', 'production')
-                           .alias('D', 'development').argv,
-    production = args.production,
-    development = args.development,
-    test = args.test;
+               .alias('D', 'development')
+               .alias('E', 'example').argv,
+  production = args.production,
+  development = args.development,
+  example = args.example;
 
 gulp.task('build', function() {
-  browserify('./src/react-infinite.jsx')
-            .transform(reactify, {
-              es6: true
-            })
-            .transform(browserifyShim)
-            .ignore('react')
-            .bundle()
-            .pipe(sourcestream('react-infinite.js'))
-            .pipe(buffer())
-            .pipe(given(development, sourcemaps.init()))
-            .pipe(given(production, minifyjs()))
-            .pipe(given(development, sourcemaps.write('.')))
-            .pipe(gulp.dest('dist'));
+  var b = browserify('./src/react-infinite.jsx')
+      .transform(reactify, {
+        es6: true
+      })
+     .transform(browserifyShim)
+     .bundle()
+     .pipe(sourcestream('react-infinite.' + (production ? 'min.' : '') + 'js'))
+     .pipe(buffer())
+     .pipe(given(development, sourcemaps.init()))
+     .pipe(given(production, minifyjs()))
+     .pipe(given(development, sourcemaps.write('.')))
+     .pipe(gulp.dest('dist'));
+
+  if (example) {
+    gulp.src('./examples/index.jsx')
+      .pipe(jsx())
+      .pipe(gulp.dest('examples'))
+  }
 });
 
 gulp.task('default', ['build']);
