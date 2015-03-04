@@ -56,7 +56,7 @@ var Infinite = React.createClass({displayName: "Infinite",
   // automatic adjust to scroll direction
   // give spinner a ReactCSSTransitionGroup
   getInitialState:function() {
-    var computer = this.createInfiniteComputer(this.props.elementHeight);
+    var computer = this.createInfiniteComputer(this.props.elementHeight, this.props.children);
 
     var preloadBatchSize = this.props.preloadBatchSize ?
                            this.props.preloadBatchSize :
@@ -88,9 +88,9 @@ var Infinite = React.createClass({displayName: "Infinite",
     };
   },
 
-  createInfiniteComputer:function(data) {
+  createInfiniteComputer:function(data, children) {
     var computer;
-    var numberOfChildren = React.Children.count(this.props.children);
+    var numberOfChildren = React.Children.count(children);
 
     if (_isFinite(data)) {
       computer = new ConstantInfiniteComputer(data, numberOfChildren);
@@ -108,7 +108,10 @@ var Infinite = React.createClass({displayName: "Infinite",
         newStateObject = {};
 
     // TODO: more efficient elementHeight change detection
-    newStateObject.infiniteComputer = this.createInfiniteComputer(nextProps.elementHeight);
+    newStateObject.infiniteComputer = this.createInfiniteComputer(
+                                        nextProps.elementHeight,
+                                        nextProps.children
+                                      );
 
     if (nextProps.isInfiniteLoading !== undefined) {
       newStateObject.isInfiniteLoading = nextProps.isInfiniteLoading;
@@ -169,7 +172,6 @@ var Infinite = React.createClass({displayName: "Infinite",
         windowTop = Math.max(0, blockStart - this.state.preloadAdditionalHeight),
         windowBottom = Math.min(this.state.infiniteComputer.getTotalScrollableHeight(),
                         blockEnd + this.state.preloadAdditionalHeight)
-
     this.setState({
       displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(windowTop),
       displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom),
