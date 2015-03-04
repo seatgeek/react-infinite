@@ -20,7 +20,7 @@ var ListItem = React.createClass({
 var InfiniteList = React.createClass({
     getInitialState: function() {
         return {
-            elements: this.buildElements(0, 200),
+            elements: this.buildElements(0, 50),
             isInfiniteLoading: false
         }
     },
@@ -55,10 +55,62 @@ var InfiniteList = React.createClass({
     },
 
     render: function() {
-        return <Infinite elementHeight={40}
+        return <Infinite elementHeight={50}
                          containerHeight={250}
                          infiniteLoadBeginBottomOffset={200}
                          onInfiniteLoad={this.handleInfiniteLoad}
+                         loadingSpinnerDelegate={this.elementInfiniteLoad()}
+                         isInfiniteLoading={this.state.isInfiniteLoading}
+                         timeScrollStateLastsForAfterUserScrolls={1000}
+                         >
+                    {this.state.elements}
+                </Infinite>;
+    }
+});
+
+var AdditionInfiniteList = React.createClass({
+    componentDidMount: function() {
+        setTimeout(this.handleInfiniteLoad, 3000);
+    },
+    getInitialState: function() {
+        return {
+            elements: this.buildElements(0, 2),
+            isInfiniteLoading: false
+        }
+    },
+
+    buildElements: function(start, end) {
+        var elements = [];
+        for (var i = start; i < end; i++) {
+            elements.push(<ListItem key={i} index={i}/>)
+        }
+        return elements;
+    },
+
+    handleInfiniteLoad: function() {
+        var that = this;
+        this.setState({
+            isInfiniteLoading: true
+        });
+        setTimeout(function() {
+            var elemLength = that.state.elements.length,
+                newElements = that.buildElements(elemLength, elemLength + 100);
+            that.setState({
+                isInfiniteLoading: false,
+                elements: that.state.elements.concat(newElements)
+            });
+        }, 2500);
+    },
+
+    elementInfiniteLoad: function() {
+        return <div className="infinite-list-item">
+            Loading...
+        </div>;
+    },
+
+    render: function() {
+        return <Infinite elementHeight={50}
+                         containerHeight={250}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
                          timeScrollStateLastsForAfterUserScrolls={1000}
@@ -120,7 +172,10 @@ var VariableInfiniteList = React.createClass({
 });
 
 
+
 React.renderComponent(<InfiniteList/>,
         document.getElementById('infinite-example-one'));
 React.renderComponent(<VariableInfiniteList/>,
         document.getElementById('infinite-example-two'));
+React.renderComponent(<AdditionInfiniteList/>,
+        document.getElementById('infinite-example-three'));

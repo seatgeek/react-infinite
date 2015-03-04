@@ -277,8 +277,8 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
   })
 });
 
-ddescribe('The Behavior of the Variable Height React Infinite Component', function() {
-  iit('hides elements when the user has not yet scrolled', function() {
+describe('The Behavior of the Variable Height React Infinite Component', function() {
+  it('hides elements when the user has not yet scrolled', function() {
                       // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
     var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
     var rootNode = TestUtils.renderIntoDocument(
@@ -313,7 +313,7 @@ ddescribe('The Behavior of the Variable Height React Infinite Component', functi
   });
 
   it('hides visible elements when the user scrolls sufficiently', function() {
-                      // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
+                      // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (17)
     var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -348,14 +348,14 @@ ddescribe('The Behavior of the Variable Height React Infinite Component', functi
     }
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 2; i < 15; i++) {
+    for (var i = 2; i < 16; i++) {
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
 
     // Below the batch and its preloadAdditionalHeight
-    for (var i = 15; i < 16; i++) {
+    for (var i = 16; i < 17; i++) {
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
@@ -386,7 +386,7 @@ ddescribe('The Behavior of the Variable Height React Infinite Component', functi
     //  1000 pixels: start of block
     //  1400 pixels: end of block
     //  1400 pixels: end of windowBottom
-    expect(rootNode.refs.topSpacer.props.style.height).toEqual("600px");
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("575px");
     expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("0px");
 
     // Above the batch and its preloadAdditionalHeight
@@ -401,13 +401,6 @@ ddescribe('The Behavior of the Variable Height React Infinite Component', functi
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
-    }
-
-    // Below the batch and its preloadAdditionalHeight
-    for (var i = 15; i < 16; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
     }
   })
 });
@@ -545,5 +538,33 @@ describe("Maintaining React Infinite's internal scroll state", function() {
 
   var wrapper = rootNode.refs.smoothScrollingWrapper;
   expect(wrapper.props.style.pointerEvents).toEqual('none');
+  });
+})
+
+describe("Rerendering React Infinite", function() {
+  it("updates the infinite computer", function() {
+    var rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={17}
+                  containerHeight={450}
+                  infiniteLoadBeginBottomOffset={1000}
+                  loadingSpinnerDelegate={<div className={"delegate-div"} />}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(20, 17)}
+        </Infinite>
+      );
+
+    expect(rootNode.state.infiniteComputer.heightData).toEqual(17);
+    expect(rootNode.state.infiniteComputer.numberOfChildren).toEqual(20);
+
+    rootNode.setProps({
+      children: renderHelpers.divGenerator(74, 17)
+    });
+    expect(rootNode.state.infiniteComputer.numberOfChildren).toEqual(74);
+
+    rootNode.setProps({
+      elementHeight: [10, 20, 30]
+    });
+    expect(rootNode.state.infiniteComputer.heightData).toEqual([10, 20, 30]);
+
   });
 })
