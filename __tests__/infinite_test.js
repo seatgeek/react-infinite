@@ -313,7 +313,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
   });
 
   it('hides visible elements when the user scrolls sufficiently', function() {
-                      // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
+                      // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (17)
     var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -348,14 +348,14 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     }
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 2; i < 15; i++) {
+    for (var i = 2; i < 16; i++) {
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
 
     // Below the batch and its preloadAdditionalHeight
-    for (var i = 15; i < 16; i++) {
+    for (var i = 16; i < 17; i++) {
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
@@ -401,13 +401,6 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
       expect(function() {
         TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
-    }
-
-    // Below the batch and its preloadAdditionalHeight
-    for (var i = 15; i < 16; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
     }
   })
 });
@@ -548,7 +541,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
   });
 })
 
-ddescribe("Rerendering React Infinite", function() {
+describe("Rerendering React Infinite", function() {
   it("updates the infinite computer", function() {
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={17}
