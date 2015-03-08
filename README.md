@@ -178,7 +178,7 @@ React Infinite is built with Browserify and Gulp. To get started, install the de
 
 ### Infinite Computers
 
-Extending React Infinite to support different specifications of `elementHeight`s is now much easier. To do so, write a class that extends and satisfies the `InfiniteComputer` interface of five methods (see `src/computers/infinite_computer.js`). You can consult `ConstantInfiniteComputer` and `ArrayInfiniteComputer` to see how constant and variable heights are handled respectively.
+Extending React Infinite to support different specifications of `elementHeight`s is now much easier. To do so, write a class that extends the `InfiniteComputer` and satisfies its interface of five methods (see `src/computers/infinite_computer.js`). You can consult `ConstantInfiniteComputer` and `ArrayInfiniteComputer` to see how constant and variable heights are handled respectively.
 
 ## Future Development
 
