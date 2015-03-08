@@ -24,9 +24,18 @@
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "testPathDirs": [
+      "<rootDir>/__tests__",
+      "<rootDir>/src"
+    ],
+    "testFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react"
-    ]
+    ],
+    "collectCoverage": true
   },
   "homepage": "https://github.com/seatgeek/react-infinite",
   "devDependencies": {
