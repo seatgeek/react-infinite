@@ -16,7 +16,6 @@ The relevant files are `dist/react-infinite.js` and `dist/react-infinite.min.js`
 ### In NPM
 React Infinite uses a Universal Module Definition so you can use it in NPM as well. `npm install` this package and
 ```
-var React = require('react');
 var Infinite = require('react-infinite');
 ```
 

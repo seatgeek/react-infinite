@@ -24,7 +24,7 @@ gulp.task('build', function() {
       .transform(reactify, {
         es6: true
       })
-     .transform(browserifyShim)
+     .exclude('react')
      .bundle()
      .pipe(sourcestream('react-infinite.' + (production ? 'min.' : '') + 'js'))
      .pipe(buffer())

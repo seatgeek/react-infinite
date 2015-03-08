@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "dist/react-infinite.js",
   "repository": {
@@ -28,9 +28,6 @@
       "<rootDir>/node_modules/react"
     ]
   },
-  "browserify-shim": {
-    "react": "global:React"
-  },
   "homepage": "https://github.com/seatgeek/react-infinite",
   "devDependencies": {
     "gulp": "^3.8.8",
@@ -44,7 +41,6 @@
     "yargs": "^1.3.2",
     "react-tools": "*",
     "browserify": "^9.0.3",
-    "browserify-shim": "^3.8.3",
     "reactify": "^1.0.0",
     "gulp-react": "3.0.0",
     "vinyl-buffer": "^1.0.0",
