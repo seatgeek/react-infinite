@@ -1,4 +1,4 @@
-var React = require('react'),
+var React = global.React || require('react'),
     _isArray = require('lodash.isarray'),
     _isFinite = require('lodash.isfinite'),
     ConstantInfiniteComputer = require('./computers/constant_infinite_computer.js'),
