@@ -1,4 +1,5 @@
 *.map
+coverage
 node_modules
 bower_components
 examples/*.js

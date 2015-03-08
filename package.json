@@ -24,16 +24,25 @@
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "testPathDirs": [
+      "<rootDir>/__tests__",
+      "<rootDir>/src"
+    ],
+    "testFileExtensions": [
+      "js",
+      "jsx"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/react"
-    ]
+    ],
+    "collectCoverage": true
   },
   "homepage": "https://github.com/seatgeek/react-infinite",
   "devDependencies": {
     "gulp": "^3.8.8",
     "gulp-concat": "^2.4.3",
     "gulp-if": "^1.2.5",
-    "gulp-react": "^1.0.2",
+    "gulp-react": "3.0.0",
     "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
@@ -42,9 +51,9 @@
     "react-tools": "*",
     "browserify": "^9.0.3",
     "reactify": "^1.0.0",
-    "gulp-react": "3.0.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0"
+    "vinyl-source-stream": "^1.0.0",
+    "coveralls": "^2.11.2"
   },
   "dependencies": {
     "lodash.isarray": "^3.0.0",
