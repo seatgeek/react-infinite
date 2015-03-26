@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "dist/react-infinite.js",
   "repository": {
@@ -18,6 +18,14 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/seatgeek/react-infinite/issues"
+  },
+  "browser": "src/react-infinite.jsx",
+  "browserify": {
+    "transform": [
+      ["reactify", {
+        "es6": true
+      }]
+    ]
   },
   "scripts": {
     "test": "jest"
