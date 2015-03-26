@@ -21,7 +21,7 @@ var Infinite = require('react-infinite');
 ```
 
 ### In Browserify
-If you want to use the source Browserify, the relevant file to include is `src/react_infinite.jsx`. You **must** create the bundle with a compiler that supports both ES6 and JSX compilation. `reactify` with the `harmony` option turned on will suffice - examine the `preprocessor.js` tools to see an example of the compilation for tests.
+If you want to use the source with Browserify, you may require it in a similar manner to the NPM instructions above. You **must** have Reactify to compile the JSX and ES6, however.
 
 Otherwise, you can follow the instructions for NPM.
 
