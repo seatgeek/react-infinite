@@ -65,7 +65,9 @@
   },
   "dependencies": {
     "lodash.isarray": "^3.0.0",
-    "lodash.isfinite": "^3.0.0",
+    "lodash.isfinite": "^3.0.0"
+  },
+  "peerDependencies":{
     "react": ">= 0.12.2"
   }
 }
