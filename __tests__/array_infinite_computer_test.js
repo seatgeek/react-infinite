@@ -46,17 +46,37 @@ describe("Array Infinite Computer", () => {
 
     xit("computes indexes correctly with zero-height elements", () => {
     });
+
+
+    it("computes a zero display index correctly", () => {
+      var aic = new ArrayInfiniteComputer([20], 1);
+      expect(aic.getDisplayIndexStart(10)).toEqual(0);
+    });
   });
 
   describe("getDisplayIndexEnd()", () => {
     it("computes the correct display index when precisely at element border", () => {
       var aic = new ArrayInfiniteComputer([130, 120, 110, 100, 90, 80, 70], 7);
-      expect(aic.getDisplayIndexEnd(550)).toEqual(5);
+      expect(aic.getDisplayIndexEnd(550)).toEqual(4);
     });
 
     it("computes the correct display index when not precisely at element border", () => {
       var aic = new ArrayInfiniteComputer([130, 120, 110, 100, 90, 80, 70], 7);
-      expect(aic.getDisplayIndexEnd(444)).toEqual(4);
+      expect(aic.getDisplayIndexEnd(444)).toEqual(3);
+    });
+
+    it("computes the correct end index when all items fit within the container", () => {
+      var aic = new ArrayInfiniteComputer([28], 1);
+      expect(aic.getDisplayIndexEnd(627)).toEqual(0);
+
+      aic = new ArrayInfiniteComputer([28, 28, 28, 10], 4);
+      expect(aic.getDisplayIndexEnd(627)).toEqual(3);
+    });
+
+    it("returns -1 when there are no items", () => {
+      var aic = new ArrayInfiniteComputer([], 0);
+      expect(aic.getDisplayIndexEnd(800)).toEqual(-1);     
+      expect(aic.getDisplayIndexEnd(0)).toEqual(-1);     
     });
 
     xit("computes indexes correctly with zero-height elements", () => {
@@ -71,20 +91,28 @@ describe("Array Infinite Computer", () => {
 
     it("correctly computes a regular top spacer height", () => {
       var aic = new ArrayInfiniteComputer([40, 80, 160, 320], 4);
+      expect(aic.getTopSpacerHeight(1)).toEqual(40);
       expect(aic.getTopSpacerHeight(2)).toEqual(120);
+      expect(aic.getTopSpacerHeight(3)).toEqual(280);
     });
   });
 
   describe("getBottomSpacerHeight()", () => {
-    it("correctly computes a zero bottom spacer height", () => {
-      // Note the displayIndexEnd is not inclusive
+    it("correctly computes a bottom spacer height when the last item is rendered", () => {
       var aic = new ArrayInfiniteComputer([20, 40, 80, 160], 4);
-      expect(aic.getBottomSpacerHeight(4)).toEqual(0);
+      expect(aic.getBottomSpacerHeight(3)).toEqual(0);
     });
 
     it("correctly computes a regular bottom spacer height", () => {
       var aic = new ArrayInfiniteComputer([20, 40, 80, 160], 4);
-      expect(aic.getBottomSpacerHeight(3)).toEqual(160);
+      expect(aic.getBottomSpacerHeight(0)).toEqual(280);
+      expect(aic.getBottomSpacerHeight(1)).toEqual(240);
+      expect(aic.getBottomSpacerHeight(2)).toEqual(160);
+    });
+
+    it("correctly computes bottom spacer height when there are no items", () => {
+      var aic = new ArrayInfiniteComputer([], 0);
+      expect(aic.getBottomSpacerHeight(-1)).toEqual(0);
     });
   });
 });

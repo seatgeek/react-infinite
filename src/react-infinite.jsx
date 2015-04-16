@@ -240,7 +240,7 @@ var Infinite = React.createClass({
   render() {
     var that = this;
     var displayables = this.props.children.slice(this.state.displayIndexStart,
-                                                 this.state.displayIndexEnd);
+                                                 this.state.displayIndexEnd + 1);
 
     var infiniteScrollStyles = {};
     if (this.state.isScrolling) {
