@@ -106,6 +106,6 @@ describe("Binary Index Search", function() {
       expect(binaryIndexSearch(oddArray, 11, bs.opts.CLOSEST_HIGHER)).toEqual(0);
       expect(binaryIndexSearch(oddArray, 203, bs.opts.CLOSEST_HIGHER)).toEqual(1);
       expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_HIGHER)).toEqual(2);
-    })
+    });
   });
 })
