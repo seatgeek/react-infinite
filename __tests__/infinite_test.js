@@ -109,8 +109,8 @@ describe('The Children of the React Infinite Component', function() {
     // all, the extent that React Infinite will render is
     // preloadBatchSize + preloadAdditionalHeight below the container.
     //
-    // preloadBatchSize defaults to the containerHeight, 800 pixels
-    // preloadAdditionalHeight defaults to containerHeight / 2 pixels, 400 pixels
+    // preloadBatchSize defaults to containerHeight / 2 pixels, 400 pixels
+    // preloadAdditionalHeight defaults to the containerHeight, 800 pixels
     //
     // Their sum is 1200 pixels, or 6 200-pixel elements.
     for (var i = 0; i < 6; i++) {
@@ -128,7 +128,7 @@ describe('The Children of the React Infinite Component', function() {
 
   it ("renders more children when preloadAdditionalHeight is increased beyond its default", function() {
     var elementHeight = 200;
-    var infinite = TestUtils.renderIntoDocument(
+    var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   preloadAdditionalHeight={1000}
@@ -137,30 +137,33 @@ describe('The Children of the React Infinite Component', function() {
         </Infinite>
       );
 
-    // Why are six nodes rendered? Since we have not scrolled at
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("0px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("600px");
+
+    // Why are seven nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
     // preloadBatchSize + preloadAdditionalHeight below the container.
     //
-    // preloadBatchSize defaults to the containerHeight, 800 pixels
-    // preloadAdditionalHeight defaults to containerHeight / 2 pixels, 400 pixels
+    // preloadBatchSize defaults to containerHeight / 2 pixels, 400 pixels
+    // preloadAdditionalHeight is declared as 1000 pixels
     //
-    // Their sum is 1200 pixels, or 6 200-pixel elements.
+    // Their sum is 1400 pixels, or 7 200-pixel elements.
     for (var i = 0; i < 7; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
 
     for (var i = 7; i < 10; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
     }
   });
 
   it ("renders more children when preloadBatchSize is increased beyond its default", function() {
     var elementHeight = 200;
-    var infinite = TestUtils.renderIntoDocument(
+    var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   preloadBatchSize={800}
@@ -169,23 +172,26 @@ describe('The Children of the React Infinite Component', function() {
         </Infinite>
       );
 
-    // Why are six nodes rendered? Since we have not scrolled at
+    expect(rootNode.refs.topSpacer.props.style.height).toEqual("0px");
+    expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("400px");
+
+    // Why are eight nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
     // preloadBatchSize + preloadAdditionalHeight below the container.
     //
-    // preloadBatchSize defaults to the containerHeight, 800 pixels
-    // preloadAdditionalHeight defaults to containerHeight / 2 pixels, 400 pixels
+    // preloadBatchSize is declared as 800 pixels
+    // preloadAdditionalHeight defaults to containerHeight, 800 pixels
     //
-    // Their sum is 1200 pixels, or 6 200-pixel elements.
+    // Their sum is 1600 pixels, or 8 200-pixel elements.
     for (var i = 0; i < 8; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).not.toThrow();
     }
 
     for (var i = 8; i < 10; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(infinite, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
       }).toThrow();
     }
   });
