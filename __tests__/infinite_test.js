@@ -113,17 +113,19 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to the containerHeight, 800 pixels
     //
     // Their sum is 1200 pixels, or 6 200-pixel elements.
-    for (var i = 0; i < 6; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).not.toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
 
-    for (var i = 6; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
+    
+
   });
 
   it ("renders more children when preloadAdditionalHeight is increased beyond its default", function() {
@@ -148,17 +150,19 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight is declared as 1000 pixels
     //
     // Their sum is 1400 pixels, or 7 200-pixel elements.
-    for (var i = 0; i < 7; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).not.toThrow();
-    }
 
-    for (var i = 7; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
+
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
+
   });
 
   it ("renders more children when preloadBatchSize is increased beyond its default", function() {
@@ -183,17 +187,18 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to containerHeight, 800 pixels
     //
     // Their sum is 1600 pixels, or 8 200-pixel elements.
-    for (var i = 0; i < 8; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).not.toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).not.toThrow();
 
-    for (var i = 8; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
+
   });
 })
 
@@ -347,25 +352,27 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     expect(rootNode.refs.bottomSpacer.props.style.height).toEqual("100px");
 
     // Above the batch and its preloadAdditionalHeight
-    for (var i = 0; i < 2; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).toThrow();
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 2; i < 16; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).not.toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-10')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-11')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-12')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-13')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-14')}).not.toThrow();
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-15')}).not.toThrow();
 
     // Below the batch and its preloadAdditionalHeight
-    for (var i = 16; i < 17; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
-      }).toThrow();
-    }
+    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-16')}).toThrow();
   });
 
   it("functions correctly at the end of its range", function() {

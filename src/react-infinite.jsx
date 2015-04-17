@@ -63,16 +63,12 @@ var Infinite = React.createClass({
       infiniteComputer: computer,
 
       numberOfChildren: this.props.children.length,
-      scrollableHeight: undefined,
       displayIndexStart: 0,
       displayIndexEnd: computer.getDisplayIndexEnd(
                         preloadBatchSize + preloadAdditionalHeight
                       ),
 
       isInfiniteLoading: false,
-
-      currentScrollTop: undefined,
-      previousScrollTop: undefined,
 
       preloadBatchSize: preloadBatchSize,
       preloadAdditionalHeight: preloadAdditionalHeight,
@@ -145,20 +141,8 @@ var Infinite = React.createClass({
     }
   },
 
-  componentDidMount() {
-    this.setState({
-      scrollableHeight: this.refs.scrollable.getDOMNode().clientHeight,
-      currentScrollTop: this.getScrollTop(),
-      previousScrollTop: this.getScrollTop()
-    });
-  },
-
   getScrollTop() {
     return this.refs.scrollable.getDOMNode().scrollTop;
-  },
-
-  isScrollingDown() {
-    return this.state.previousScrollTop < this.state.currentScrollTop;
   },
 
   // Given the scrollTop of the container, computes the state the
@@ -175,9 +159,7 @@ var Infinite = React.createClass({
                         blockEnd + this.state.preloadAdditionalHeight)
     this.setState({
       displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(windowTop),
-      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom),
-      currentScrollTop: scrollTop,
-      previousScrollTop: this.state.currentScrollTop
+      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom)
     });
   },
 
