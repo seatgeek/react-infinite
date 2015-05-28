@@ -179,7 +179,14 @@ var Infinite = React.createClass({
   },
 
   infiniteHandleScroll(e) {
-    this.props.handleScroll(this.refs.scrollable.getDOMNode());
+    var scrollable = this.refs.scrollable.getDOMNode();
+
+    if (scrollable !== e.target) {
+      // This is a scroll event for some child element, not our container.
+      return;
+    }
+
+    this.props.handleScroll(scrollable);
     this.handleScroll(e.target.scrollTop);
   },
 
