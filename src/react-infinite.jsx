@@ -56,27 +56,19 @@ var Infinite = React.createClass({
   getInitialState() {
     var computer = this.createInfiniteComputer(this.props.elementHeight, this.props.children);
 
-    var preloadBatchSize = this.props.preloadBatchSize ?
-                           this.props.preloadBatchSize :
-                           this.props.containerHeight / 2,
-        preloadAdditionalHeight = this.props.preloadAdditionalHeight ?
-                                  this.props.preloadAdditionalHeight :
-                                  this.props.containerHeight;
+    var preloadBatchSize = this.getPreloadBatchSizeFromProps(this.props);
+    var preloadAdditionalHeight = this.getPreloadAdditionalHeightFromProps(this.props);
 
     return {
       infiniteComputer: computer,
 
       numberOfChildren: this.props.children.length,
-      scrollableHeight: undefined,
       displayIndexStart: 0,
       displayIndexEnd: computer.getDisplayIndexEnd(
                         preloadBatchSize + preloadAdditionalHeight
                       ),
 
       isInfiniteLoading: false,
-
-      currentScrollTop: undefined,
-      previousScrollTop: undefined,
 
       preloadBatchSize: preloadBatchSize,
       preloadAdditionalHeight: preloadAdditionalHeight,
@@ -115,15 +107,24 @@ var Infinite = React.createClass({
       newStateObject.isInfiniteLoading = nextProps.isInfiniteLoading;
     }
 
-    var nextPBS = nextProps.preloadBatchSize;
-    newStateObject.preloadBatchSize = nextPBS ? nextPBS : nextProps.containerHeight / 2;
-
-    var nextPAH = nextProps.preloadAdditionalHeight;
-    newStateObject.preloadAdditionalHeight = nextPAH ? nextPAH : nextProps.containerHeight;
+    newStateObject.preloadBatchSize = this.getPreloadBatchSizeFromProps(nextProps);
+    newStateObject.preloadAdditionalHeight = this.getPreloadAdditionalHeightFromProps(nextProps);
 
     this.setState(newStateObject, () => {
       that.setStateFromScrollTop(that.getScrollTop());
     });
+  },
+
+  getPreloadBatchSizeFromProps(props) {
+    return props.preloadBatchSize ?
+      props.preloadBatchSize :
+      props.containerHeight / 2;
+  },
+
+  getPreloadAdditionalHeightFromProps(props) {
+    return props.preloadAdditionalHeight ?
+      props.preloadAdditionalHeight :
+      props.containerHeight;
   },
 
   componentDidUpdate(prevProps, prevState) {
@@ -140,22 +141,8 @@ var Infinite = React.createClass({
     }
   },
 
-  componentDidMount() {
-    var that = this;
-
-    this.setState({
-      scrollableHeight: this.refs.scrollable.getDOMNode().clientHeight,
-      currentScrollTop: this.getScrollTop(),
-      previousScrollTop: this.getScrollTop()
-    });
-  },
-
   getScrollTop() {
     return this.refs.scrollable.getDOMNode().scrollTop;
-  },
-
-  isScrollingDown() {
-    return this.state.previousScrollTop < this.state.currentScrollTop;
   },
 
   // Given the scrollTop of the container, computes the state the
@@ -172,9 +159,7 @@ var Infinite = React.createClass({
                         blockEnd + this.state.preloadAdditionalHeight)
     this.setState({
       displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(windowTop),
-      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom),
-      currentScrollTop: scrollTop,
-      previousScrollTop: this.state.currentScrollTop
+      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom)
     });
   },
 
@@ -206,7 +191,6 @@ var Infinite = React.createClass({
   },
 
   handleScroll(scrollTop) {
-    var that = this;
     this.manageScrollTimeouts();
     this.setStateFromScrollTop(scrollTop);
     var infiniteScrollBottomLimit = scrollTop >
@@ -238,9 +222,8 @@ var Infinite = React.createClass({
   },
 
   render() {
-    var that = this;
     var displayables = this.props.children.slice(this.state.displayIndexStart,
-                                                 this.state.displayIndexEnd);
+                                                 this.state.displayIndexEnd + 1);
 
     var infiniteScrollStyles = {};
     if (this.state.isScrolling) {

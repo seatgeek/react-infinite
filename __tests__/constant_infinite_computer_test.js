@@ -38,12 +38,12 @@ describe("Constant Infinite Computer", () => {
     });
 
     it("computes the correct display index when precisely at element border", () => {
-      expect(cic.getDisplayIndexEnd(94)).toEqual(2);
-      expect(cic.getDisplayIndexEnd(611)).toEqual(13);
+      expect(cic.getDisplayIndexEnd(94)).toEqual(1);
+      expect(cic.getDisplayIndexEnd(611)).toEqual(12);
     });
 
     it("computes the correct display index when below element border", () => {
-      expect(cic.getDisplayIndexEnd(417)).toEqual(9);
+      expect(cic.getDisplayIndexEnd(417)).toEqual(8);
     });
 
     it("computes a zero display index correctly", () => {
