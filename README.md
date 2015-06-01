@@ -105,7 +105,7 @@ To get you started, here is some sample code that implements an infinite scroll 
 var ListItem = React.createClass({
     render: function() {
         return <div className="infinite-list-item">
-        List Item {this.props.key}
+        List Item {this.props.num}
         </div>;
     }
 });
@@ -121,7 +121,7 @@ var InfiniteList = React.createClass({
     buildElements: function(start, end) {
         var elements = [];
         for (var i = start; i < end; i++) {
-            elements.push(<ListItem key={i}/>)
+            elements.push(<ListItem key={i} num={i}/>)
         }
         return elements;
     },
@@ -160,8 +160,7 @@ var InfiniteList = React.createClass({
     }
 });
 
-React.renderComponent(<InfiniteList/>,
-        document.getElementById('react-example-one'));
+React.render(<InfiniteList/>, document.getElementById('react-example-one'));
 ```
 
 SeatGeek also currently uses React Infinite in production on our event pages; because we only have pages for events in the future, a link would not be appropriate. To see one, head to one of our team pages for the [New York Giants](https://seatgeek.com/new-york-giants-tickets), or the [New York Mets](https://seatgeek.com/new-york-mets-tickets), or the [New York Knicks](https://seatgeek.com/new-york-knicks-tickets), and click on the green button for an event to see them in action in the Omnibox.
