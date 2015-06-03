@@ -33,7 +33,7 @@ gulp.task('build', function() {
      .pipe(gulp.dest('dist'));
 
   if (example) {
-    gulp.src('./examples/index.jsx')
+    gulp.src('./examples/*.jsx')
       .pipe(jsx())
       .pipe(gulp.dest('examples'))
   }
