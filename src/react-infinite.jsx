@@ -62,7 +62,7 @@ var Infinite = React.createClass({
     return {
       infiniteComputer: computer,
 
-      numberOfChildren: this.props.children.length,
+      numberOfChildren: React.Children.count(this.props.children),
       displayIndexStart: 0,
       displayIndexEnd: computer.getDisplayIndexEnd(
                         preloadBatchSize + preloadAdditionalHeight
@@ -128,14 +128,14 @@ var Infinite = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    if (React.Children.count(this.props.children) !== prevProps.children.length) {
+    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
       this.setStateFromScrollTop(this.getScrollTop());
     }
   },
 
   componentWillMount() {
     if (_isArray(this.props.elementHeight)) {
-      if (this.props.children.length !== this.props.elementHeight.length) {
+      if (React.Children.count(this.props.children) !== this.props.elementHeight.length) {
         throw new Error("There must be as many values provided in the elementHeight prop as there are children.")
       }
     }
