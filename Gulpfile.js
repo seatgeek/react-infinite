@@ -16,6 +16,7 @@ var args = require('yargs').alias('P', 'production')
   example = args.example;
 
 gulp.task('build', function() {
+  // Build standalone bundle for the browser
   var b = browserify({
         entries: './src/react-infinite.jsx',
         standalone: 'Infinite'
@@ -32,8 +33,15 @@ gulp.task('build', function() {
      .pipe(given(development, sourcemaps.write('.')))
      .pipe(gulp.dest('dist'));
 
+  // Transpile CommonJS files to ES5 with React's tools.
+  gulp.src(['./src/**/*.js', './src/**/*.jsx'])
+      .pipe(jsx({
+        harmony: true
+      }))
+      .pipe(gulp.dest('build'))
+
   if (example) {
-    gulp.src('./examples/index.jsx')
+    gulp.src('./examples/*.jsx')
       .pipe(jsx())
       .pipe(gulp.dest('examples'))
   }

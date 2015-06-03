@@ -58,27 +58,19 @@ var Infinite = React.createClass({displayName: "Infinite",
   getInitialState:function() {
     var computer = this.createInfiniteComputer(this.props.elementHeight, this.props.children);
 
-    var preloadBatchSize = this.props.preloadBatchSize ?
-                           this.props.preloadBatchSize :
-                           this.props.containerHeight / 2,
-        preloadAdditionalHeight = this.props.preloadAdditionalHeight ?
-                                  this.props.preloadAdditionalHeight :
-                                  this.props.containerHeight;
+    var preloadBatchSize = this.getPreloadBatchSizeFromProps(this.props);
+    var preloadAdditionalHeight = this.getPreloadAdditionalHeightFromProps(this.props);
 
     return {
       infiniteComputer: computer,
 
-      numberOfChildren: this.props.children.length,
-      scrollableHeight: undefined,
+      numberOfChildren: React.Children.count(this.props.children),
       displayIndexStart: 0,
       displayIndexEnd: computer.getDisplayIndexEnd(
                         preloadBatchSize + preloadAdditionalHeight
                       ),
 
       isInfiniteLoading: false,
-
-      currentScrollTop: undefined,
-      previousScrollTop: undefined,
 
       preloadBatchSize: preloadBatchSize,
       preloadAdditionalHeight: preloadAdditionalHeight,
@@ -117,47 +109,42 @@ var Infinite = React.createClass({displayName: "Infinite",
       newStateObject.isInfiniteLoading = nextProps.isInfiniteLoading;
     }
 
-    var nextPBS = nextProps.preloadBatchSize;
-    newStateObject.preloadBatchSize = nextPBS ? nextPBS : nextProps.containerHeight / 2;
-
-    var nextPAH = nextProps.preloadAdditionalHeight;
-    newStateObject.preloadAdditionalHeight = nextPAH ? nextPAH : nextProps.containerHeight;
+    newStateObject.preloadBatchSize = this.getPreloadBatchSizeFromProps(nextProps);
+    newStateObject.preloadAdditionalHeight = this.getPreloadAdditionalHeightFromProps(nextProps);
 
     this.setState(newStateObject, function()  {
       that.setStateFromScrollTop(that.getScrollTop());
     });
   },
 
+  getPreloadBatchSizeFromProps:function(props) {
+    return props.preloadBatchSize ?
+      props.preloadBatchSize :
+      props.containerHeight / 2;
+  },
+
+  getPreloadAdditionalHeightFromProps:function(props) {
+    return props.preloadAdditionalHeight ?
+      props.preloadAdditionalHeight :
+      props.containerHeight;
+  },
+
   componentDidUpdate:function(prevProps, prevState) {
-    if (React.Children.count(this.props.children) !== prevProps.children.length) {
+    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
       this.setStateFromScrollTop(this.getScrollTop());
     }
   },
 
   componentWillMount:function() {
     if (_isArray(this.props.elementHeight)) {
-      if (this.props.children.length !== this.props.elementHeight.length) {
+      if (React.Children.count(this.props.children) !== this.props.elementHeight.length) {
         throw new Error("There must be as many values provided in the elementHeight prop as there are children.")
       }
     }
   },
 
-  componentDidMount:function() {
-    var that = this;
-
-    this.setState({
-      scrollableHeight: this.refs.scrollable.getDOMNode().clientHeight,
-      currentScrollTop: this.getScrollTop(),
-      previousScrollTop: this.getScrollTop()
-    });
-  },
-
   getScrollTop:function() {
     return this.refs.scrollable.getDOMNode().scrollTop;
-  },
-
-  isScrollingDown:function() {
-    return this.state.previousScrollTop < this.state.currentScrollTop;
   },
 
   // Given the scrollTop of the container, computes the state the
@@ -174,13 +161,15 @@ var Infinite = React.createClass({displayName: "Infinite",
                         blockEnd + this.state.preloadAdditionalHeight)
     this.setState({
       displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(windowTop),
-      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom),
-      currentScrollTop: scrollTop,
-      previousScrollTop: this.state.currentScrollTop
+      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom)
     });
   },
 
   infiniteHandleScroll:function(e) {
+    if (e.target !== this.refs.scrollable.getDOMNode()) {
+      return;
+    }
+
     this.props.handleScroll(this.refs.scrollable.getDOMNode());
     this.handleScroll(e.target.scrollTop);
   },
@@ -208,7 +197,6 @@ var Infinite = React.createClass({displayName: "Infinite",
   },
 
   handleScroll:function(scrollTop) {
-    var that = this;
     this.manageScrollTimeouts();
     this.setStateFromScrollTop(scrollTop);
     var infiniteScrollBottomLimit = scrollTop >
@@ -240,9 +228,8 @@ var Infinite = React.createClass({displayName: "Infinite",
   },
 
   render:function() {
-    var that = this;
     var displayables = this.props.children.slice(this.state.displayIndexStart,
-                                                 this.state.displayIndexEnd);
+                                                 this.state.displayIndexEnd + 1);
 
     var infiniteScrollStyles = {};
     if (this.state.isScrolling) {
@@ -279,10 +266,10 @@ global.Infinite = Infinite;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./computers/array_infinite_computer.js":5,"./computers/constant_infinite_computer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}],2:[function(require,module,exports){
 /**
- * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
@@ -291,19 +278,19 @@ global.Infinite = Infinite;
 var arrayTag = '[object Array]',
     funcTag = '[object Function]';
 
-/** Used to detect host constructors (Safari > 5). */
-var reHostCtor = /^\[object .+?Constructor\]$/;
-
 /**
- * Used to match `RegExp` special characters.
- * See this [article on `RegExp` characters](http://www.regular-expressions.info/characters.html#special)
- * for more details.
+ * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+ * In addition to special characters the forward slash is escaped to allow for
+ * easier `eval` use and `Function` compilation.
  */
 var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
     reHasRegExpChars = RegExp(reRegExpChars.source);
 
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
 /**
- * Converts `value` to a string if it is not one. An empty string is returned
+ * Converts `value` to a string if it's not one. An empty string is returned
  * for `null` or `undefined` values.
  *
  * @private
@@ -325,7 +312,7 @@ function baseToString(value) {
  * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
  */
 function isObjectLike(value) {
-  return (value && typeof value == 'object') || false;
+  return !!value && typeof value == 'object';
 }
 
 /** Used for native method references. */
@@ -334,31 +321,47 @@ var objectProto = Object.prototype;
 /** Used to resolve the decompiled source of functions. */
 var fnToString = Function.prototype.toString;
 
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
 /**
- * Used to resolve the `toStringTag` of values.
- * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
- * for more details.
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
  */
 var objToString = objectProto.toString;
 
 /** Used to detect if a method is native. */
-var reNative = RegExp('^' +
-  escapeRegExp(objToString)
-  .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+var reIsNative = RegExp('^' +
+  escapeRegExp(fnToString.call(hasOwnProperty))
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 );
 
 /* Native method references for those with the same name as other `lodash` methods. */
-var nativeIsArray = isNative(nativeIsArray = Array.isArray) && nativeIsArray;
+var nativeIsArray = getNative(Array, 'isArray');
 
 /**
- * Used as the maximum length of an array-like value.
- * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength)
- * for more details.
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
  */
-var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
 
 /**
  * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
  *
  * @private
  * @param {*} value The value to check.
@@ -381,11 +384,11 @@ function isLength(value) {
  * _.isArray([1, 2, 3]);
  * // => true
  *
- * (function() { return _.isArray(arguments); })();
+ * _.isArray(function() { return arguments; }());
  * // => false
  */
 var isArray = nativeIsArray || function(value) {
-  return (isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag) || false;
+  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
 };
 
 /**
@@ -409,14 +412,14 @@ function isNative(value) {
     return false;
   }
   if (objToString.call(value) == funcTag) {
-    return reNative.test(fnToString.call(value));
+    return reIsNative.test(fnToString.call(value));
   }
-  return (isObjectLike(value) && reHostCtor.test(value)) || false;
+  return isObjectLike(value) && reIsHostCtor.test(value);
 }
 
 /**
- * Escapes the `RegExp` special characters "\", "^", "$", ".", "|", "?", "*",
- * "+", "(", ")", "[", "]", "{" and "}" in `string`.
+ * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+ * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
  *
  * @static
  * @memberOf _
@@ -426,7 +429,7 @@ function isNative(value) {
  * @example
  *
  * _.escapeRegExp('[lodash](https://lodash.com/)');
- * // => '\[lodash\]\(https://lodash\.com/\)'
+ * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
  */
 function escapeRegExp(string) {
   string = baseToString(string);
@@ -440,25 +443,23 @@ module.exports = isArray;
 },{}],3:[function(require,module,exports){
 (function (global){
 /**
- * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var isNative = require('lodash.isnative');
+var getNative = require('lodash._getnative');
 
 /* Native method references for those with the same name as other `lodash` methods. */
 var nativeIsFinite = global.isFinite,
-    nativeNumIsFinite = isNative(nativeNumIsFinite = Number.isFinite) && nativeNumIsFinite;
+    nativeNumIsFinite = getNative(Number, 'isFinite');
 
 /**
  * Checks if `value` is a finite primitive number.
  *
- * **Note:** This method is based on ES `Number.isFinite`. See the
- * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.isfinite)
- * for more details.
+ * **Note:** This method is based on [`Number.isFinite`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.isfinite).
  *
  * @static
  * @memberOf _
@@ -489,12 +490,12 @@ var isFinite = nativeNumIsFinite || function(value) {
 module.exports = isFinite;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"lodash.isnative":4}],4:[function(require,module,exports){
+},{"lodash._getnative":4}],4:[function(require,module,exports){
 /**
- * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * lodash 3.9.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
  * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
@@ -502,19 +503,19 @@ module.exports = isFinite;
 /** `Object#toString` result references. */
 var funcTag = '[object Function]';
 
-/** Used to detect host constructors (Safari > 5). */
-var reHostCtor = /^\[object .+?Constructor\]$/;
-
 /**
- * Used to match `RegExp` special characters.
- * See this [article on `RegExp` characters](http://www.regular-expressions.info/characters.html#special)
- * for more details.
+ * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+ * In addition to special characters the forward slash is escaped to allow for
+ * easier `eval` use and `Function` compilation.
  */
 var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
     reHasRegExpChars = RegExp(reRegExpChars.source);
 
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
 /**
- * Converts `value` to a string if it is not one. An empty string is returned
+ * Converts `value` to a string if it's not one. An empty string is returned
  * for `null` or `undefined` values.
  *
  * @private
@@ -536,7 +537,7 @@ function baseToString(value) {
  * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
  */
 function isObjectLike(value) {
-  return (value && typeof value == 'object') || false;
+  return !!value && typeof value == 'object';
 }
 
 /** Used for native method references. */
@@ -545,18 +546,33 @@ var objectProto = Object.prototype;
 /** Used to resolve the decompiled source of functions. */
 var fnToString = Function.prototype.toString;
 
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
 /**
- * Used to resolve the `toStringTag` of values.
- * See the [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
- * for more details.
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
  */
 var objToString = objectProto.toString;
 
 /** Used to detect if a method is native. */
-var reNative = RegExp('^' +
-  escapeRegExp(objToString)
-  .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+var reIsNative = RegExp('^' +
+  escapeRegExp(fnToString.call(hasOwnProperty))
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 );
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
 
 /**
  * Checks if `value` is a native function.
@@ -579,14 +595,14 @@ function isNative(value) {
     return false;
   }
   if (objToString.call(value) == funcTag) {
-    return reNative.test(fnToString.call(value));
+    return reIsNative.test(fnToString.call(value));
   }
-  return (isObjectLike(value) && reHostCtor.test(value)) || false;
+  return isObjectLike(value) && reIsHostCtor.test(value);
 }
 
 /**
- * Escapes the `RegExp` special characters "\", "^", "$", ".", "|", "?", "*",
- * "+", "(", ")", "[", "]", "{" and "}" in `string`.
+ * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+ * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
  *
  * @static
  * @memberOf _
@@ -596,7 +612,7 @@ function isNative(value) {
  * @example
  *
  * _.escapeRegExp('[lodash](https://lodash.com/)');
- * // => '\[lodash\]\(https://lodash\.com/\)'
+ * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
  */
 function escapeRegExp(string) {
   string = baseToString(string);
@@ -605,7 +621,7 @@ function escapeRegExp(string) {
     : string;
 }
 
-module.exports = isNative;
+module.exports = getNative;
 
 },{}],5:[function(require,module,exports){
 var InfiniteComputer = require('./infinite_computer.js'),
@@ -624,34 +640,29 @@ for(var InfiniteComputer____Key in InfiniteComputer){if(InfiniteComputer.hasOwnP
     }, []);
   }
 
-  ArrayInfiniteComputer.prototype.getTotalScrollableHeight=function() {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTotalScrollableHeight",{writable:true,configurable:true,value:function() {"use strict";
     var length = this.prefixHeightData.length;
     return length === 0 ? 0 : this.prefixHeightData[length - 1];
-  };
+  }});
 
-  ArrayInfiniteComputer.prototype.getDisplayIndexStart=function(windowTop) {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexStart",{writable:true,configurable:true,value:function(windowTop) {"use strict";
     return bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
-  };
+  }});
 
-  ArrayInfiniteComputer.prototype.getDisplayIndexEnd=function(windowBottom) {"use strict";
-    return bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER) + 1;
-  };
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexEnd",{writable:true,configurable:true,value:function(windowBottom) {"use strict";
+    var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
+    return typeof foundIndex === 'undefined' ? this.prefixHeightData.length - 1 : foundIndex; 
+  }});
 
-  ArrayInfiniteComputer.prototype.getTopSpacerHeight=function(displayIndexStart) {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTopSpacerHeight",{writable:true,configurable:true,value:function(displayIndexStart) {"use strict";
     var previous = displayIndexStart - 1;
     return previous < 0 ? 0 : this.prefixHeightData[previous];
-  };
+  }});
 
-  ArrayInfiniteComputer.prototype.getBottomSpacerHeight=function(displayIndexEnd) {"use strict";
-    var previous = displayIndexEnd - 1;
-    if (displayIndexEnd === 0) {
-      return this.getTotalScrollableHeight();
-    } else if (displayIndexEnd >= this.prefixHeightData.length) {
-      return 0;
-    } else {
-      return this.getTotalScrollableHeight() - this.prefixHeightData[previous];
-    }
-  };
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getBottomSpacerHeight",{writable:true,configurable:true,value:function(displayIndexEnd) {"use strict";
+    if (displayIndexEnd === -1) return 0;
+    return this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd];
+  }});
 
 
 module.exports = ArrayInfiniteComputer;
@@ -661,25 +672,30 @@ module.exports = ArrayInfiniteComputer;
 var InfiniteComputer = require('./infinite_computer.js');
 
 for(var InfiniteComputer____Key in InfiniteComputer){if(InfiniteComputer.hasOwnProperty(InfiniteComputer____Key)){ConstantInfiniteComputer[InfiniteComputer____Key]=InfiniteComputer[InfiniteComputer____Key];}}var ____SuperProtoOfInfiniteComputer=InfiniteComputer===null?null:InfiniteComputer.prototype;ConstantInfiniteComputer.prototype=Object.create(____SuperProtoOfInfiniteComputer);ConstantInfiniteComputer.prototype.constructor=ConstantInfiniteComputer;ConstantInfiniteComputer.__superConstructor__=InfiniteComputer;function ConstantInfiniteComputer(){"use strict";if(InfiniteComputer!==null){InfiniteComputer.apply(this,arguments);}}
-  ConstantInfiniteComputer.prototype.getTotalScrollableHeight=function() {"use strict";
+  Object.defineProperty(ConstantInfiniteComputer.prototype,"getTotalScrollableHeight",{writable:true,configurable:true,value:function() {"use strict";
     return this.heightData * this.numberOfChildren;
-  };
+  }});
 
-  ConstantInfiniteComputer.prototype.getDisplayIndexStart=function(windowTop) {"use strict";
+  Object.defineProperty(ConstantInfiniteComputer.prototype,"getDisplayIndexStart",{writable:true,configurable:true,value:function(windowTop) {"use strict";
     return Math.floor(windowTop / this.heightData);
-  };
+  }});
 
-  ConstantInfiniteComputer.prototype.getDisplayIndexEnd=function(windowBottom) {"use strict";
-    return Math.ceil(windowBottom / this.heightData);
-  };
+  Object.defineProperty(ConstantInfiniteComputer.prototype,"getDisplayIndexEnd",{writable:true,configurable:true,value:function(windowBottom) {"use strict";
+    var nonZeroIndex = Math.ceil(windowBottom / this.heightData);
+    if (nonZeroIndex > 0) {
+      return nonZeroIndex - 1;
+    }
+    return nonZeroIndex;
+  }});
 
-  ConstantInfiniteComputer.prototype.getTopSpacerHeight=function(displayIndexStart) {"use strict";
+  Object.defineProperty(ConstantInfiniteComputer.prototype,"getTopSpacerHeight",{writable:true,configurable:true,value:function(displayIndexStart) {"use strict";
     return displayIndexStart * this.heightData;
-  };
+  }});
 
-  ConstantInfiniteComputer.prototype.getBottomSpacerHeight=function(displayIndexEnd) {"use strict";
-    return Math.max(0, (this.numberOfChildren - displayIndexEnd) * this.heightData);
-  };
+  Object.defineProperty(ConstantInfiniteComputer.prototype,"getBottomSpacerHeight",{writable:true,configurable:true,value:function(displayIndexEnd) {"use strict";
+    var nonZeroIndex = displayIndexEnd + 1;
+    return Math.max(0, (this.numberOfChildren - nonZeroIndex) * this.heightData);
+  }});
 
 
 module.exports = ConstantInfiniteComputer;
@@ -697,27 +713,27 @@ module.exports = ConstantInfiniteComputer;
     this.numberOfChildren = numberOfChildren;
   }
 
-  InfiniteComputer.prototype.getTotalScrollableHeight=function() {"use strict";
+  Object.defineProperty(InfiniteComputer.prototype,"getTotalScrollableHeight",{writable:true,configurable:true,value:function() {"use strict";
     throw new Error("getTotalScrollableHeight not implemented.");
-  };
+  }});
 
-  InfiniteComputer.prototype.getDisplayIndexStart=function(windowTop) {"use strict";
+  Object.defineProperty(InfiniteComputer.prototype,"getDisplayIndexStart",{writable:true,configurable:true,value:function(windowTop) {"use strict";
     throw new Error("getDisplayIndexStart not implemented.");
-  };
+  }});
 
-  InfiniteComputer.prototype.getDisplayIndexEnd=function(windowBottom) {"use strict";
+  Object.defineProperty(InfiniteComputer.prototype,"getDisplayIndexEnd",{writable:true,configurable:true,value:function(windowBottom) {"use strict";
     throw new Error("getDisplayIndexEnd not implemented.");
-  };
+  }});
 
   // These are helper methods, and can be calculated from
   // the above details.
-  InfiniteComputer.prototype.getTopSpacerHeight=function(displayIndexStart) {"use strict";
+  Object.defineProperty(InfiniteComputer.prototype,"getTopSpacerHeight",{writable:true,configurable:true,value:function(displayIndexStart) {"use strict";
     throw new Error("getTopSpacerHeight not implemented.");
-  };
+  }});
 
-  InfiniteComputer.prototype.getBottomSpacerHeight=function(displayIndexEnd) {"use strict";
+  Object.defineProperty(InfiniteComputer.prototype,"getBottomSpacerHeight",{writable:true,configurable:true,value:function(displayIndexEnd) {"use strict";
     throw new Error("getBottomSpacerHeight not implemented.");
-  };
+  }});
 
 
 module.exports = InfiniteComputer;
