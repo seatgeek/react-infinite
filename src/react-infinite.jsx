@@ -164,6 +164,10 @@ var Infinite = React.createClass({
   },
 
   infiniteHandleScroll(e) {
+    if (e.target !== this.refs.scrollable.getDOMNode()) {
+      return;
+    }
+
     this.props.handleScroll(this.refs.scrollable.getDOMNode());
     this.handleScroll(e.target.scrollTop);
   },

@@ -32,7 +32,8 @@
   },
   "scripts": {
     "test": "jest",
-    "watch": "watch \"npm test\" ./__tests__ ./src"
+    "watch": "watch \"npm test\" ./__tests__ ./src",
+    "build": "gulp build && gulp build -E"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/preprocessor.js",
