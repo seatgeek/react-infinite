@@ -47,7 +47,8 @@ var Infinite = React.createClass({displayName: "Infinite",
       loadingSpinnerDelegate: React.createElement("div", null),
       onInfiniteLoad: function()  {},
       isInfiniteLoading: false,
-      timeScrollStateLastsForAfterUserScrolls: 150
+      timeScrollStateLastsForAfterUserScrolls: 150,
+      sticky: null
     };
   },
 
@@ -246,6 +247,7 @@ var Infinite = React.createClass({displayName: "Infinite",
       React.createElement("div", {ref: "smoothScrollingWrapper", style: infiniteScrollStyles}, 
         React.createElement("div", {ref: "topSpacer", 
              style: this.buildHeightStyle(topSpacerHeight)}), 
+            this.props.sticky, 
             displayables, 
         React.createElement("div", {ref: "bottomSpacer", 
              style: this.buildHeightStyle(bottomSpacerHeight)}), 

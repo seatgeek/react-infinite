@@ -47,7 +47,8 @@ var Infinite = React.createClass({
       loadingSpinnerDelegate: <div/>,
       onInfiniteLoad: () => {},
       isInfiniteLoading: false,
-      timeScrollStateLastsForAfterUserScrolls: 150
+      timeScrollStateLastsForAfterUserScrolls: 150,
+      sticky: null
     };
   },
 
@@ -246,6 +247,7 @@ var Infinite = React.createClass({
       <div ref="smoothScrollingWrapper" style={infiniteScrollStyles}>
         <div ref="topSpacer"
              style={this.buildHeightStyle(topSpacerHeight)}/>
+            {this.props.sticky}
             {displayables}
         <div ref="bottomSpacer"
              style={this.buildHeightStyle(bottomSpacerHeight)}/>
