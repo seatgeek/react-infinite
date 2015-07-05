@@ -176,6 +176,9 @@ var Infinite = React.createClass({displayName: "Infinite",
   manageScrollTimeouts:function() {
     // Maintains a series of timeouts to set this.state.isScrolling
     // to be true when the element is scrolling.
+    if (!this.props.timeScrollStateLastsForAfterUserScrolls) {
+      return;
+    }
 
     if (this.state.scrollTimeout) {
       clearTimeout(this.state.scrollTimeout);
