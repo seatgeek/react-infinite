@@ -116,13 +116,13 @@ var Infinite = React.createClass({
   },
 
   getPreloadBatchSizeFromProps(props) {
-    return props.preloadBatchSize ?
+    return typeof props.preloadBatchSize === 'number' ?
       props.preloadBatchSize :
       props.containerHeight / 2;
   },
 
   getPreloadAdditionalHeightFromProps(props) {
-    return props.preloadAdditionalHeight ?
+    return typeof props.preloadAdditionalHeight === 'number' ?
       props.preloadAdditionalHeight :
       props.containerHeight;
   },
@@ -151,12 +151,12 @@ var Infinite = React.createClass({
   // The window is the block with any preloadAdditionalHeight
   // added to it.
   setStateFromScrollTop(scrollTop) {
-    var blockNumber = Math.floor(scrollTop / this.state.preloadBatchSize),
+    var blockNumber = this.state.preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / this.state.preloadBatchSize),
         blockStart = this.state.preloadBatchSize * blockNumber,
         blockEnd = blockStart + this.state.preloadBatchSize,
         windowTop = Math.max(0, blockStart - this.state.preloadAdditionalHeight),
         windowBottom = Math.min(this.state.infiniteComputer.getTotalScrollableHeight(),
-                        blockEnd + this.state.preloadAdditionalHeight)
+                        blockEnd + this.state.preloadAdditionalHeight);
     this.setState({
       displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(windowTop),
       displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(windowBottom)

@@ -72,6 +72,16 @@ describe('Rendering the React Infinite Component Wrapper', function() {
 
     expect(infinite.props.className).toEqual("correct-class-name");
   });
+
+  it('allows preloadBatchSize to be zero', function() {
+    var renderedInfinite = TestUtils.renderIntoDocument(<Infinite elementHeight={[28,28]} containerHeight={100}
+                             preloadBatchSize={0}>
+                        <li>Test1</li>
+                        <li>Test2</li>
+                    </Infinite>);
+
+    TestUtils.Simulate.scroll(renderedInfinite.getDOMNode());
+  });
 })
 
 describe('The Children of the React Infinite Component', function() {
