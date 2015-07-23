@@ -22,7 +22,8 @@
   "browser": "build/react-infinite.js",
   "scripts": {
     "test": "jest",
-    "watch": "watch \"npm test\" ./__tests__ ./src",
+    "watch-test": "watch \"npm test\" ./__tests__ ./src",
+    "watch-build": "watch \"gulp build -E\" ./examples ./src",
     "build": "gulp build && gulp build -E"
   },
   "jest": {
