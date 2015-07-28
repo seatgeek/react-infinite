@@ -173,9 +173,9 @@ var VariableInfiniteList = React.createClass({
 
 
 
-React.renderComponent(<InfiniteList/>,
+React.render(<InfiniteList/>,
         document.getElementById('infinite-example-one'));
-React.renderComponent(<VariableInfiniteList/>,
+React.render(<VariableInfiniteList/>,
         document.getElementById('infinite-example-two'));
-React.renderComponent(<AdditionInfiniteList/>,
+React.render(<AdditionInfiniteList/>,
         document.getElementById('infinite-example-three'));
