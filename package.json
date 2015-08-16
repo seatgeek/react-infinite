@@ -57,7 +57,7 @@
     "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
-    "jest-cli": "0.4.0",
+    "jest-cli": "0.4.19",
     "react-tools": "*",
     "reactify": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
