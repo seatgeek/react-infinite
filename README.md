@@ -16,7 +16,7 @@ The relevant files are `dist/react-infinite.js` and `dist/react-infinite.min.js`
 
 ### In NPM
 React Infinite uses a Universal Module Definition so you can use it in NPM as well. `npm install` this package and
-```
+```js
 var Infinite = require('react-infinite');
 ```
 
@@ -101,7 +101,7 @@ Code samples are now available in the `/examples` directory for your perusal. Tw
 
 To get you started, here is some sample code that implements an infinite scroll with an simulated delay of 2.5 seconds. A [live demo of this example is available](http://chairnerd.seatgeek.com/react-infinite-a-browser-ready-efficient-scrolling-container-based-on-uitableview/) on our blog.
 
-```javascript
+```js
 var ListItem = React.createClass({
     render: function() {
         return <div className="infinite-list-item">
