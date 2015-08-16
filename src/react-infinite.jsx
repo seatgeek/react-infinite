@@ -249,9 +249,7 @@ var Infinite = React.createClass({
             {displayables}
         <div ref="bottomSpacer"
              style={this.buildHeightStyle(bottomSpacerHeight)}/>
-        <div ref="loadingSpinner">
-             {this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null}
-        </div>
+        {this.state.isInfiniteLoading ? this.props.loadingSpinnerDelegate : null}
       </div>
     </div>;
   }
