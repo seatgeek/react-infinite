@@ -2,6 +2,7 @@ React Infinite
 ===
 [![Build Status](https://travis-ci.org/seatgeek/react-infinite.svg?branch=master)](https://travis-ci.org/seatgeek/react-infinite)
 [![Coverage Status](https://coveralls.io/repos/seatgeek/react-infinite/badge.svg)](https://coveralls.io/r/seatgeek/react-infinite)
+[![npm version](https://badge.fury.io/js/react-infinite.svg)](http://badge.fury.io/js/react-infinite)
 
 **A browser-ready efficient scrolling container based on UITableView. Now supports elements of variable heights!**
 
