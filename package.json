@@ -25,7 +25,6 @@
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
     "typecheck": "./node_modules/.bin/flow check",
     "verify": "npm run lint && npm run typecheck && npm test",
-
     "watch-test": "watch \"npm test\" ./__tests__ ./src",
     "watch-build": "watch \"gulp build -E\" ./examples ./src",
     "build": "gulp build && gulp build -E"
@@ -73,9 +72,10 @@
     "yargs": "^1.3.2"
   },
   "dependencies": {
-    "react": ">= 0.12.2",
+    "eslint-config-seatgeek-standard": "^0.1.0",
     "lodash.isarray": "^3.0.0",
-    "lodash.isfinite": "^3.0.0"
+    "lodash.isfinite": "^3.0.0",
+    "react": ">= 0.12.2"
   },
   "peerDependencies": {
     "react": ">= 0.12.2"
