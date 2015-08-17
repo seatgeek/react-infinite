@@ -23,6 +23,9 @@
   "scripts": {
     "test": "node ./node_modules/.bin/jest --verbose",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
+    "typecheck": "./node_modules/.bin/flow check",
+    "verify": "npm run lint && npm run typecheck && npm test",
+
     "watch-test": "watch \"npm test\" ./__tests__ ./src",
     "watch-build": "watch \"gulp build -E\" ./examples ./src",
     "build": "gulp build && gulp build -E"
@@ -53,6 +56,7 @@
     "eslint-config-standard": "^4.1.0",
     "eslint-plugin-react": "^3.2.3",
     "eslint-plugin-standard": "^1.2.0",
+    "flow-bin": "^0.14.0",
     "gulp": "^3.8.8",
     "gulp-concat": "^2.4.3",
     "gulp-if": "^1.2.5",

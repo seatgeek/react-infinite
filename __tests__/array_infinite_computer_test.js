@@ -44,13 +44,15 @@ describe("Array Infinite Computer", () => {
       expect(aic.getDisplayIndexStart(0)).toEqual(0);
     });
 
-    xit("computes indexes correctly with zero-height elements", () => {
-    });
-
 
     it("computes a zero display index correctly", () => {
       var aic = new ArrayInfiniteComputer([20], 1);
       expect(aic.getDisplayIndexStart(10)).toEqual(0);
+    });
+    it("returns -1 when there are no items", () => {
+      var aic = new ArrayInfiniteComputer([], 0);
+      expect(aic.getDisplayIndexStart(800)).toEqual(-1);
+      expect(aic.getDisplayIndexStart(0)).toEqual(-1);
     });
   });
 
@@ -75,8 +77,8 @@ describe("Array Infinite Computer", () => {
 
     it("returns -1 when there are no items", () => {
       var aic = new ArrayInfiniteComputer([], 0);
-      expect(aic.getDisplayIndexEnd(800)).toEqual(-1);     
-      expect(aic.getDisplayIndexEnd(0)).toEqual(-1);     
+      expect(aic.getDisplayIndexEnd(800)).toEqual(-1);
+      expect(aic.getDisplayIndexEnd(0)).toEqual(-1);
     });
 
     xit("computes indexes correctly with zero-height elements", () => {
