@@ -1,8 +1,11 @@
+/* @flow */
+
 var InfiniteComputer = require('./infinite_computer.js'),
     bs = require('../utils/binary_index_search.js');
 
 class ArrayInfiniteComputer extends InfiniteComputer {
-  constructor(heightData, numberOfChildren) {
+
+  constructor(heightData/* : Array<number> */, numberOfChildren/* : number */): void {
     super(heightData, numberOfChildren);
     this.prefixHeightData = this.heightData.reduce((acc, next) => {
       if (acc.length === 0) {
@@ -14,26 +17,35 @@ class ArrayInfiniteComputer extends InfiniteComputer {
     }, []);
   }
 
-  getTotalScrollableHeight() {
+  maybeIndexToIndex(index/* : ?number */)/* : number */ {
+    if (typeof index === 'undefined' || index === null) {
+      return this.prefixHeightData.length - 1;
+    } else {
+      return index;
+    }
+  }
+
+  getTotalScrollableHeight()/* : number */ {
     var length = this.prefixHeightData.length;
     return length === 0 ? 0 : this.prefixHeightData[length - 1];
   }
 
-  getDisplayIndexStart(windowTop) {
-    return bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
+  getDisplayIndexStart(windowTop/* : number */)/* : number */ {
+    var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
+    return this.maybeIndexToIndex(foundIndex);
   }
 
-  getDisplayIndexEnd(windowBottom) {
+  getDisplayIndexEnd(windowBottom/* : number */)/* : number */ {
     var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
-    return typeof foundIndex === 'undefined' ? this.prefixHeightData.length - 1 : foundIndex;
+    return this.maybeIndexToIndex(foundIndex);
   }
 
-  getTopSpacerHeight(displayIndexStart) {
+  getTopSpacerHeight(displayIndexStart/* : number */)/* : number */ {
     var previous = displayIndexStart - 1;
     return previous < 0 ? 0 : this.prefixHeightData[previous];
   }
 
-  getBottomSpacerHeight(displayIndexEnd) {
+  getBottomSpacerHeight(displayIndexEnd/* : number */)/* : number */ {
     if (displayIndexEnd === -1) {
       return 0;
     }

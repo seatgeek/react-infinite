@@ -1,9 +1,13 @@
+/* @flow */
+
 var opts = {
   CLOSEST_LOWER: 1,
   CLOSEST_HIGHER: 2
 };
 
-var binaryIndexSearch = function(array, item, opt) {
+var binaryIndexSearch = function(array/* : Array<number> */,
+                                 item/* : number */,
+                                 opt/* : number */)/* : ?number */{
   var index;
 
   var high = array.length - 1,
