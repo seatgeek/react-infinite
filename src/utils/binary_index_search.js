@@ -8,7 +8,7 @@ var opts = {
 var binaryIndexSearch = function(array/* : Array<number> */,
                                  item/* : number */,
                                  opt/* : number */)/* : ?number */{
-  var index/* : ?number */;
+  var index;
 
   var high = array.length - 1,
       low = 0,
