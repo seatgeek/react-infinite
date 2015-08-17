@@ -10,25 +10,33 @@ class InfiniteComputer {
   }
 
   getTotalScrollableHeight() {
-    throw new Error("getTotalScrollableHeight not implemented.");
+    throw new Error('getTotalScrollableHeight not implemented.');
   }
 
+  /* eslint-disable no-unused-vars */
   getDisplayIndexStart(windowTop) {
-    throw new Error("getDisplayIndexStart not implemented.");
+  /* eslint-enable no-unused-vars */
+    throw new Error('getDisplayIndexStart not implemented.');
   }
 
+  /* eslint-disable no-unused-vars */
   getDisplayIndexEnd(windowBottom) {
-    throw new Error("getDisplayIndexEnd not implemented.");
+  /* eslint-enable no-unused-vars */
+    throw new Error('getDisplayIndexEnd not implemented.');
   }
 
   // These are helper methods, and can be calculated from
   // the above details.
+  /* eslint-disable no-unused-vars */
   getTopSpacerHeight(displayIndexStart) {
-    throw new Error("getTopSpacerHeight not implemented.");
+  /* eslint-enable no-unused-vars */
+    throw new Error('getTopSpacerHeight not implemented.');
   }
 
+  /* eslint-disable no-unused-vars */
   getBottomSpacerHeight(displayIndexEnd) {
-    throw new Error("getBottomSpacerHeight not implemented.");
+  /* eslint-enable no-unused-vars */
+    throw new Error('getBottomSpacerHeight not implemented.');
   }
 }
 

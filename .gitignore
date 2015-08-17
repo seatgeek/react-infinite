@@ -4,3 +4,6 @@ node_modules
 bower_components
 examples/*.js
 .c9/
+.idea/
+npm-debug.log
+*.iml

@@ -1,7 +1,7 @@
 var opts = {
   CLOSEST_LOWER: 1,
   CLOSEST_HIGHER: 2
-}
+};
 
 var binaryIndexSearch = function(array, item, opt) {
   var index;
@@ -11,7 +11,7 @@ var binaryIndexSearch = function(array, item, opt) {
       middle,
       middleItem;
 
-  while(low <= high) {
+  while (low <= high) {
     middle = low + Math.floor((high - low) / 2);
     middleItem = array[middle];
 
@@ -36,4 +36,4 @@ var binaryIndexSearch = function(array, item, opt) {
 module.exports = {
   binaryIndexSearch: binaryIndexSearch,
   opts: opts
-}
+};

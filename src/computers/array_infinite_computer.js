@@ -25,7 +25,7 @@ class ArrayInfiniteComputer extends InfiniteComputer {
 
   getDisplayIndexEnd(windowBottom) {
     var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
-    return typeof foundIndex === 'undefined' ? this.prefixHeightData.length - 1 : foundIndex; 
+    return typeof foundIndex === 'undefined' ? this.prefixHeightData.length - 1 : foundIndex;
   }
 
   getTopSpacerHeight(displayIndexStart) {
@@ -34,7 +34,9 @@ class ArrayInfiniteComputer extends InfiniteComputer {
   }
 
   getBottomSpacerHeight(displayIndexEnd) {
-    if (displayIndexEnd === -1) return 0;
+    if (displayIndexEnd === -1) {
+      return 0;
+    }
     return this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd];
   }
 }

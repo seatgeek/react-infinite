@@ -87,7 +87,7 @@ var Infinite = React.createClass({
     } else if (_isArray(data)) {
       computer = new ArrayInfiniteComputer(data, numberOfChildren);
     } else {
-      throw new Error("You must provide either a number or an array of numbers as the elementHeight prop.");
+      throw new Error('You must provide either a number or an array of numbers as the elementHeight prop.');
     }
 
     return computer;
@@ -127,7 +127,7 @@ var Infinite = React.createClass({
       props.containerHeight;
   },
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
       this.setStateFromScrollTop(this.getScrollTop());
     }
@@ -136,7 +136,7 @@ var Infinite = React.createClass({
   componentWillMount() {
     if (_isArray(this.props.elementHeight)) {
       if (React.Children.count(this.props.children) !== this.props.elementHeight.length) {
-        throw new Error("There must be as many values provided in the elementHeight prop as there are children.")
+        throw new Error('There must be as many values provided in the elementHeight prop as there are children.');
       }
     }
   },
@@ -185,7 +185,7 @@ var Infinite = React.createClass({
           that.setState({
             isScrolling: false,
             scrollTimeout: undefined
-          })
+          });
         }, this.props.timeScrollStateLastsForAfterUserScrolls);
 
     this.setState({
