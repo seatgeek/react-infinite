@@ -22,7 +22,7 @@
   "browser": "build/react-infinite.js",
   "scripts": {
     "test": "node ./node_modules/.bin/jest --verbose",
-    "lint": "./node_modules/.bin/eslint ./src --ext .jsx",
+    "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
     "watch-test": "watch \"npm test\" ./__tests__ ./src",
     "watch-build": "watch \"gulp build -E\" ./examples ./src",
     "build": "gulp build && gulp build -E"

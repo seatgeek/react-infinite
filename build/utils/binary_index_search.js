@@ -11,7 +11,7 @@ var binaryIndexSearch = function(array, item, opt) {
       middle,
       middleItem;
 
-  while(low <= high) {
+  while (low <= high) {
     middle = low + Math.floor((high - low) / 2);
     middleItem = array[middle];
 
