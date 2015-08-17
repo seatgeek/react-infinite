@@ -49,7 +49,8 @@ var Infinite = React.createClass({displayName: "Infinite",
       loadingSpinnerDelegate: React.createElement("div", null),
       onInfiniteLoad: function()  {},
       isInfiniteLoading: false,
-      timeScrollStateLastsForAfterUserScrolls: 150
+      timeScrollStateLastsForAfterUserScrolls: 150,
+      sticky: null
     };
   },
 
@@ -177,6 +178,9 @@ var Infinite = React.createClass({displayName: "Infinite",
   manageScrollTimeouts:function() {
     // Maintains a series of timeouts to set this.state.isScrolling
     // to be true when the element is scrolling.
+    if (!this.props.timeScrollStateLastsForAfterUserScrolls) {
+      return;
+    }
 
     if (this.state.scrollTimeout) {
       clearTimeout(this.state.scrollTimeout);
@@ -248,6 +252,7 @@ var Infinite = React.createClass({displayName: "Infinite",
       React.createElement("div", {ref: "smoothScrollingWrapper", style: infiniteScrollStyles}, 
         React.createElement("div", {ref: "topSpacer", 
              style: this.buildHeightStyle(topSpacerHeight)}), 
+            this.props.sticky, 
             displayables, 
         React.createElement("div", {ref: "bottomSpacer", 
              style: this.buildHeightStyle(bottomSpacerHeight)}), 
