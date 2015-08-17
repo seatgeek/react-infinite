@@ -3,9 +3,10 @@
 
   "rules": {
     "indent": [2, 2, {"VariableDeclarator": 2}],
-    "quotes": [2, "single"],
     "linebreak-style": [2, "unix"],
-    "semi": [2, "always"],
+    "one-var": 0,
+    "space-before-function-paren": [2, "never"],
+
     "react/jsx-boolean-value": 1,
     "react/jsx-no-undef": 1,
     "react/no-danger": 1,
@@ -24,7 +25,7 @@
     "browser": true
   },
 
-  "extends": "eslint:recommended",
+  "extends": ["semistandard"],
 
   "ecmaFeatures": {
     "jsx": true,
