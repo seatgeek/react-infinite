@@ -28,7 +28,7 @@
     "build": "gulp build && gulp build -E"
   },
   "jest": {
-    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "testPathDirs": [
       "<rootDir>/__tests__",
       "<rootDir>/src"
