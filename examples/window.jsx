@@ -14,7 +14,7 @@ var ListItem = React.createClass({
             }
         }>
             <div style={{height: 400}}>
-            List Item {this.props.index}
+                List Item {this.props.index}
             </div>
         </div>;
     }
