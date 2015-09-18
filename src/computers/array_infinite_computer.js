@@ -5,7 +5,7 @@ var InfiniteComputer = require('./infinite_computer.js'),
 
 class ArrayInfiniteComputer extends InfiniteComputer {
 
-  constructor(heightData/* : Array<number> */, numberOfChildren/* : number */): void {
+  constructor(heightData/* : Array<number> */, numberOfChildren/* : number */)/* : void */ {
     super(heightData, numberOfChildren);
     this.prefixHeightData = this.heightData.reduce((acc, next) => {
       if (acc.length === 0) {
