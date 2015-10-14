@@ -13,7 +13,7 @@ var ListItem = React.createClass({
                 overflow: 'scroll'
             }
         }>
-            <div style={{height: 400}}>
+            <div style={{height: 50}}>
             List Item {this.props.index}
             </div>
         </div>;
