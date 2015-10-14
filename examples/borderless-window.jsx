@@ -65,6 +65,7 @@ var InfiniteList = React.createClass({
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
                          timeScrollStateLastsForAfterUserScrolls={1000}
+                         useWindowAsScrollContainer={true}
                          >
                     {this.state.elements}
                 </Infinite>;
