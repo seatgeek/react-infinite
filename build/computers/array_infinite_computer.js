@@ -1,8 +1,11 @@
+/* @flow */
+
 var InfiniteComputer = require('./infinite_computer.js'),
     bs = require('../utils/binary_index_search.js');
 
 for(var InfiniteComputer____Key in InfiniteComputer){if(InfiniteComputer.hasOwnProperty(InfiniteComputer____Key)){ArrayInfiniteComputer[InfiniteComputer____Key]=InfiniteComputer[InfiniteComputer____Key];}}var ____SuperProtoOfInfiniteComputer=InfiniteComputer===null?null:InfiniteComputer.prototype;ArrayInfiniteComputer.prototype=Object.create(____SuperProtoOfInfiniteComputer);ArrayInfiniteComputer.prototype.constructor=ArrayInfiniteComputer;ArrayInfiniteComputer.__superConstructor__=InfiniteComputer;
-  function ArrayInfiniteComputer(heightData, numberOfChildren) {"use strict";
+
+  function ArrayInfiniteComputer(heightData/* : Array<number> */, numberOfChildren   )/* : void */ {"use strict";
     InfiniteComputer.call(this,heightData, numberOfChildren);
     this.prefixHeightData = this.heightData.reduce(function(acc, next)  {
       if (acc.length === 0) {
@@ -14,27 +17,38 @@ for(var InfiniteComputer____Key in InfiniteComputer){if(InfiniteComputer.hasOwnP
     }, []);
   }
 
-  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTotalScrollableHeight",{writable:true,configurable:true,value:function() {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"maybeIndexToIndex",{writable:true,configurable:true,value:function(index   )/* : number */ {"use strict";
+    if (typeof index === 'undefined' || index === null) {
+      return this.prefixHeightData.length - 1;
+    } else {
+      return index;
+    }
+  }});
+
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTotalScrollableHeight",{writable:true,configurable:true,value:function()/* : number */ {"use strict";
     var length = this.prefixHeightData.length;
     return length === 0 ? 0 : this.prefixHeightData[length - 1];
   }});
 
-  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexStart",{writable:true,configurable:true,value:function(windowTop) {"use strict";
-    return bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexStart",{writable:true,configurable:true,value:function(windowTop   )/* : number */ {"use strict";
+    var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
+    return this.maybeIndexToIndex(foundIndex);
   }});
 
-  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexEnd",{writable:true,configurable:true,value:function(windowBottom) {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getDisplayIndexEnd",{writable:true,configurable:true,value:function(windowBottom   )/* : number */ {"use strict";
     var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
-    return typeof foundIndex === 'undefined' ? this.prefixHeightData.length - 1 : foundIndex; 
+    return this.maybeIndexToIndex(foundIndex);
   }});
 
-  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTopSpacerHeight",{writable:true,configurable:true,value:function(displayIndexStart) {"use strict";
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getTopSpacerHeight",{writable:true,configurable:true,value:function(displayIndexStart   )/* : number */ {"use strict";
     var previous = displayIndexStart - 1;
     return previous < 0 ? 0 : this.prefixHeightData[previous];
   }});
 
-  Object.defineProperty(ArrayInfiniteComputer.prototype,"getBottomSpacerHeight",{writable:true,configurable:true,value:function(displayIndexEnd) {"use strict";
-    if (displayIndexEnd === -1) return 0;
+  Object.defineProperty(ArrayInfiniteComputer.prototype,"getBottomSpacerHeight",{writable:true,configurable:true,value:function(displayIndexEnd   )/* : number */ {"use strict";
+    if (displayIndexEnd === -1) {
+      return 0;
+    }
     return this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd];
   }});
 
