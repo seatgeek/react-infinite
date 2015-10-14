@@ -1,5 +1,7 @@
 [ignore]
 .*/fbjs/.*
+.*/build/.*
+.*/dist/.*
 
 [include]
 
