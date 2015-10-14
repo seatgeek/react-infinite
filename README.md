@@ -72,6 +72,9 @@ Defaults to `this.props.containerHeight`. The total height of the area in which 
 #### **Function** `handleScroll(DOMNode node)`
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
 
+#### Bool `useWindowAsScrollContainer`
+Defaults to `false`. This option allows the window to be used as the scroll container, instead of an arbitrary `div`, when it is set to `true`. This means that scroll position is detected by `window.scrollY` instead of the `scrollTop` of the `div` that React Infinite creates. Using this option is a way of achieving smoother scrolling on mobile before the problem is solved for container `div`s.
+
 #### **Number** `infiniteLoadBeginBottomOffset`
 When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
 
