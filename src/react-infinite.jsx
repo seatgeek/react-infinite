@@ -102,12 +102,12 @@ var Infinite = React.createClass({
 
   generateComputedProps(props) {
     var computedProps = _assign({}, props);
-    computedProps.containerHeight = props.useWindowAsScrollContainer ?
-      window.innerHeight : props.containerHeight;
-    computedProps.preloadBatchSize = typeof props.preloadBatchSize === 'number' ?
-      props.preloadBatchSize : computedProps.containerHeight / 2;
-    computedProps.preloadAdditionalHeight = typeof props.preloadAdditionalHeight === 'number' ?
-      props.preloadAdditionalHeight : computedProps.containerHeight;
+    computedProps.containerHeight = props.useWindowAsScrollContainer
+      ? window.innerHeight : props.containerHeight;
+    computedProps.preloadBatchSize = typeof props.preloadBatchSize === 'number'
+      ? props.preloadBatchSize : computedProps.containerHeight / 2;
+    computedProps.preloadAdditionalHeight = typeof props.preloadAdditionalHeight === 'number'
+      ? props.preloadAdditionalHeight : computedProps.containerHeight;
     return computedProps;
   },
 

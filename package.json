@@ -50,7 +50,7 @@
     "babel-jest": "^5.3.0",
     "browserify": "^9.0.3",
     "coveralls": "^2.11.2",
-    "eslint": "^1.1.0",
+    "eslint": "~1.6.0",
     "eslint-config-semistandard": "^5.0.0",
     "eslint-config-standard": "^4.1.0",
     "eslint-plugin-react": "^3.2.3",
