@@ -7,17 +7,18 @@ var _isArray = require('lodash.isarray');
 var _isFinite = require('lodash.isfinite');
 
 module.exports = function(props) {
+  var rie = 'Invariant Violation: ';
   if (!(props.containerHeight || props.useWindowAsScrollContainer)) {
-    throw new Error('Either containerHeight or useWindowAsScrollContainer must be provided.');
+    throw new Error(rie + 'Either containerHeight or useWindowAsScrollContainer must be provided.');
   }
 
   if (!(_isFinite(props.elementHeight) || _isArray(props.elementHeight))) {
-    throw new Error('You must provide either a number or an array of numbers as the elementHeight prop.');
+    throw new Error(rie + 'You must provide either a number or an array of numbers as the elementHeight.');
   }
 
   if (_isArray(props.elementHeight)) {
     if (React.Children.count(props.children) !== props.elementHeight.length) {
-      throw new Error('There must be as many values provided in the elementHeight prop as there are children.');
+      throw new Error(rie + 'There must be as many values provided in the elementHeight prop as there are children.');
     }
   }
 };
