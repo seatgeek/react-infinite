@@ -1,7 +1,21 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - 4.1
+  - 4.0
+  - iojs
+  - 0.12
+  - 0.10
+env:
+  - TEST=1
+
+matrix:
+  include:
+    - node_js: 4.1
+      env: TYPECHECK=1
+    - node_js: 4.1
+      env: LINT=1
+
 script:
-  - npm run verify
+  - ./config/travis/test.sh
 after_success: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
