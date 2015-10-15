@@ -1,20 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-  - 4.1
-  - 4.0
-  - iojs
-  - 0.12
   - 0.10
 env:
   - TEST=1
-
-matrix:
-  include:
-    - node_js: 4.1
-      env: TYPECHECK=1
-    - node_js: 4.1
-      env: LINT=1
+  - TYPECHECK=1
+  - LINT=1
 
 script:
   - ./config/travis/test.sh
