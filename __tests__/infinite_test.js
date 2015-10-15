@@ -32,7 +32,18 @@ var renderHelpers = {
 }
 
 describe('Rendering the React Infinite Component Wrapper', function() {
-  it('throws an error when given only one child', function() {
+  it('does not throw an error when given no children', function() {
+    expect(function() {
+      TestUtils.renderIntoDocument(
+        <Infinite elementHeight={200}
+                  containerHeight={800}
+                  className={"root-scrollable-node"}>
+        </Infinite>
+      );
+    }).not.toThrow();
+  });
+
+  it('does not throw an error when given only one child', function() {
     expect(function() {
       TestUtils.renderIntoDocument(
         <Infinite elementHeight={200}
@@ -41,7 +52,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
           <div/>
         </Infinite>
       );
-    }).toThrow();
+    }).not.toThrow();
   });
 
   it('renders itself into the DOM with the correct container styles', function() {

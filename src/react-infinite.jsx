@@ -105,6 +105,7 @@ var Infinite = React.createClass({
 
   generateComputedProps(props) {
     var computedProps = _assign({}, props);
+    computedProps.children = React.Children.toArray(props.children);
     computedProps.containerHeight = props.useWindowAsScrollContainer
       ? window.innerHeight : props.containerHeight;
     computedProps.preloadBatchSize = typeof props.preloadBatchSize === 'number'
@@ -258,8 +259,13 @@ var Infinite = React.createClass({
   },
 
   render() {
-    var displayables = this.computedProps.children.slice(this.state.displayIndexStart,
-                                                         this.state.displayIndexEnd + 1);
+    var displayables;
+    if (React.Children.count(this.computedProps.children) > 1) {
+      displayables = this.computedProps.children.slice(this.state.displayIndexStart,
+                                                       this.state.displayIndexEnd + 1);
+    } else {
+      displayables = this.computedProps.children;
+    }
 
     var infiniteScrollStyles = {};
     if (this.state.isScrolling) {

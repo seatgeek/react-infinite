@@ -54,7 +54,7 @@ describe('Errors an error on elementHeight array length mismatch', function() {
   beforeEach(function() {
     shallowRenderer = TestUtils.createRenderer();
   });
-  
+
   it('throws an error when the number of children is not equal to the length of the elementHeight array when ', function() {
     var errorfulInfinite = <Infinite elementHeight={[1, 2, 3]}
                                      containerHeight={400}>
