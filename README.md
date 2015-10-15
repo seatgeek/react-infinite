@@ -177,7 +177,11 @@ I am seated in an office, surrounded by heads and bodies. There I've written som
 Tests are located in the `__tests__` directory<small><sup>2</sup></small>, and can be run with `npm test` after `npm install`.
 
 ## Developing
-React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`. Then run `gulp build -D`, which builds the development version. To build the production version, run `gulp build -P`, and to build the non-minified release version, run `gulp`.
+React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`.
+
+The newly revamped development environment is based on `gulp develop`. When run, this command sets up a watch on the `/src` folder with Browserify as well as the `examples` folder.
+
+The other major command, `gulp release`, prepares files for release. It produces normal and minified versions of `react-infinite.js` in the `dist` folder and also directly transpiles the source to ES5 in the `build` folder so it can be required by other asset pipelines.
 
 ### Infinite Computers
 
