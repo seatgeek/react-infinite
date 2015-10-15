@@ -130,7 +130,8 @@ var Infinite = React.createClass({
         return {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: 'scroll'
+          overflowY: 'scroll',
+          WebkitOverflowScrolling: 'touch'
         };
       };
     }
@@ -244,22 +245,13 @@ var Infinite = React.createClass({
     }
   },
 
-  // Helpers for React styles.
-  buildScrollableStyle() {
-    return {
-      height: this.computedProps.containerHeight,
-      overflowX: 'hidden',
-      overflowY: 'scroll'
-    };
-  },
-
   buildHeightStyle(height) {
     return {
       width: '100%',
       height: Math.ceil(height)
     };
   },
-
+  
   render() {
     var displayables = this.computedProps.children.slice(this.state.displayIndexStart,
                                                          this.state.displayIndexEnd + 1);
