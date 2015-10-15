@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "build/react-infinite.js",
   "repository": {
@@ -25,7 +25,6 @@
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
     "typecheck": "./node_modules/.bin/flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
-
     "preversion": "npm run verify",
     "prepublish": "gulp release"
   },
