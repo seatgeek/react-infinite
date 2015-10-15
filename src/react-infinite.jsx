@@ -30,8 +30,10 @@ var Infinite = React.createClass({
       React.PropTypes.number,
       React.PropTypes.arrayOf(React.PropTypes.number)
     ]).isRequired,
-    // This is the total height of the visible window.
-    containerHeight: React.PropTypes.number.isRequired,
+    // This is the total height of the visible window. One
+    // of
+    containerHeight: React.PropTypes.number,
+    useWindowAsScrollContainer: React.PropTypes.bool,
 
     infiniteLoadBeginBottomOffset: React.PropTypes.number,
     onInfiniteLoad: React.PropTypes.func,
@@ -39,7 +41,6 @@ var Infinite = React.createClass({
 
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
-    useWindowAsScrollContainer: React.PropTypes.bool,
 
     className: React.PropTypes.string
   },
@@ -59,6 +60,8 @@ var Infinite = React.createClass({
   // automatic adjust to scroll direction
   // give spinner a ReactCSSTransitionGroup
   getInitialState() {
+    checkProps(this.props);
+
     this.computedProps = this.generateComputedProps(this.props);
     this.utils = this.generateComputedUtilityFunctions(this.props);
 
@@ -140,6 +143,8 @@ var Infinite = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
+    checkProps(nextProps);
+
     this.computedProps = this.generateComputedProps(nextProps);
     this.utils = this.generateComputedUtilityFunctions(nextProps);
 
@@ -252,7 +257,7 @@ var Infinite = React.createClass({
       height: Math.ceil(height)
     };
   },
-  
+
   render() {
     var displayables = this.computedProps.children.slice(this.state.displayIndexStart,
                                                          this.state.displayIndexEnd + 1);
