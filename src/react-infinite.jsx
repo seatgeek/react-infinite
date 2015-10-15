@@ -249,7 +249,7 @@ var Infinite = React.createClass({
     return {
       height: this.computedProps.containerHeight,
       overflowX: 'hidden',
-      overflowY: 'scroll'
+      overflowY: 'auto'
     };
   },
 
