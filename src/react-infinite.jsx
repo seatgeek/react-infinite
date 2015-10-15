@@ -1,10 +1,7 @@
 var React = global.React || require('react');
-var _isArray = require('lodash.isarray');
-var _isFinite = require('lodash.isfinite');
-var ConstantInfiniteComputer = require('./computers/ConstantInfiniteComputer.js');
-var ArrayInfiniteComputer = require('./computers/ArrayInfiniteComputer.js');
 var _assign = require('object-assign');
 var checkProps = require('./utils/checkProps');
+var infiniteHelpers = require('./utils/infiniteHelpers');
 
 var Infinite = React.createClass({
 
@@ -60,52 +57,20 @@ var Infinite = React.createClass({
   // automatic adjust to scroll direction
   // give spinner a ReactCSSTransitionGroup
   getInitialState() {
-    checkProps(this.props);
+    var nextInternalState = this.recomputeInternalStateFromProps(this.props);
 
-    this.computedProps = this.generateComputedProps(this.props);
-    this.utils = this.generateComputedUtilityFunctions(this.props);
+    this.computedProps = nextInternalState.computedProps;
+    this.utils = nextInternalState.utils;
 
-    var computer = this.createInfiniteComputer(this.computedProps.elementHeight, this.computedProps.children);
+    var state = nextInternalState.newState;
+    state.scrollTimeout = undefined;
+    state.isScrolling = false;
 
-    var preloadBatchSize = this.computedProps.preloadBatchSize;
-    var preloadAdditionalHeight = this.computedProps.preloadAdditionalHeight;
-
-    return {
-      infiniteComputer: computer,
-
-      numberOfChildren: React.Children.count(this.computedProps.children),
-      displayIndexStart: 0,
-      displayIndexEnd: computer.getDisplayIndexEnd(
-                        preloadBatchSize + preloadAdditionalHeight
-                      ),
-
-      isInfiniteLoading: false,
-
-      preloadBatchSize: preloadBatchSize,
-      preloadAdditionalHeight: preloadAdditionalHeight,
-
-      scrollTimeout: undefined,
-      isScrolling: false
-    };
-  },
-
-  createInfiniteComputer(data, children) {
-    var computer;
-    var numberOfChildren = React.Children.count(children);
-
-    // This is guaranteed by checkProps
-    if (_isFinite(data)) {
-      computer = new ConstantInfiniteComputer(data, numberOfChildren);
-    } else if (_isArray(data)) {
-      computer = new ArrayInfiniteComputer(data, numberOfChildren);
-    }
-
-    return computer;
+    return state;
   },
 
   generateComputedProps(props) {
     var computedProps = _assign({}, props);
-    computedProps.children = React.Children.toArray(props.children);
     computedProps.containerHeight = props.useWindowAsScrollContainer
       ? window.innerHeight : props.containerHeight;
     computedProps.preloadBatchSize = typeof props.preloadBatchSize === 'number'
@@ -132,7 +97,10 @@ var Infinite = React.createClass({
       utilities.subscribeToScrollListener = () => {};
       utilities.unsubscribeFromScrollListener = () => {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
-      utilities.getScrollTop = () => React.findDOMNode(this.refs.scrollable).scrollTop;
+      utilities.getScrollTop = () => {
+        var scrollable = React.findDOMNode(this.refs.scrollable);
+        return scrollable ? scrollable.scrollTop : 0;
+      }
       utilities.scrollShouldBeIgnored = event => event.target !== React.findDOMNode(this.refs.scrollable);
       utilities.buildScrollableStyle = () => {
         return {
@@ -146,35 +114,54 @@ var Infinite = React.createClass({
     return utilities;
   },
 
-  componentWillReceiveProps(nextProps) {
-    checkProps(nextProps);
+  recomputeInternalStateFromProps(props) {
+    checkProps(props);
+    var computedProps = this.generateComputedProps(props);
+    var utils = this.generateComputedUtilityFunctions(props);
 
-    this.computedProps = this.generateComputedProps(nextProps);
-    this.utils = this.generateComputedUtilityFunctions(nextProps);
+    var newState = {
+      numberOfChildren: React.Children.count(computedProps.children)
+    };
 
-    var newStateObject = {};
+    newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(
+      computedProps.elementHeight,
+      computedProps.children
+    );
 
-    // TODO: more efficient elementHeight change detection
-    newStateObject.infiniteComputer = this.createInfiniteComputer(
-                                        this.computedProps.elementHeight,
-                                        this.computedProps.children
-                                      );
-
-    if (this.computedProps.isInfiniteLoading !== undefined) {
-      newStateObject.isInfiniteLoading = this.computedProps.isInfiniteLoading;
+    if (computedProps.isInfiniteLoading !== undefined) {
+      newState.isInfiniteLoading = computedProps.isInfiniteLoading;
     }
 
-    newStateObject.preloadBatchSize = this.computedProps.preloadBatchSize;
-    newStateObject.preloadAdditionalHeight = this.computedProps.preloadAdditionalHeight;
+    newState.preloadBatchSize = computedProps.preloadBatchSize;
+    newState.preloadAdditionalHeight = computedProps.preloadAdditionalHeight;
 
-    this.setState(newStateObject, () => {
-      this.setStateFromScrollTop(this.utils.getScrollTop());
-    });
+    _assign(newState,
+            infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
+              newState, utils.getScrollTop()));
+
+    return {
+      computedProps,
+      utils,
+      newState
+    };
   },
 
-  componentDidUpdate(prevProps) {
-    if (React.Children.count(this.computedProps.children) !== React.Children.count(prevProps.children)) {
-      this.setStateFromScrollTop(this.utils.getScrollTop());
+  componentWillReceiveProps(nextProps) {
+    var nextInternalState = this.recomputeInternalStateFromProps(nextProps);
+
+    this.computedProps = nextInternalState.computedProps;
+    this.utils = nextInternalState.utils;
+
+    this.setState(nextInternalState.newState);
+  },
+
+  componentDidUpdate(prevProps, prevState) {
+    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
+      var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
+        this.state,
+        this.utils.getScrollTop()
+      );
+      this.setState(newApertureState);
     }
   },
 
@@ -184,25 +171,6 @@ var Infinite = React.createClass({
 
   componentWillUnmount() {
     this.utils.unsubscribeFromScrollListener();
-  },
-
-  // Given the scrollTop of the container, computes the state the
-  // component should be in. The goal is to abstract all of this
-  // from any actual representation in the DOM.
-  // The window is the block with any preloadAdditionalHeight
-  // added to it.
-  setStateFromScrollTop(scrollTop) {
-    var blockNumber = this.state.preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / this.state.preloadBatchSize),
-        blockStart = this.state.preloadBatchSize * blockNumber,
-        blockEnd = blockStart + this.state.preloadBatchSize,
-        apertureTop = Math.max(0, blockStart - this.state.preloadAdditionalHeight),
-        apertureBottom = Math.min(this.state.infiniteComputer.getTotalScrollableHeight(),
-                        blockEnd + this.state.preloadAdditionalHeight);
-
-    this.setState({
-      displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(apertureTop),
-      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(apertureBottom)
-    });
   },
 
   infiniteHandleScroll(e) {
@@ -237,17 +205,23 @@ var Infinite = React.createClass({
 
   handleScroll(scrollTop) {
     this.manageScrollTimeouts();
-    this.setStateFromScrollTop(scrollTop);
+
+    var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
+      this.state,
+      scrollTop
+    );
 
     var infiniteScrollBottomLimit = scrollTop >
         (this.state.infiniteComputer.getTotalScrollableHeight() -
           this.computedProps.containerHeight -
           this.computedProps.infiniteLoadBeginBottomOffset);
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
-      this.setState({
+      this.setState(_assign(newApertureState, {
         isInfiniteLoading: true
-      });
+      }));
       this.computedProps.onInfiniteLoad();
+    } else {
+      this.setState(newApertureState);
     }
   },
 

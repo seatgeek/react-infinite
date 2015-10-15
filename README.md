@@ -23,9 +23,9 @@ var Infinite = require('react-infinite');
 ```
 
 ### In Browserify
-If you want to use the source with Browserify, you may require it in a similar manner to the NPM instructions above. You **must** have Reactify to compile the JSX and ES6, however.
+If you want to use the source with Browserify, the ES5-compiled source is directly requirable from the `/build` folder off NPM.
 
-Otherwise, you can follow the instructions for NPM.
+Otherwise, you can follow the instructions for NPM.     
 
 ## Basic Use
 ### Elements of Equal Height

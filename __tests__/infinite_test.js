@@ -3,6 +3,7 @@ jest.dontMock('../src/computers/InfiniteComputer.js');
 jest.dontMock('../src/computers/ConstantInfiniteComputer.js');
 jest.dontMock('../src/computers/ArrayInfiniteComputer.js');
 jest.dontMock('../src/utils/binaryIndexSearch.js');
+jest.dontMock('../src/utils/infiniteHelpers.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
