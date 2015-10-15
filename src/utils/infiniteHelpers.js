@@ -1,7 +1,7 @@
 var _isArray = require('lodash.isarray');
 var _isFinite = require('lodash.isfinite');
-var ConstantInfiniteComputer = require('../computers/ConstantInfiniteComputer.js');
-var ArrayInfiniteComputer = require('../computers/ArrayInfiniteComputer.js');
+var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js');
+var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
 var React = global.React || require('react');
 
 function createInfiniteComputer(data, children) {
