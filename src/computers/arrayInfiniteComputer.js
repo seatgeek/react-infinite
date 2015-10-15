@@ -1,6 +1,6 @@
 /* @flow */
 
-var InfiniteComputer = require('./InfiniteComputer.js'),
+var InfiniteComputer = require('./infiniteComputer.js'),
     bs = require('../utils/binaryIndexSearch.js');
 
 class ArrayInfiniteComputer extends InfiniteComputer {
