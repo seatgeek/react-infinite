@@ -33,18 +33,16 @@ function transformBundle(root, envObject) {
   }
 }
 
-module.exports = function(shouldWatch, envObject) {
-  var watchFunction = shouldWatch ? watchify : function(x) { return x };
+module.exports = function(shouldWatch, envObject, files) {
+  var watchFunction = shouldWatch ? watchify : function(x) { return x; };
   var watchArgs = shouldWatch ? watchify.args : undefined;
 
-  return function(files) {
+  return function() {
     var root = watchFunction(browserify({
       entries: files,
       standalone: 'Infinite'
     }, watchArgs))
-      .transform(reactify, {
-        es6: true
-      })
+      .transform(babelify)
       .exclude('react');
 
     if (shouldWatch) {
