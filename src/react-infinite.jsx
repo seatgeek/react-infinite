@@ -1,9 +1,10 @@
 var React = global.React || require('react'),
     _isArray = require('lodash.isarray'),
     _isFinite = require('lodash.isfinite'),
-    ConstantInfiniteComputer = require('./computers/constant_infinite_computer.js'),
-    ArrayInfiniteComputer = require('./computers/array_infinite_computer.js');
+    ConstantInfiniteComputer = require('./computers/ConstantInfiniteComputer.js'),
+    ArrayInfiniteComputer = require('./computers/ArrayInfiniteComputer.js');
 var _assign = require('object-assign');
+var checkProps = require('./utils/checkProps');
 
 var Infinite = React.createClass({
 

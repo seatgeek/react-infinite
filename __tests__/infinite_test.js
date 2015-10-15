@@ -1,8 +1,8 @@
 jest.dontMock('../src/react-infinite.jsx');
-jest.dontMock('../src/computers/infinite_computer.js');
-jest.dontMock('../src/computers/constant_infinite_computer.js');
-jest.dontMock('../src/computers/array_infinite_computer.js');
-jest.dontMock('../src/utils/binary_index_search.js');
+jest.dontMock('../src/computers/InfiniteComputer.js');
+jest.dontMock('../src/computers/ConstantInfiniteComputer.js');
+jest.dontMock('../src/computers/ArrayInfiniteComputer.js');
+jest.dontMock('../src/utils/binaryIndexSearch.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 

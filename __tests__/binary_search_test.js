@@ -1,6 +1,6 @@
-jest.dontMock('../src/utils/binary_index_search.js');
+jest.dontMock('../src/utils/binaryIndexSearch.js');
 
-var bs = require('../src/utils/binary_index_search.js'),
+var bs = require('../src/utils/binaryIndexSearch.js'),
     binaryIndexSearch = bs.binaryIndexSearch;
 
 describe("Binary Index Search", function() {
