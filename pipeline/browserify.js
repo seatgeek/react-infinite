@@ -1,12 +1,10 @@
 var watchify = require('watchify');
 var browserify = require('browserify');
 var babelify = require('babelify');
-var reactify = require('reactify');
 var moment = require('moment');
 var buffer = require('vinyl-buffer');
 var sourcestream = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
-var given = require('gulp-if');
 var uglify = require('gulp-uglify');
 var gulp = require('gulp');
 

@@ -1,21 +1,11 @@
-var gulp = require('gulp'),
-  given = require('gulp-if'),
-  jsx = require('gulp-react'),
-  reactify = require('reactify'),
-  buffer = require('vinyl-buffer'),
-  minifyjs = require('gulp-uglify'),
-  browserify = require('browserify'),
-  sourcemaps = require('gulp-sourcemaps'),
-  sourcestream = require('vinyl-source-stream');
+var gulp = require('gulp');
+var babel = require('gulp-babel');
 
 var browserifyCreator = require('./pipeline/browserify');
 
 var args = require('yargs').alias('P', 'production')
                .alias('D', 'development')
-               .alias('E', 'example').argv,
-  production = args.production,
-  development = args.development,
-  example = args.example;
+               .alias('E', 'example').argv;
 
 var envObject = {
   production: args.production,
@@ -24,8 +14,8 @@ var envObject = {
 };
 var INFINITE_SOURCE = './src/react-infinite.jsx';
 
-gulp.task('build-bundle', browserifyCreator(false, envObject)(INFINITE_SOURCE));
-gulp.task('watch-develop-bundle', browserifyCreator(true, {development: true})(INFINITE_SOURCE));
+gulp.task('build-bundle', browserifyCreator(false, envObject, INFINITE_SOURCE));
+gulp.task('watch-develop-bundle', browserifyCreator(true, {development: true}, INFINITE_SOURCE));
 
 // This task builds everything for release: the dist
 // folder is populated with react-infinite.js and
@@ -34,9 +24,7 @@ gulp.task('watch-develop-bundle', browserifyCreator(true, {development: true})(I
 gulp.task('release', ['build-bundle'], function() {
   // Transpile CommonJS files to ES5 with React's tools.
   gulp.src(['./src/**/*.js', './src/**/*.jsx'])
-      .pipe(jsx({
-        harmony: true
-      }))
+      .pipe(babel())
       .pipe(gulp.dest('build'));
 });
 
@@ -44,7 +32,7 @@ gulp.task('release', ['build-bundle'], function() {
 // in the development watch function as well.
 gulp.task('examples', function() {
   gulp.src('./examples/*.jsx')
-    .pipe(jsx())
+    .pipe(babel())
     .pipe(gulp.dest('examples'));
 });
 
