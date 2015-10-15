@@ -1,8 +1,8 @@
-var React = global.React || require('react'),
-    _isArray = require('lodash.isarray'),
-    _isFinite = require('lodash.isfinite'),
-    ConstantInfiniteComputer = require('./computers/ConstantInfiniteComputer.js'),
-    ArrayInfiniteComputer = require('./computers/ArrayInfiniteComputer.js');
+var React = global.React || require('react');
+var _isArray = require('lodash.isarray');
+var _isFinite = require('lodash.isfinite');
+var ConstantInfiniteComputer = require('./computers/ConstantInfiniteComputer.js');
+var ArrayInfiniteComputer = require('./computers/ArrayInfiniteComputer.js');
 var _assign = require('object-assign');
 var checkProps = require('./utils/checkProps');
 
@@ -93,12 +93,11 @@ var Infinite = React.createClass({
     var computer;
     var numberOfChildren = React.Children.count(children);
 
+    // This is guaranteed by checkProps
     if (_isFinite(data)) {
       computer = new ConstantInfiniteComputer(data, numberOfChildren);
     } else if (_isArray(data)) {
       computer = new ArrayInfiniteComputer(data, numberOfChildren);
-    } else {
-      throw new Error('You must provide either a number or an array of numbers as the elementHeight prop.');
     }
 
     return computer;
@@ -119,7 +118,10 @@ var Infinite = React.createClass({
     var utilities = {};
     if (props.useWindowAsScrollContainer) {
       utilities.subscribeToScrollListener = () => {
-        window.onscroll = this.infiniteHandleScroll;
+        window.addEventListener('scroll', this.infiniteHandleScroll);
+      };
+      utilities.unsubscribeFromScrollListener = () => {
+        window.removeEventListener('scroll');
       };
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.scrollY;
@@ -127,6 +129,7 @@ var Infinite = React.createClass({
       utilities.buildScrollableStyle = () => ({});
     } else {
       utilities.subscribeToScrollListener = () => {};
+      utilities.unsubscribeFromScrollListener = () => {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = () => React.findDOMNode(this.refs.scrollable).scrollTop;
       utilities.scrollShouldBeIgnored = event => event.target !== React.findDOMNode(this.refs.scrollable);
@@ -174,16 +177,12 @@ var Infinite = React.createClass({
     }
   },
 
-  componentWillMount() {
-    if (_isArray(this.computedProps.elementHeight)) {
-      if (React.Children.count(this.computedProps.children) !== this.computedProps.elementHeight.length) {
-        throw new Error('There must be as many values provided in the elementHeight prop as there are children.');
-      }
-    }
-  },
-
   componentDidMount() {
     this.utils.subscribeToScrollListener();
+  },
+
+  componentWillUnmount() {
+    this.utils.unsubscribeFromScrollListener();
   },
 
   // Given the scrollTop of the container, computes the state the
