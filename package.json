@@ -24,10 +24,10 @@
     "test": "node ./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
     "typecheck": "./node_modules/.bin/flow check",
-    "verify": "npm run lint && npm run typecheck && npm test",
-    "watch-test": "watch \"npm test\" ./__tests__ ./src",
-    "watch-build": "watch \"gulp build -E\" ./examples ./src",
-    "build": "gulp build && gulp build -E"
+    "verify": "npm test && npm run typecheck && npm run lint",
+
+    "preversion": "npm run verify",
+    "prepublish": "gulp release"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
@@ -61,15 +61,11 @@
     "gulp": "^3.8.8",
     "gulp-babel": "^5.2.1",
     "gulp-concat": "^2.4.3",
-    "gulp-if": "^1.2.5",
-    "gulp-react": "3.0.0",
-    "gulp-rename": "^1.2.0",
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
     "jest-cli": "0.4.19",
     "moment": "^2.10.6",
     "react-tools": "*",
-    "reactify": "^1.0.0",
     "uglifyify": "^3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
