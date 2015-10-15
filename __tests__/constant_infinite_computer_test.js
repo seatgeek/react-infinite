@@ -1,7 +1,7 @@
-jest.dontMock('../src/computers/constant_infinite_computer.js');
-jest.dontMock('../src/computers/infinite_computer.js');
+jest.dontMock('../src/computers/constantInfiniteComputer.js');
+jest.dontMock('../src/computers/infiniteComputer.js');
 
-var ConstantInfiniteComputer = require('../src/computers/constant_infinite_computer.js');
+var ConstantInfiniteComputer = require('../src/computers/constantInfiniteComputer.js');
 
 describe("Constant Infinite Computer", () => {
 

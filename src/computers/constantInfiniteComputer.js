@@ -1,6 +1,6 @@
 /* @flow */
 
-var InfiniteComputer = require('./infinite_computer.js');
+var InfiniteComputer = require('./infiniteComputer.js');
 
 class ConstantInfiniteComputer extends InfiniteComputer {
   getTotalScrollableHeight()/* : number */ {

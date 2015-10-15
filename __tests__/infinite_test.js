@@ -1,8 +1,9 @@
 jest.dontMock('../src/react-infinite.jsx');
-jest.dontMock('../src/computers/infinite_computer.js');
-jest.dontMock('../src/computers/constant_infinite_computer.js');
-jest.dontMock('../src/computers/array_infinite_computer.js');
-jest.dontMock('../src/utils/binary_index_search.js');
+jest.dontMock('../src/computers/infiniteComputer.js');
+jest.dontMock('../src/computers/constantInfiniteComputer.js');
+jest.dontMock('../src/computers/arrayInfiniteComputer.js');
+jest.dontMock('../src/utils/binaryIndexSearch.js');
+jest.dontMock('../src/utils/infiniteHelpers.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
@@ -32,7 +33,18 @@ var renderHelpers = {
 }
 
 describe('Rendering the React Infinite Component Wrapper', function() {
-  it('throws an error when given only one child', function() {
+  it('does not throw an error when given no children', function() {
+    expect(function() {
+      TestUtils.renderIntoDocument(
+        <Infinite elementHeight={200}
+                  containerHeight={800}
+                  className={"root-scrollable-node"}>
+        </Infinite>
+      );
+    }).not.toThrow();
+  });
+
+  it('does not throw an error when given only one child', function() {
     expect(function() {
       TestUtils.renderIntoDocument(
         <Infinite elementHeight={200}
@@ -41,7 +53,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
           <div/>
         </Infinite>
       );
-    }).toThrow();
+    }).not.toThrow();
   });
 
   it('renders itself into the DOM with the correct container styles', function() {
@@ -55,9 +67,10 @@ describe('Rendering the React Infinite Component Wrapper', function() {
       );
 
     var rootScrollable = TestUtils.findRenderedDOMComponentWithClass(infinite, 'root-scrollable-node')
-    expect(rootScrollable.props.style.height).toEqual(800);
-    expect(rootScrollable.props.style.overflowX).toEqual('hidden');
-    expect(rootScrollable.props.style.overflowY).toEqual('scroll');
+    expect(rootScrollable.style.height).toEqual('800px');
+    expect(rootScrollable.style.overflowX).toEqual('hidden');
+    expect(rootScrollable.style.overflowY).toEqual('scroll');
+    expect(rootScrollable.style.WebkitOverflowScrolling).toEqual('touch');
   });
 
   it('applies the provided class name to the root node', function() {
@@ -123,17 +136,17 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to the containerHeight, 800 pixels
     //
     // Their sum is 1200 pixels, or 6 200-pixel elements.
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
+    for (var i = 0; i < 6; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).not.toThrow();
+    }
 
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
+    for (var i = 6; i < 10; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).toThrow();
+    }
 
 
   });
@@ -161,18 +174,17 @@ describe('The Children of the React Infinite Component', function() {
     //
     // Their sum is 1400 pixels, or 7 200-pixel elements.
 
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
+    for (var i = 0; i < 7; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).not.toThrow();
+    }
 
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
-
+    for (var i = 7; i < 10; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).toThrow();
+    }
   });
 
   it ("renders more children when preloadBatchSize is increased beyond its default", function() {
@@ -197,17 +209,17 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to containerHeight, 800 pixels
     //
     // Their sum is 1600 pixels, or 8 200-pixel elements.
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).not.toThrow();
+    for (var i = 0; i < 8; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).not.toThrow();
+    }
 
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).toThrow();
+    for (var i = 8; i < 10; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).toThrow();
+    }
 
   });
 })
@@ -612,7 +624,168 @@ describe('Handling infinite scrolling', function() {
   });
 });
 
+describe('React Infinite when the window is used as the Container', function() {
+  var elementHeight = 200;
+  it('does not attach a scrollable style', function() {
+    var rootNode = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={elementHeight}
+                timeScrollStateLastsForAfterUserScrolls={10000}
+                className={"correct-class-name"}
+                useWindowAsScrollContainer>
+        {renderHelpers.divGenerator(20, elementHeight)}
+      </Infinite>);
 
+    var scrollable = rootNode.refs.scrollable;
+    expect(scrollable.getAttribute('style')).toEqual(null);
+  });
+
+
+  it('considers a scroll to have occurred when the window is scrolled', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+
+    var oldAdd = window.addEventListener;
+    var scrollListener;
+
+    // I would very much like to know if there
+    // is a better way of doing this.
+    window.addEventListener = function(event, f) {
+      if (event === 'scroll') {
+        scrollListener = f;
+      }
+    };
+
+    var rootNode;
+    runs(function() {
+      rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  handleScroll={infiniteSpy}
+                  timeScrollStateLastsForAfterUserScrolls={10000}
+                  className={"correct-class-name"}
+                  useWindowAsScrollContainer>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+    });
+
+    waitsFor(function() {
+      return !!scrollListener;
+    });
+
+    runs(function() {
+      window.scrollY = 200;
+      scrollListener();
+      expect(infiniteSpy).toHaveBeenCalled();
+    });
+  });
+
+  it('hides DOM elements that are below the visible range of the window', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    window.innerHeight = 800;
+
+    var oldAdd = window.addEventListener;
+    var scrollListener;
+
+    // I would very much like to know if there
+    // is a better way of doing this.
+    window.addEventListener = function(event, f) {
+      if (event === 'scroll') {
+        scrollListener = f;
+      }
+    };
+
+    var rootNode = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={elementHeight}
+                handleScroll={infiniteSpy}
+                timeScrollStateLastsForAfterUserScrolls={10000}
+                className={"correct-class-name"}
+                useWindowAsScrollContainer>
+        {renderHelpers.divGenerator(20, elementHeight)}
+      </Infinite>);
+
+    for (var i = 0; i < 6; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).not.toThrow();
+    }
+
+    for (var i = 6; i < 10; i++) {
+      expect(function() {
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+      }).toThrow();
+    }
+  });
+
+  it('alters the elements displayed when a scroll has occurred', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+
+    var oldAdd = window.addEventListener;
+    var scrollListener;
+
+    // I would very much like to know if there
+    // is a better way of doing this.
+    window.addEventListener = function(event, f) {
+      if (event === 'scroll') {
+        scrollListener = f;
+      }
+    };
+
+    var rootNode;
+    runs(function() {
+      rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  handleScroll={infiniteSpy}
+                  timeScrollStateLastsForAfterUserScrolls={10000}
+                  className={"correct-class-name"}
+                  useWindowAsScrollContainer>
+          {renderHelpers.divGenerator(20, elementHeight)}
+        </Infinite>
+      );
+
+      for (var i = 0; i < 6; i++) {
+        expect(function() {
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+        }).not.toThrow();
+      }
+
+      for (var i = 6; i < 20; i++) {
+        expect(function() {
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
+        }).toThrow();
+      }
+    });
+
+    waitsFor(function() {
+      return !!scrollListener;
+    });
+
+    runs(function() {
+      window.scrollY = 1500;
+      scrollListener();
+
+      for (var i = 0; i < 2; i++) {
+        expect(function() {
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        }).toThrow();
+      }
+
+      for (var i = 2; i < 12; i++) {
+        expect(function() {
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        }).not.toThrow();
+      }
+
+      // Below the batch and its preloadAdditionalHeight
+      for (var i = 12; i < 20; i++) {
+        expect(function() {
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        }).toThrow();
+      }
+    });
+  });
+});
 
 describe("Rerendering React Infinite", function() {
   it("updates the infinite computer", function() {

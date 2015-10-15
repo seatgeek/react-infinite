@@ -1,8 +1,8 @@
-jest.dontMock('../src/utils/binary_index_search.js');
-jest.dontMock('../src/computers/array_infinite_computer.js');
-jest.dontMock('../src/computers/infinite_computer.js');
+jest.dontMock('../src/utils/binaryIndexSearch.js');
+jest.dontMock('../src/computers/arrayInfiniteComputer.js');
+jest.dontMock('../src/computers/infiniteComputer.js');
 
-var ArrayInfiniteComputer = require('../src/computers/array_infinite_computer.js');
+var ArrayInfiniteComputer = require('../src/computers/arrayInfiniteComputer.js');
 
 describe("Array Infinite Computer", () => {
 
