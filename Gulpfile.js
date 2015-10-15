@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
+var server = require('gulp-webserver');
 
 var browserifyCreator = require('./pipeline/browserify');
 
@@ -36,9 +37,31 @@ gulp.task('examples', function() {
     .pipe(gulp.dest('examples'));
 });
 
+gulp.task('server', function() {
+  gulp.src(__dirname)
+      .pipe(server({
+        port: 8080,
+        directoryListing: true,
+        livereload: {
+          enable: true,
+          filter: function(filename) {
+            if (filename.match(__dirname + '/examples')) {
+              return true;
+              // The examples draw from /dist, which should change
+              // when the source files change
+            } else if (filename.match(__dirname + '/dist')) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+      }));
+});
+
 // This task is used for development. When run, it sets up
 // a watch on the source files
-gulp.task('develop', ['watch-develop-bundle'], function() {
+gulp.task('develop', ['watch-develop-bundle', 'server'], function() {
   gulp.watch('Gulpfile.js', ['examples', 'build-bundle']);
   gulp.watch('./examples/*.jsx', ['examples', 'build-bundle']);
 });
