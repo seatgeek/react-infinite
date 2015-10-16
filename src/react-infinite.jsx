@@ -99,7 +99,7 @@ var Infinite = React.createClass({
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = () => {
         var scrollable;
-        if (this.refs.scrollable) {
+        if (this.refs && this.refs.scrollable) {
           scrollable = React.findDOMNode(this.refs.scrollable);
         }
         return scrollable ? scrollable.scrollTop : 0;
