@@ -2,12 +2,10 @@
 (function (global){
 'use strict';
 
-var React = global.React || require('react'),
-    _isArray = require('lodash.isarray'),
-    _isFinite = require('lodash.isfinite'),
-    ConstantInfiniteComputer = require('./computers/constant_infinite_computer.js'),
-    ArrayInfiniteComputer = require('./computers/array_infinite_computer.js');
+var React = global.React || require('react');
 var _assign = require('object-assign');
+var checkProps = require('./utils/checkProps');
+var infiniteHelpers = require('./utils/infiniteHelpers');
 
 var Infinite = React.createClass({
   displayName: 'Infinite',
@@ -31,8 +29,10 @@ var Infinite = React.createClass({
     //  1. a constant: all elements are the same height
     //  2. an array containing the height of each element
     elementHeight: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.arrayOf(React.PropTypes.number)]).isRequired,
-    // This is the total height of the visible window.
-    containerHeight: React.PropTypes.number.isRequired,
+    // This is the total height of the visible window. One
+    // of
+    containerHeight: React.PropTypes.number,
+    useWindowAsScrollContainer: React.PropTypes.bool,
 
     infiniteLoadBeginBottomOffset: React.PropTypes.number,
     onInfiniteLoad: React.PropTypes.func,
@@ -40,7 +40,6 @@ var Infinite = React.createClass({
 
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
-    useWindowAsScrollContainer: React.PropTypes.bool,
 
     className: React.PropTypes.string
   },
@@ -60,44 +59,16 @@ var Infinite = React.createClass({
   // automatic adjust to scroll direction
   // give spinner a ReactCSSTransitionGroup
   getInitialState: function getInitialState() {
-    this.computedProps = this.generateComputedProps(this.props);
-    this.utils = this.generateComputedUtilityFunctions(this.props);
+    var nextInternalState = this.recomputeInternalStateFromProps(this.props);
 
-    var computer = this.createInfiniteComputer(this.computedProps.elementHeight, this.computedProps.children);
+    this.computedProps = nextInternalState.computedProps;
+    this.utils = nextInternalState.utils;
 
-    var preloadBatchSize = this.computedProps.preloadBatchSize;
-    var preloadAdditionalHeight = this.computedProps.preloadAdditionalHeight;
+    var state = nextInternalState.newState;
+    state.scrollTimeout = undefined;
+    state.isScrolling = false;
 
-    return {
-      infiniteComputer: computer,
-
-      numberOfChildren: React.Children.count(this.computedProps.children),
-      displayIndexStart: 0,
-      displayIndexEnd: computer.getDisplayIndexEnd(preloadBatchSize + preloadAdditionalHeight),
-
-      isInfiniteLoading: false,
-
-      preloadBatchSize: preloadBatchSize,
-      preloadAdditionalHeight: preloadAdditionalHeight,
-
-      scrollTimeout: undefined,
-      isScrolling: false
-    };
-  },
-
-  createInfiniteComputer: function createInfiniteComputer(data, children) {
-    var computer;
-    var numberOfChildren = React.Children.count(children);
-
-    if (_isFinite(data)) {
-      computer = new ConstantInfiniteComputer(data, numberOfChildren);
-    } else if (_isArray(data)) {
-      computer = new ArrayInfiniteComputer(data, numberOfChildren);
-    } else {
-      throw new Error('You must provide either a number or an array of numbers as the elementHeight prop.');
-    }
-
-    return computer;
+    return state;
   },
 
   generateComputedProps: function generateComputedProps(props) {
@@ -114,7 +85,10 @@ var Infinite = React.createClass({
     var utilities = {};
     if (props.useWindowAsScrollContainer) {
       utilities.subscribeToScrollListener = function () {
-        window.onscroll = _this.infiniteHandleScroll;
+        window.addEventListener('scroll', _this.infiniteHandleScroll);
+      };
+      utilities.unsubscribeFromScrollListener = function () {
+        window.removeEventListener('scroll');
       };
       utilities.nodeScrollListener = function () {};
       utilities.getScrollTop = function () {
@@ -128,9 +102,11 @@ var Infinite = React.createClass({
       };
     } else {
       utilities.subscribeToScrollListener = function () {};
+      utilities.unsubscribeFromScrollListener = function () {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = function () {
-        return React.findDOMNode(_this.refs.scrollable).scrollTop;
+        var scrollable = React.findDOMNode(_this.refs.scrollable);
+        return scrollable ? scrollable.scrollTop : 0;
       };
       utilities.scrollShouldBeIgnored = function (event) {
         return event.target !== React.findDOMNode(_this.refs.scrollable);
@@ -139,47 +115,54 @@ var Infinite = React.createClass({
         return {
           height: _this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: 'scroll'
+          overflowY: 'scroll',
+          WebkitOverflowScrolling: 'touch'
         };
       };
     }
     return utilities;
   },
 
+  recomputeInternalStateFromProps: function recomputeInternalStateFromProps(props) {
+    checkProps(props);
+    var computedProps = this.generateComputedProps(props);
+    var utils = this.generateComputedUtilityFunctions(props);
+
+    var newState = {
+      numberOfChildren: React.Children.count(computedProps.children)
+    };
+
+    newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(computedProps.elementHeight, computedProps.children);
+
+    if (computedProps.isInfiniteLoading !== undefined) {
+      newState.isInfiniteLoading = computedProps.isInfiniteLoading;
+    }
+
+    newState.preloadBatchSize = computedProps.preloadBatchSize;
+    newState.preloadAdditionalHeight = computedProps.preloadAdditionalHeight;
+
+    _assign(newState, infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(newState, utils.getScrollTop()));
+
+    return {
+      computedProps: computedProps,
+      utils: utils,
+      newState: newState
+    };
+  },
+
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    var _this2 = this;
+    var nextInternalState = this.recomputeInternalStateFromProps(nextProps);
 
-    this.computedProps = this.generateComputedProps(nextProps);
-    this.utils = this.generateComputedUtilityFunctions(nextProps);
+    this.computedProps = nextInternalState.computedProps;
+    this.utils = nextInternalState.utils;
 
-    var newStateObject = {};
-
-    // TODO: more efficient elementHeight change detection
-    newStateObject.infiniteComputer = this.createInfiniteComputer(this.computedProps.elementHeight, this.computedProps.children);
-
-    if (this.computedProps.isInfiniteLoading !== undefined) {
-      newStateObject.isInfiniteLoading = this.computedProps.isInfiniteLoading;
-    }
-
-    newStateObject.preloadBatchSize = this.computedProps.preloadBatchSize;
-    newStateObject.preloadAdditionalHeight = this.computedProps.preloadAdditionalHeight;
-
-    this.setState(newStateObject, function () {
-      _this2.setStateFromScrollTop(_this2.utils.getScrollTop());
-    });
+    this.setState(nextInternalState.newState);
   },
 
-  componentDidUpdate: function componentDidUpdate(prevProps) {
-    if (React.Children.count(this.computedProps.children) !== React.Children.count(prevProps.children)) {
-      this.setStateFromScrollTop(this.utils.getScrollTop());
-    }
-  },
-
-  componentWillMount: function componentWillMount() {
-    if (_isArray(this.computedProps.elementHeight)) {
-      if (React.Children.count(this.computedProps.children) !== this.computedProps.elementHeight.length) {
-        throw new Error('There must be as many values provided in the elementHeight prop as there are children.');
-      }
+  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
+      var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state, this.utils.getScrollTop());
+      this.setState(newApertureState);
     }
   },
 
@@ -187,22 +170,8 @@ var Infinite = React.createClass({
     this.utils.subscribeToScrollListener();
   },
 
-  // Given the scrollTop of the container, computes the state the
-  // component should be in. The goal is to abstract all of this
-  // from any actual representation in the DOM.
-  // The window is the block with any preloadAdditionalHeight
-  // added to it.
-  setStateFromScrollTop: function setStateFromScrollTop(scrollTop) {
-    var blockNumber = this.state.preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / this.state.preloadBatchSize),
-        blockStart = this.state.preloadBatchSize * blockNumber,
-        blockEnd = blockStart + this.state.preloadBatchSize,
-        apertureTop = Math.max(0, blockStart - this.state.preloadAdditionalHeight),
-        apertureBottom = Math.min(this.state.infiniteComputer.getTotalScrollableHeight(), blockEnd + this.state.preloadAdditionalHeight);
-
-    this.setState({
-      displayIndexStart: this.state.infiniteComputer.getDisplayIndexStart(apertureTop),
-      displayIndexEnd: this.state.infiniteComputer.getDisplayIndexEnd(apertureBottom)
-    });
+  componentWillUnmount: function componentWillUnmount() {
+    this.utils.unsubscribeFromScrollListener();
   },
 
   infiniteHandleScroll: function infiniteHandleScroll(e) {
@@ -237,24 +206,18 @@ var Infinite = React.createClass({
 
   handleScroll: function handleScroll(scrollTop) {
     this.manageScrollTimeouts();
-    this.setStateFromScrollTop(scrollTop);
+
+    var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state, scrollTop);
 
     var infiniteScrollBottomLimit = scrollTop > this.state.infiniteComputer.getTotalScrollableHeight() - this.computedProps.containerHeight - this.computedProps.infiniteLoadBeginBottomOffset;
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
-      this.setState({
+      this.setState(_assign(newApertureState, {
         isInfiniteLoading: true
-      });
+      }));
       this.computedProps.onInfiniteLoad();
+    } else {
+      this.setState(newApertureState);
     }
-  },
-
-  // Helpers for React styles.
-  buildScrollableStyle: function buildScrollableStyle() {
-    return {
-      height: this.computedProps.containerHeight,
-      overflowX: 'hidden',
-      overflowY: 'scroll'
-    };
   },
 
   buildHeightStyle: function buildHeightStyle(height) {
@@ -265,7 +228,12 @@ var Infinite = React.createClass({
   },
 
   render: function render() {
-    var displayables = this.computedProps.children.slice(this.state.displayIndexStart, this.state.displayIndexEnd + 1);
+    var displayables;
+    if (React.Children.count(this.computedProps.children) > 1) {
+      displayables = this.computedProps.children.slice(this.state.displayIndexStart, this.state.displayIndexEnd + 1);
+    } else {
+      displayables = this.computedProps.children;
+    }
 
     var infiniteScrollStyles = {};
     if (this.state.isScrolling) {
@@ -305,7 +273,7 @@ module.exports = Infinite;
 global.Infinite = Infinite;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./computers/array_infinite_computer.js":5,"./computers/constant_infinite_computer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"object-assign":4,"react":undefined}],2:[function(require,module,exports){
+},{"./utils/checkProps":9,"./utils/infiniteHelpers":10,"object-assign":4,"react":undefined}],2:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -587,8 +555,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var InfiniteComputer = require('./infinite_computer.js'),
-    bs = require('../utils/binary_index_search.js');
+var InfiniteComputer = require('./infiniteComputer.js'),
+    bs = require('../utils/binaryIndexSearch.js');
 
 var ArrayInfiniteComputer = (function (_InfiniteComputer) {
   _inherits(ArrayInfiniteComputer, _InfiniteComputer);
@@ -655,7 +623,7 @@ var ArrayInfiniteComputer = (function (_InfiniteComputer) {
 
 module.exports = ArrayInfiniteComputer;
 
-},{"../utils/binary_index_search.js":8,"./infinite_computer.js":7}],6:[function(require,module,exports){
+},{"../utils/binaryIndexSearch.js":8,"./infiniteComputer.js":7}],6:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -666,7 +634,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var InfiniteComputer = require('./infinite_computer.js');
+var InfiniteComputer = require('./infiniteComputer.js');
 
 var ConstantInfiniteComputer = (function (_InfiniteComputer) {
   _inherits(ConstantInfiniteComputer, _InfiniteComputer);
@@ -714,7 +682,7 @@ var ConstantInfiniteComputer = (function (_InfiniteComputer) {
 
 module.exports = ConstantInfiniteComputer;
 
-},{"./infinite_computer.js":7}],7:[function(require,module,exports){
+},{"./infiniteComputer.js":7}],7:[function(require,module,exports){
 // An infinite computer must be able to do the following things:
 //  1. getTotalScrollableHeight()
 //  2. getDisplayIndexStart()
@@ -825,5 +793,87 @@ module.exports = {
   opts: opts
 };
 
-},{}]},{},[1])(1)
+},{}],9:[function(require,module,exports){
+(function (global){
+// This module provides a centralized place for
+// runtime checking that the props passed to React Infinite
+// make the minimum amount of sense.
+
+'use strict';
+
+var React = global.React || require('react');
+var _isArray = require('lodash.isarray');
+var _isFinite = require('lodash.isfinite');
+
+module.exports = function (props) {
+  var rie = 'Invariant Violation: ';
+  if (!(props.containerHeight || props.useWindowAsScrollContainer)) {
+    throw new Error(rie + 'Either containerHeight or useWindowAsScrollContainer must be provided.');
+  }
+
+  if (!(_isFinite(props.elementHeight) || _isArray(props.elementHeight))) {
+    throw new Error(rie + 'You must provide either a number or an array of numbers as the elementHeight.');
+  }
+
+  if (_isArray(props.elementHeight)) {
+    if (React.Children.count(props.children) !== props.elementHeight.length) {
+      throw new Error(rie + 'There must be as many values provided in the elementHeight prop as there are children.');
+    }
+  }
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}],10:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var _isArray = require('lodash.isarray');
+var _isFinite = require('lodash.isfinite');
+var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js');
+var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
+var React = global.React || require('react');
+
+function createInfiniteComputer(data, children) {
+  var computer;
+  var numberOfChildren = React.Children.count(children);
+
+  // This should be guaranteed by checkProps
+  if (_isFinite(data)) {
+    computer = new ConstantInfiniteComputer(data, numberOfChildren);
+  } else if (_isArray(data)) {
+    computer = new ArrayInfiniteComputer(data, numberOfChildren);
+  }
+
+  return computer;
+}
+
+// Given the scrollTop of the container, computes the state the
+// component should be in. The goal is to abstract all of this
+// from any actual representation in the DOM.
+// The window is the block with any preloadAdditionalHeight
+// added to it.
+function recomputeApertureStateFromOptionsAndScrollTop(_ref, scrollTop) {
+  var preloadBatchSize = _ref.preloadBatchSize;
+  var preloadAdditionalHeight = _ref.preloadAdditionalHeight;
+  var infiniteComputer = _ref.infiniteComputer;
+
+  var blockNumber = preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / preloadBatchSize),
+      blockStart = preloadBatchSize * blockNumber,
+      blockEnd = blockStart + preloadBatchSize,
+      apertureTop = Math.max(0, blockStart - preloadAdditionalHeight),
+      apertureBottom = Math.min(infiniteComputer.getTotalScrollableHeight(), blockEnd + preloadAdditionalHeight);
+
+  return {
+    displayIndexStart: infiniteComputer.getDisplayIndexStart(apertureTop),
+    displayIndexEnd: infiniteComputer.getDisplayIndexEnd(apertureBottom)
+  };
+}
+
+module.exports = {
+  createInfiniteComputer: createInfiniteComputer,
+  recomputeApertureStateFromOptionsAndScrollTop: recomputeApertureStateFromOptionsAndScrollTop
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../computers/arrayInfiniteComputer.js":5,"../computers/constantInfiniteComputer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}]},{},[1])(1)
 });
