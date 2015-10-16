@@ -105,7 +105,10 @@ var Infinite = React.createClass({
       utilities.unsubscribeFromScrollListener = function () {};
       utilities.nodeScrollListener = this.infiniteHandleScroll;
       utilities.getScrollTop = function () {
-        var scrollable = React.findDOMNode(_this.refs.scrollable);
+        var scrollable;
+        if (_this.refs.scrollable) {
+          scrollable = React.findDOMNode(_this.refs.scrollable);
+        }
         return scrollable ? scrollable.scrollTop : 0;
       };
       utilities.scrollShouldBeIgnored = function (event) {
