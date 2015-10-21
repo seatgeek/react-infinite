@@ -87,7 +87,7 @@ var Infinite = React.createClass({
         window.addEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.unsubscribeFromScrollListener = () => {
-        window.removeEventListener('scroll');
+        window.removeEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.scrollY;
