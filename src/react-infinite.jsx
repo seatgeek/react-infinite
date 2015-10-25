@@ -1,4 +1,5 @@
 var React = global.React || require('react');
+var ReactDOM = global.ReactDOM || require('react-dom');
 var _assign = require('object-assign');
 var checkProps = require('./utils/checkProps');
 var infiniteHelpers = require('./utils/infiniteHelpers');
@@ -100,11 +101,11 @@ var Infinite = React.createClass({
       utilities.getScrollTop = () => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
-          scrollable = React.findDOMNode(this.refs.scrollable);
+          scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
         }
         return scrollable ? scrollable.scrollTop : 0;
       };
-      utilities.scrollShouldBeIgnored = event => event.target !== React.findDOMNode(this.refs.scrollable);
+      utilities.scrollShouldBeIgnored = event => event.target !== ReactDOM.findDOMNode(this.refs.scrollable);
       utilities.buildScrollableStyle = () => {
         return {
           height: this.computedProps.containerHeight,
@@ -180,7 +181,7 @@ var Infinite = React.createClass({
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
-    this.computedProps.handleScroll(React.findDOMNode(this.refs.scrollable));
+    this.computedProps.handleScroll(ReactDOM.findDOMNode(this.refs.scrollable));
     this.handleScroll(this.utils.getScrollTop());
   },
 
