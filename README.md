@@ -25,7 +25,7 @@ var Infinite = require('react-infinite');
 ### In Browserify
 If you want to use the source with Browserify, the ES5-compiled source is directly requirable from the `/build` folder off NPM.
 
-Otherwise, you can follow the instructions for NPM.     
+Otherwise, you can follow the instructions for NPM.
 
 ## Basic Use
 ### Elements of Equal Height
@@ -52,6 +52,10 @@ If not all of the children have the same height, you must provide an array of in
 ### Note on Smooth Scrolling
 A wrapper `div` is applied that disables pointer events on the children for a default of 150 milliseconds after the last user scroll action for browsers with inertial scrolling. To configure this, set `timeScrollStateLastsForAfterUserScrolls`.
 
+## Static Methods
+
+#### **Function** `Infinite.containerHeightScaleFactor(Number number)`
+This function allows a value to be specified for `preloadBatchSize` and `preloadAdditionalHeight` that is a relative to the container height. Please see the documentation for those two configuration options for further information on how to use it.
 
 ## Configuration Options
 
@@ -64,11 +68,15 @@ If each child element has the same height, you can pass a number representing th
 #### (Required) **Number** `containerHeight`
 The height of the scrolling container in pixels.
 
-#### Number `preloadBatchSize`
-Defaults to `this.props.containerHeight / 2`. Imagine the total height of the scrollable divs. Now divide this equally into blocks `preloadBatchSize` pixels high. Every time the container's scrollTop enters each of these blocks the set of elements rendered in full are those contained within the block and elements that are within `preloadAdditionalHeight` above and below it.
+#### Number | Object `preloadBatchSize`
+Defaults to `this.props.containerHeight * 0.5`. Imagine the total height of the scrollable divs. Now divide this equally into blocks `preloadBatchSize` pixels high. Every time the container's scrollTop enters each of these blocks the set of elements rendered in full are those contained within the block and elements that are within `preloadAdditionalHeight` above and below it.
 
-#### Number `preloadAdditionalHeight`
+When working with the window as the scroll container, it is sometimes useful to specify a scale factor relative to the container height as the batch size, so your code does not need to know anything about the `window`. To do this, use `Infinite.containerHeightScaleFactor`. So, for example, if you want the preloaded batch size to be twice the container height, write `preloadBatchSize={Infinite.containerHeightScaleFactor(2)}`.
+
+#### Number | Object `preloadAdditionalHeight`
 Defaults to `this.props.containerHeight`. The total height of the area in which elements are rendered in full is height of the current scroll block (see `preloadBatchSize`) as well as `preloadAdditionalHeight` above and below it.
+
+When working with the window as the scroll container, it is sometimes useful to specify this relative to the container height. If you want the preloaded additional height to be twice the container height, write `preloadAdditionalHeight={Infinite.containerHeightScaleFactor(2)}`. Please see `preloadBatchSize` for more details.
 
 #### **Function** `handleScroll(DOMNode node)`
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
@@ -77,7 +85,7 @@ Defaults to `function(){}`. A function that is called when the container is scro
 Defaults to `false`. This option allows the window to be used as the scroll container, instead of an arbitrary `div`, when it is set to `true`. This means that scroll position is detected by `window.scrollY` instead of the `scrollTop` of the `div` that React Infinite creates. Using this option is a way of achieving smoother scrolling on mobile before the problem is solved for container `div`s.
 
 #### **Number** `infiniteLoadBeginBottomOffset`
-When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
+Defaults to `undefined`, which means that infinite loading is disabled. When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
 
 #### Function `onInfiniteLoad()`
 Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginBottomOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
