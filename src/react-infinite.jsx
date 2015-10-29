@@ -129,7 +129,7 @@ var Infinite = React.createClass({
       };
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.scrollY;
-      utilities.scrollShouldBeIgnored = (e) => { false; };
+      utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
     } else {
       utilities.subscribeToScrollListener = () => {};
