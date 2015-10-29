@@ -787,6 +787,90 @@ describe('React Infinite when the window is used as the Container', function() {
   });
 });
 
+describe("Specifiying React Infinite's preload amounts", function() {
+  it('has correct preload batch size defaults', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={800}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadBatchSize).toEqual(400);
+  });
+
+  it('can use a number to set preload batch size', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={800}
+                preloadBatchSize={742}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadBatchSize).toEqual(742);
+  });
+
+  it('can be used with a preload batch size scale factor', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={800}
+                preloadBatchSize={Infinite.containerHeightScaleFactor(4)}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadBatchSize).toEqual(3200);
+  });
+
+  it('has correct preload additional height defaults', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={800}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadAdditionalHeight).toEqual(800);
+  });
+
+  it('can use a number to set preload additional height', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={200}
+                preloadAdditionalHeight={465}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadAdditionalHeight).toEqual(465);
+  });
+
+  it('can be used with a preload additional height scale factor', function() {
+    var infinite = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={200}
+                containerHeight={500}
+                preloadAdditionalHeight={Infinite.containerHeightScaleFactor(1.5)}
+                className={"correct-class-name"}>
+        <div/>
+        <div/>
+      </Infinite>
+    );
+
+    expect(infinite.computedProps.preloadAdditionalHeight).toEqual(750);
+  });
+});
+
 describe("Rerendering React Infinite", function() {
   it("updates the infinite computer", function() {
     var rootNode = TestUtils.renderIntoDocument(
