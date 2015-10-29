@@ -5,7 +5,10 @@
 var React = global.React || require('react');
 var _assign = require('object-assign');
 var checkProps = require('./utils/checkProps');
+var preloadType = require('./utils/types').preloadType;
+var scaleEnum = require('./utils/scaleEnum');
 var infiniteHelpers = require('./utils/infiniteHelpers');
+var _isFinite = require('lodash.isfinite');
 
 var Infinite = React.createClass({
   displayName: 'Infinite',
@@ -17,13 +20,13 @@ var Infinite = React.createClass({
     // happen each preloadBatchSize pixels of scrolling.
     // Set a larger number to cause fewer updates to the
     // element list.
-    preloadBatchSize: React.PropTypes.number,
+    preloadBatchSize: preloadType,
     // preloadAdditionalHeight determines how much of the
     // list above and below the container is preloaded even
     // when it is not currently visible to the user. In the
     // regular scroll implementation, preloadAdditionalHeight
     // is equal to the entire height of the list.
-    preloadAdditionalHeight: React.PropTypes.number, // page to screen ratio
+    preloadAdditionalHeight: preloadType, // page to screen ratio
 
     // The provided elementHeight can be either
     //  1. a constant: all elements are the same height
@@ -42,6 +45,18 @@ var Infinite = React.createClass({
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
 
     className: React.PropTypes.string
+  },
+
+  statics: {
+    containerHeightScaleFactor: function containerHeightScaleFactor(factor) {
+      if (!_isFinite(factor)) {
+        throw new Error('The scale factor must be a number.');
+      }
+      return {
+        type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
+        amount: factor
+      };
+    }
   },
 
   getDefaultProps: function getDefaultProps() {
@@ -74,8 +89,29 @@ var Infinite = React.createClass({
   generateComputedProps: function generateComputedProps(props) {
     var computedProps = _assign({}, props);
     computedProps.containerHeight = props.useWindowAsScrollContainer ? window.innerHeight : props.containerHeight;
-    computedProps.preloadBatchSize = typeof props.preloadBatchSize === 'number' ? props.preloadBatchSize : computedProps.containerHeight / 2;
-    computedProps.preloadAdditionalHeight = typeof props.preloadAdditionalHeight === 'number' ? props.preloadAdditionalHeight : computedProps.containerHeight;
+
+    var defaultPreloadBatchSizeScaling = {
+      type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
+      amount: 0.5
+    };
+    var batchSize = props.preloadBatchSize && props.preloadBatchSize.type ? props.preloadBatchSize : defaultPreloadBatchSizeScaling;
+    if (_isFinite(props.preloadBatchSize)) {
+      computedProps.preloadBatchSize = props.preloadBatchSize;
+    } else if (batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+      computedProps.preloadBatchSize = computedProps.containerHeight * batchSize.amount;
+    }
+
+    var defaultPreloadAdditionalHeightScaling = {
+      type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
+      amount: 1
+    };
+    var additionalHeight = props.preloadAdditionalHeight && props.preloadAdditionalHeight.type ? props.preloadAdditionalHeight : defaultPreloadAdditionalHeightScaling;
+    if (_isFinite(props.preloadAdditionalHeight)) {
+      computedProps.preloadAdditionalHeight = props.preloadAdditionalHeight;
+    } else if (additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+      computedProps.preloadAdditionalHeight = computedProps.containerHeight * additionalHeight.amount;
+    }
+
     return computedProps;
   },
 
@@ -88,7 +124,7 @@ var Infinite = React.createClass({
         window.addEventListener('scroll', _this.infiniteHandleScroll);
       };
       utilities.unsubscribeFromScrollListener = function () {
-        window.removeEventListener('scroll');
+        window.removeEventListener('scroll', _this.infiniteHandleScroll);
       };
       utilities.nodeScrollListener = function () {};
       utilities.getScrollTop = function () {
@@ -276,7 +312,7 @@ module.exports = Infinite;
 global.Infinite = Infinite;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils/checkProps":9,"./utils/infiniteHelpers":10,"object-assign":4,"react":undefined}],2:[function(require,module,exports){
+},{"./utils/checkProps":9,"./utils/infiniteHelpers":10,"./utils/scaleEnum":11,"./utils/types":12,"lodash.isfinite":3,"object-assign":4,"react":undefined}],2:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -878,5 +914,26 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../computers/arrayInfiniteComputer.js":5,"../computers/constantInfiniteComputer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}]},{},[1])(1)
+},{"../computers/arrayInfiniteComputer.js":5,"../computers/constantInfiniteComputer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}],11:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  CONTAINER_HEIGHT_SCALE_FACTOR: 'containerHeightScaleFactor'
+};
+
+},{}],12:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var React = global.React || require('react');
+
+module.exports = {
+  preloadType: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.shape({
+    type: React.PropTypes.oneOf(['containerHeightScaleFactor']).isRequired,
+    amount: React.PropTypes.number.isRequired
+  })])
+};
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"react":undefined}]},{},[1])(1)
 });
