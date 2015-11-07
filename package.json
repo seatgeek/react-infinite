@@ -15,7 +15,7 @@
     "infinite"
   ],
   "author": "Gareth Tan",
-  "license": "MIT",
+  "license": "BSD2",
   "bugs": {
     "url": "https://github.com/seatgeek/react-infinite/issues"
   },
