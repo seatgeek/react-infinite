@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var server = require('gulp-webserver');
+var del = require('del');
 
 var browserifyCreator = require('./pipeline/browserify');
 
@@ -15,18 +16,25 @@ var envObject = {
 };
 var INFINITE_SOURCE = './src/react-infinite.jsx';
 
-gulp.task('build-bundle', browserifyCreator(false, envObject, INFINITE_SOURCE));
+var buildFunction = browserifyCreator(false, envObject, INFINITE_SOURCE);
+
+gulp.task('build-bundle', buildFunction);
+gulp.task('cleanly-build-bundle', ['clean'], buildFunction);
 gulp.task('watch-develop-bundle', browserifyCreator(true, {development: true}, INFINITE_SOURCE));
 
 // This task builds everything for release: the dist
 // folder is populated with react-infinite.js and
 // react-infinite.min.js, while the build folder is
 // provided with a copy of the source transpiled to ES5.
-gulp.task('release', ['build-bundle'], function() {
+gulp.task('release', ['cleanly-build-bundle'], function() {
   // Transpile CommonJS files to ES5 with React's tools.
   gulp.src(['./src/**/*.js', './src/**/*.jsx'])
       .pipe(babel())
       .pipe(gulp.dest('build'));
+});
+
+gulp.task('clean', function() {
+  return del(['build', 'dist']);
 });
 
 // This task is used to build the examples. It is used
