@@ -1,7 +1,7 @@
 /* @flow */
 
 var React = global.React || require('react');
-var _assign = require('object-assign');
+require('./utils/polyfill-object-assign');
 var checkProps = require('./utils/checkProps');
 var preloadType = require('./utils/types').preloadType;
 var scaleEnum = require('./utils/scaleEnum');
@@ -11,6 +11,8 @@ var _isFinite = require('lodash.isfinite');
 var Infinite = React.createClass({
 
   propTypes: {
+    children: React.PropTypes.any,
+
     handleScroll: React.PropTypes.func,
 
     // preloadBatchSize causes updates only to
@@ -34,7 +36,7 @@ var Infinite = React.createClass({
     ]).isRequired,
     // This is the total height of the visible window. One
     // of
-    containerHeight: React.PropTypes.number,
+    containerHeight: React.PropTypes.number.isRequired,
     useWindowAsScrollContainer: React.PropTypes.bool,
 
     infiniteLoadBeginBottomOffset: React.PropTypes.number,
@@ -59,14 +61,23 @@ var Infinite = React.createClass({
     }
   },
 
-  getDefaultProps() {
+  // Properties currently used but which may be
+  // refactored away in the future.
+  computedProps: {},
+  utils: {},
+
+  getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
       handleScroll: () => {},
-      loadingSpinnerDelegate: <div/>,
+
+      useWindowAsScrollContainer: false,
+
       onInfiniteLoad: () => {},
+      loadingSpinnerDelegate: <div/>,
+
       isInfiniteLoading: false,
       timeScrollStateLastsForAfterUserScrolls: 150,
-      useWindowAsScrollContainer: false,
+
       className: ''
     };
   },
@@ -86,8 +97,8 @@ var Infinite = React.createClass({
     return state;
   },
 
-  generateComputedProps(props) {
-    var computedProps = _assign({}, props);
+  generateComputedProps(props: ReactInfiniteProps): ReactInfiniteProps {
+    var computedProps = Object.assign({}, props);
     computedProps.containerHeight = props.useWindowAsScrollContainer
       ? window.innerHeight : props.containerHeight;
 
@@ -120,7 +131,7 @@ var Infinite = React.createClass({
     return computedProps;
   },
 
-  generateComputedUtilityFunctions(props) {
+  generateComputedUtilityFunctions(props: ReactInfiniteProps): ReactInfiniteUtilityFunctions {
     var utilities = {};
     if (props.useWindowAsScrollContainer) {
       utilities.subscribeToScrollListener = () => {
@@ -157,30 +168,29 @@ var Infinite = React.createClass({
     return utilities;
   },
 
-  recomputeInternalStateFromProps(props) {
+  recomputeInternalStateFromProps(props: ReactInfiniteProps): {
+    computedProps: ReactInfiniteProps,
+    utils: ReactInfiniteUtilityFunctions,
+    newState: ReactInfiniteState
+    } {
     checkProps(props);
     var computedProps = this.generateComputedProps(props);
     var utils = this.generateComputedUtilityFunctions(props);
 
     var newState = {
-      numberOfChildren: React.Children.count(computedProps.children)
+      numberOfChildren: React.Children.count(computedProps.children),
+      infiniteComputer: infiniteHelpers.createInfiniteComputer(
+        computedProps.elementHeight,
+        computedProps.children
+      ),
+      preloadBatchSize: computedProps.preloadBatchSize,
+      preloadAdditionalHeight: computedProps.preloadAdditionalHeight,
+      isInfiniteLoading: computedProps.isInfiniteLoading !== undefined
     };
 
-    newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(
-      computedProps.elementHeight,
-      computedProps.children
-    );
-
-    if (computedProps.isInfiniteLoading !== undefined) {
-      newState.isInfiniteLoading = computedProps.isInfiniteLoading;
-    }
-
-    newState.preloadBatchSize = computedProps.preloadBatchSize;
-    newState.preloadAdditionalHeight = computedProps.preloadAdditionalHeight;
-
-    _assign(newState,
-            infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
-              newState, utils.getScrollTop()));
+    newState = Object.assign(newState,
+      infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
+        newState, utils.getScrollTop()));
 
     return {
       computedProps,
@@ -189,7 +199,7 @@ var Infinite = React.createClass({
     };
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: ReactInfiniteProps) {
     var nextInternalState = this.recomputeInternalStateFromProps(nextProps);
 
     this.computedProps = nextInternalState.computedProps;
@@ -198,7 +208,7 @@ var Infinite = React.createClass({
     this.setState(nextInternalState.newState);
   },
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: ReactInfiniteProps) {
     if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
       var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
         this.state,
@@ -223,7 +233,7 @@ var Infinite = React.createClass({
     this.utils.unsubscribeFromScrollListener();
   },
 
-  infiniteHandleScroll(e) {
+  infiniteHandleScroll(e: SyntheticEvent) {
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
@@ -253,7 +263,7 @@ var Infinite = React.createClass({
     });
   },
 
-  handleScroll(scrollTop) {
+  handleScroll(scrollTop: number) {
     this.manageScrollTimeouts();
 
     var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
@@ -266,7 +276,7 @@ var Infinite = React.createClass({
           this.computedProps.containerHeight -
           this.computedProps.infiniteLoadBeginBottomOffset);
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
-      this.setState(_assign(newApertureState, {
+      this.setState(Object.assign(newApertureState, {
         isInfiniteLoading: true
       }));
       this.computedProps.onInfiniteLoad();
@@ -275,14 +285,14 @@ var Infinite = React.createClass({
     }
   },
 
-  buildHeightStyle(height) {
+  buildHeightStyle(height: number): CSSStyle {
     return {
       width: '100%',
       height: Math.ceil(height)
     };
   },
 
-  render() {
+  render(): ReactElement<any, any, any> {
     var displayables;
     if (React.Children.count(this.computedProps.children) > 1) {
       displayables = this.computedProps.children.slice(this.state.displayIndexStart,

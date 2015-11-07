@@ -4,6 +4,7 @@ var InfiniteComputer = require('./infiniteComputer.js'),
     bs = require('../utils/binaryIndexSearch.js');
 
 class ArrayInfiniteComputer extends InfiniteComputer {
+  prefixHeightData: Array<number>;
 
   constructor(heightData/* : Array<number> */, numberOfChildren/* : number */)/* : void */ {
     super(heightData, numberOfChildren);
