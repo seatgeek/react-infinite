@@ -1,3 +1,5 @@
+/* @flow */
+
 var React = global.React || require('react');
 var _assign = require('object-assign');
 var checkProps = require('./utils/checkProps');
@@ -208,6 +210,13 @@ var Infinite = React.createClass({
 
   componentDidMount() {
     this.utils.subscribeToScrollListener();
+    if (_isFinite(this.computedProps.infiniteLoadBeginBottomOffset) &&
+        this.state.infiniteComputer.getTotalScrollableHeight() < this.computedProps.containerHeight) {
+      this.setState({
+        isInfiniteLoading: true
+      });
+      this.computedProps.onInfiniteLoad();
+    }
   },
 
   componentWillUnmount() {
