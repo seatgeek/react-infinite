@@ -113,6 +113,7 @@ var Infinite = React.createClass({
           ...oldProps} = props;
 
     var newProps = {};
+    containerHeight = typeof containerHeight === 'number' ? containerHeight : 0;
     newProps.containerHeight = props.useWindowAsScrollContainer
       ? window.innerHeight : containerHeight;
 
