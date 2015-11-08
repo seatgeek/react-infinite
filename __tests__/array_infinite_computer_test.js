@@ -7,7 +7,6 @@ jest.dontMock('../src/computers/infiniteComputer.js');
 var ArrayInfiniteComputer = require('../src/computers/arrayInfiniteComputer.js');
 
 describe('Array Infinite Computer', () => {
-
   describe('getTotalScrollableHeight()', () => {
     it('provides the correct sum of its children', () => {
       var aic = new ArrayInfiniteComputer([10, 20, 40, 80], 0);

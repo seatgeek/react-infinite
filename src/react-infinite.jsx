@@ -6,13 +6,11 @@ var scaleEnum = require('./utils/scaleEnum');
 var infiniteHelpers = require('./utils/infiniteHelpers');
 var _isFinite = require('lodash.isfinite');
 
-var InfinitePropTypes = {};
-var checkProps = () => {};
+var preloadType = require('./utils/types').preloadType;
+var checkProps = checkProps = require('./utils/checkProps');
 
-if (process.env.NODE_ENV === 'development') {
-  checkProps = require('./utils/checkProps');
-  var preloadType = require('./utils/types').preloadType;
-  InfinitePropTypes = {
+var Infinite = React.createClass({
+  propTypes: {
     children: React.PropTypes.any,
 
     handleScroll: React.PropTypes.func,
@@ -51,11 +49,7 @@ if (process.env.NODE_ENV === 'development') {
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
 
     className: React.PropTypes.string
-  };
-}
-
-var Infinite = React.createClass({
-  propTypes: InfinitePropTypes,
+  },
   statics: {
     containerHeightScaleFactor(factor) {
       if (!_isFinite(factor)) {
@@ -286,6 +280,13 @@ var Infinite = React.createClass({
         isInfiniteLoading: true
       });
       this.computedProps.onInfiniteLoad();
+    }
+
+    if (this.props.displayBottomUpwards) {
+      var lowestScrollTop = this.getLowestPossibleScrollTop();
+      if (this.shouldAttachToBottom && this.utils.getScrollTop() < lowestScrollTop) {
+        this.utils.setScrollTop(lowestScrollTop);
+      }
     }
   },
 

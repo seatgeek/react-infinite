@@ -1,4 +1,4 @@
-/* eslint-env jest */
+/* eslint-env jest, jasmine */
 
 jest.dontMock('../src/react-infinite.jsx');
 jest.dontMock('../src/computers/infiniteComputer.js');
@@ -905,6 +905,5 @@ describe('Rerendering React Infinite', function() {
       elementHeight: [10, 20, 30]
     });
     expect(rootNode.state.infiniteComputer.heightData).toEqual([10, 20, 30]);
-
   });
 });
