@@ -4,7 +4,8 @@ var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js
 var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
 var React = global.React || require('react');
 
-function createInfiniteComputer(data: ElementHeight, children: any): InfiniteComputer {
+function createInfiniteComputer(data: ElementHeight,
+                                children: any): InfiniteComputer {
   var computer;
   var numberOfChildren = React.Children.count(children);
 

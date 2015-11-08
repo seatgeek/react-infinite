@@ -11,6 +11,7 @@ type ReactInfiniteUtilityFunctions = {
   unsubscribeFromScrollListener: () => void,
   nodeScrollListener: (e: SyntheticEvent) => void,
   getScrollTop: () => number,
+  setScrollTop: (top: number) => void,
   scrollShouldBeIgnored: (e: SyntheticEvent) => boolean,
   buildScrollableStyle: () => CSSStyle
 };
@@ -22,6 +23,8 @@ type ReactInfiniteProvidedDefaultProps = {
 
   onInfiniteLoad: () => any,
   loadingSpinnerDelegate: ReactElement<any, any, any>,
+
+  displayBottomUpwards: boolean,
 
   isInfiniteLoading: boolean,
   timeScrollStateLastsForAfterUserScrolls: number,
@@ -39,6 +42,8 @@ type ReactInfiniteProps = {
   elementHeight: ElementHeight,
   containerHeight: number,
   useWindowAsScrollContainer?: boolean,
+
+  displayBottomUpwards: boolean,
 
   infiniteLoadBeginBottomOffset?: number,
   onInfiniteLoad?: () => any,
@@ -60,6 +65,8 @@ type ReactInfiniteComputedProps = {
   elementHeight: ElementHeight,
   containerHeight: number,
   useWindowAsScrollContainer?: boolean,
+
+  displayBottomUpwards: boolean,
 
   infiniteLoadBeginBottomOffset?: number,
   onInfiniteLoad?: () => any,
