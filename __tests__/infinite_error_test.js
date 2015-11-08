@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 // Under certain conditions React Infinite cannot run at all. This
 // is when required props are not provided, or if the props provided
 // do not make sense. This logic is centralized in checkProps, and
@@ -11,7 +13,6 @@ jest.dontMock('lodash.isarray');
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
 var Infinite = require('../src/react-infinite.jsx');
-
 
 var shallowRenderer;
 

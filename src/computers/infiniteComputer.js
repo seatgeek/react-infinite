@@ -10,19 +10,25 @@ class InfiniteComputer {
   }
 
   getTotalScrollableHeight() {
-    throw new Error('getTotalScrollableHeight not implemented.');
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error('getTotalScrollableHeight not implemented.');
+    }
   }
 
   /* eslint-disable no-unused-vars */
   getDisplayIndexStart(windowTop) {
   /* eslint-enable no-unused-vars */
-    throw new Error('getDisplayIndexStart not implemented.');
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error('getDisplayIndexStart not implemented.');
+    }
   }
 
   /* eslint-disable no-unused-vars */
   getDisplayIndexEnd(windowBottom) {
   /* eslint-enable no-unused-vars */
-    throw new Error('getDisplayIndexEnd not implemented.');
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error('getDisplayIndexEnd not implemented.');
+    }
   }
 
   // These are helper methods, and can be calculated from
@@ -30,13 +36,17 @@ class InfiniteComputer {
   /* eslint-disable no-unused-vars */
   getTopSpacerHeight(displayIndexStart) {
   /* eslint-enable no-unused-vars */
-    throw new Error('getTopSpacerHeight not implemented.');
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error('getTopSpacerHeight not implemented.');
+    }
   }
 
   /* eslint-disable no-unused-vars */
   getBottomSpacerHeight(displayIndexEnd) {
   /* eslint-enable no-unused-vars */
-    throw new Error('getBottomSpacerHeight not implemented.');
+    if (process.env.NODE_ENV === 'development') {
+      throw new Error('getBottomSpacerHeight not implemented.');
+    }
   }
 }
 

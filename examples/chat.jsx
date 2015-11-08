@@ -23,9 +23,20 @@ var ListItem = React.createClass({
 var InfiniteList = React.createClass({
     getInitialState: function() {
         return {
-            elements: this.buildElements(0, 50),
+            elements: [],
             isInfiniteLoading: false
         }
+    },
+
+    componentDidMount: function() {
+      var that = this;
+      setInterval(function() {
+        var elemLength = that.state.elements.length,
+            newElements = that.buildElements(elemLength, elemLength + 1);
+        that.setState({
+            elements: that.state.elements.concat(newElements)
+        });
+      }, 500);
     },
 
     buildElements: function(start, end) {
@@ -43,12 +54,12 @@ var InfiniteList = React.createClass({
         });
         setTimeout(function() {
             var elemLength = that.state.elements.length,
-                newElements = that.buildElements(elemLength, elemLength + 100);
+                newElements = that.buildElements(elemLength, elemLength + 20);
             that.setState({
                 isInfiniteLoading: false,
-                elements: that.state.elements.concat(newElements)
+                elements: newElements.concat(that.state.elements)
             });
-        }, 2500);
+        }, 2000);
     },
 
     elementInfiniteLoad: function() {
@@ -60,12 +71,12 @@ var InfiniteList = React.createClass({
     render: function() {
         return <Infinite elementHeight={51}
                          containerHeight={window.innerHeight}
-                         infiniteLoadBeginEdgeOffset={200}
+                         infiniteLoadBeginEdgeOffset={300}
                          onInfiniteLoad={this.handleInfiniteLoad}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
                          timeScrollStateLastsForAfterUserScrolls={1000}
-                         useWindowAsScrollContainer={true}
+                         displayBottomUpwards
                          >
                     {this.state.elements}
                 </Infinite>;

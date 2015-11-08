@@ -23,6 +23,7 @@
   "scripts": {
     "test": "node ./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
+    "fix": "./node_modules/.bin/eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
     "typecheck": "./node_modules/.bin/flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
     "preversion": "npm run verify",
@@ -33,6 +34,9 @@
     "testPathDirs": [
       "<rootDir>/__tests__",
       "<rootDir>/src"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers"
     ],
     "testFileExtensions": [
       "js",
@@ -52,6 +56,7 @@
     "browserify": "^9.0.3",
     "coveralls": "^2.11.2",
     "del": "2.0.2",
+    "envify": "3.4.0",
     "eslint": "1.9.0",
     "eslint-config-semistandard": "^5.0.0",
     "eslint-config-standard": "^4.1.0",
@@ -67,8 +72,8 @@
     "gulp-webserver": "^0.9.1",
     "jest-cli": "0.4.19",
     "moment": "^2.10.6",
-    "react-addons-test-utils": "^0.14.0",
-    "uglifyify": "^3.0.1",
+    "react-addons-test-utils": "0.14.2",
+    "uglifyify": "3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watch": "^0.16.0",
@@ -83,5 +88,10 @@
   },
   "peerDependencies": {
     "react": ">= 0.13.0"
+  },
+  "browserify": {
+    "transform": [
+      "envify"
+    ]
   }
 }

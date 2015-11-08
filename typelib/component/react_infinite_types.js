@@ -7,10 +7,12 @@ type ElementHeight = number | Array<number>;
 type CSSStyle = {[key: string]: string | number};
 
 type ReactInfiniteUtilityFunctions = {
+  getLoadingSpinnerHeight: () => number,
   subscribeToScrollListener: () => void,
   unsubscribeFromScrollListener: () => void,
   nodeScrollListener: (e: SyntheticEvent) => void,
   getScrollTop: () => number,
+  setScrollTop: (top: number) => void,
   scrollShouldBeIgnored: (e: SyntheticEvent) => boolean,
   buildScrollableStyle: () => CSSStyle
 };
@@ -22,6 +24,8 @@ type ReactInfiniteProvidedDefaultProps = {
 
   onInfiniteLoad: () => any,
   loadingSpinnerDelegate: ReactElement<any, any, any>,
+
+  displayBottomUpwards: boolean,
 
   isInfiniteLoading: boolean,
   timeScrollStateLastsForAfterUserScrolls: number,
@@ -37,10 +41,12 @@ type ReactInfiniteProps = {
   preloadAdditionalHeight?: PreloadType,
 
   elementHeight: ElementHeight,
-  containerHeight: number,
+  containerHeight?: number,
   useWindowAsScrollContainer?: boolean,
 
-  infiniteLoadBeginBottomOffset?: number,
+  displayBottomUpwards: boolean,
+
+  infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
   loadingSpinnerDelegate?: ReactElement<any, any, any>,
 
@@ -61,7 +67,9 @@ type ReactInfiniteComputedProps = {
   containerHeight: number,
   useWindowAsScrollContainer?: boolean,
 
-  infiniteLoadBeginBottomOffset?: number,
+  displayBottomUpwards: boolean,
+
+  infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
   loadingSpinnerDelegate?: ReactElement<any, any, any>,
 

@@ -1,62 +1,64 @@
+/* eslint-env jest */
+
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 
 var bs = require('../src/utils/binaryIndexSearch.js'),
     binaryIndexSearch = bs.binaryIndexSearch;
 
-describe("Binary Index Search", function() {
+describe('Binary Index Search', function() {
 
-  describe("arrays of length 0", function() {
+  describe('arrays of length 0', function() {
     var array;
 
     beforeEach(function() {
       array = [];
-    })
+    });
 
-    it("returns undefined for any argument", function() {
+    it('returns undefined for any argument', function() {
       expect(binaryIndexSearch(array, 0)).toBeUndefined();
       expect(binaryIndexSearch(array, 12)).toBeUndefined();
     });
   });
 
-  describe("arrays of length 1", function() {
+  describe('arrays of length 1', function() {
     var array;
 
     beforeEach(function() {
       array = [42];
     });
 
-    it("is able to find the element", function() {
+    it('is able to find the element', function() {
       expect(binaryIndexSearch(array, 42)).toEqual(0);
     });
   });
 
-  describe("arrays of even length", function() {
+  describe('arrays of even length', function() {
     var array;
 
     beforeEach(function() {
       array = [4, 18];
     });
 
-    it("is able to find each element", function() {
+    it('is able to find each element', function() {
       expect(binaryIndexSearch(array, 4)).toEqual(0);
       expect(binaryIndexSearch(array, 18)).toEqual(1);
     });
   });
 
-  describe("arrays of odd length", function() {
+  describe('arrays of odd length', function() {
     var array;
     beforeEach(function() {
       array = [28, 48, 192];
     });
 
-    it("is able to find each element", function() {
+    it('is able to find each element', function() {
       expect(binaryIndexSearch(array, 28)).toEqual(0);
       expect(binaryIndexSearch(array, 48)).toEqual(1);
       expect(binaryIndexSearch(array, 192)).toEqual(2);
     });
   });
 
-  describe("approximate searches", function() {
+  describe('approximate searches', function() {
     var evenArray, oddArray;
 
     beforeEach(function() {
@@ -64,7 +66,7 @@ describe("Binary Index Search", function() {
       oddArray = [11, 203, 482];
     });
 
-    it("is able to find the closest lower element, or the element itself", function() {
+    it('is able to find the closest lower element, or the element itself', function() {
       expect(binaryIndexSearch(evenArray, 27, bs.opts.CLOSEST_LOWER)).toBeUndefined();
       expect(binaryIndexSearch(evenArray, 47, bs.opts.CLOSEST_LOWER)).toEqual(0);
       expect(binaryIndexSearch(evenArray, 49, bs.opts.CLOSEST_LOWER)).toEqual(1);
@@ -86,7 +88,7 @@ describe("Binary Index Search", function() {
       expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_LOWER)).toEqual(2);
     });
 
-    it("is able to find the closest higher element, or the element itself", function() {
+    it('is able to find the closest higher element, or the element itself', function() {
       expect(binaryIndexSearch(evenArray, 0, bs.opts.CLOSEST_HIGHER)).toEqual(0);
       expect(binaryIndexSearch(evenArray, 40, bs.opts.CLOSEST_HIGHER)).toEqual(1);
       expect(binaryIndexSearch(evenArray, 100, bs.opts.CLOSEST_HIGHER)).toEqual(2);
@@ -108,4 +110,4 @@ describe("Binary Index Search", function() {
       expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_HIGHER)).toEqual(2);
     });
   });
-})
+});

@@ -1,9 +1,12 @@
+/* eslint-env jest, jasmine */
+
 jest.dontMock('../src/react-infinite.jsx');
 jest.dontMock('../src/computers/infiniteComputer.js');
 jest.dontMock('../src/computers/constantInfiniteComputer.js');
 jest.dontMock('../src/computers/arrayInfiniteComputer.js');
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 jest.dontMock('../src/utils/infiniteHelpers.js');
+jest.dontMock('./helpers/renderHelpers.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
@@ -11,26 +14,7 @@ var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var Infinite = require('../src/react-infinite.jsx');
 
-var renderHelpers = {
-  divGenerator: function(number, height) {
-    number = number || 10;
-    height = height || 100;
-
-    var divArray = [];
-    for (var i = 0; i < number; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: height}}/>)
-    }
-
-    return divArray;
-  },
-  variableDivGenerator: function(heights) {
-    var divArray = [];
-    for (var i = 0; i < heights.length; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: heights[i]}}/>)
-    }
-    return divArray;
-  }
-}
+var renderHelpers = require('./helpers/renderHelpers');
 
 describe('Rendering the React Infinite Component Wrapper', function() {
   it('does not throw an error when given no children', function() {
@@ -66,7 +50,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
         </Infinite>
       );
 
-    var rootScrollable = TestUtils.findRenderedDOMComponentWithClass(infinite, 'root-scrollable-node')
+    var rootScrollable = TestUtils.findRenderedDOMComponentWithClass(infinite, 'root-scrollable-node');
     expect(rootScrollable.style.height).toEqual('800px');
     expect(rootScrollable.style.overflowX).toEqual('hidden');
     expect(rootScrollable.style.overflowY).toEqual('scroll');
@@ -83,11 +67,11 @@ describe('Rendering the React Infinite Component Wrapper', function() {
         </Infinite>
       );
 
-    expect(infinite.props.className).toEqual("correct-class-name");
+    expect(infinite.props.className).toEqual('correct-class-name');
   });
 
   it('allows preloadBatchSize to be zero', function() {
-    var renderedInfinite = TestUtils.renderIntoDocument(<Infinite elementHeight={[28,28]} containerHeight={100}
+    var renderedInfinite = TestUtils.renderIntoDocument(<Infinite elementHeight={[28, 28]} containerHeight={100}
                              preloadBatchSize={0}>
                         <li>Test1</li>
                         <li>Test2</li>
@@ -95,10 +79,10 @@ describe('Rendering the React Infinite Component Wrapper', function() {
 
     TestUtils.Simulate.scroll(renderedInfinite.getDOMNode());
   });
-})
+});
 
 describe('The Children of the React Infinite Component', function() {
-  it ("renders its children when no hiding behavior is required", function() {
+  it('renders its children when no hiding behavior is required', function() {
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={200}
                   containerHeight={800}
@@ -115,7 +99,7 @@ describe('The Children of the React Infinite Component', function() {
     expect(TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')).not.toBeUndefined();
   });
 
-  it ("renders its children when some DOM nodes are hidden", function() {
+  it('renders its children when some DOM nodes are hidden', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -151,7 +135,7 @@ describe('The Children of the React Infinite Component', function() {
 
   });
 
-  it ("renders more children when preloadAdditionalHeight is increased beyond its default", function() {
+  it('renders more children when preloadAdditionalHeight is increased beyond its default', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -187,7 +171,7 @@ describe('The Children of the React Infinite Component', function() {
     }
   });
 
-  it ("renders more children when preloadBatchSize is increased beyond its default", function() {
+  it('renders more children when preloadBatchSize is increased beyond its default', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -222,7 +206,7 @@ describe('The Children of the React Infinite Component', function() {
     }
 
   });
-})
+});
 
 describe('The Scrolling Behavior of the Constant Height React Infinite Component', function() {
   it('hides visible elements when the user scrolls sufficiently', function() {
@@ -255,26 +239,26 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
     // Above the batch and its preloadAdditionalHeight
     for (var i = 0; i < 2; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).toThrow();
     }
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
     for (var i = 2; i < 12; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).not.toThrow();
     }
 
     // Below the batch and its preloadAdditionalHeight
     for (var i = 12; i < 20; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).toThrow();
     }
   });
 
-  it("functions correctly at the end of its range", function() {
+  it('functions correctly at the end of its range', function() {
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
@@ -297,17 +281,17 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
     // Above the batch and its preloadAdditionalHeight
     for (var i = 0; i < 14; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).toThrow();
     }
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
     for (var i = 14; i < 20; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).not.toThrow();
     }
-  })
+  });
 });
 
 describe('The Behavior of the Variable Height React Infinite Component', function() {
@@ -333,14 +317,14 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     // Within the batch and its preloadAdditionalHeight, top and bottom
     for (var i = 1; i < 11; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).not.toThrow();
     }
 
     // Below the batch and its preloadAdditionalHeight
     for (var i = 11; i < 16; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).toThrow();
     }
   });
@@ -374,30 +358,30 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     expect(rootNode.refs.bottomSpacer.props.style.height).toEqual(100);
 
     // Above the batch and its preloadAdditionalHeight
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')}).toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')}).toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0') }).toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1') }).toThrow();
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-10')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-11')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-12')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-13')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-14')}).not.toThrow();
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-15')}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-10') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-11') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-12') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-13') }).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-14');}).not.toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-15') }).not.toThrow();
 
     // Below the batch and its preloadAdditionalHeight
-    expect(function(){TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-16')}).toThrow();
+    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-16');}).toThrow();
   });
 
-  it("functions correctly at the end of its range", function() {
+  it('functions correctly at the end of its range', function() {
                       // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
     var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
     var rootNode = TestUtils.renderIntoDocument(
@@ -427,29 +411,29 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     // Above the batch and its preloadAdditionalHeight
     for (var i = 0; i < 9; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).toThrow();
     }
 
     // Within the batch and its preloadAdditionalHeight, top and bottom
     for (var i = 9; i < 15; i++) {
       expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
       }).not.toThrow();
     }
-  })
+  });
 });
 
 describe("React Infinite's Infinite Scroll Capabilities", function() {
 
-  it("infiniteLoadBeginBottomOffset does not always trigger infinite load on scroll", function() {
+  it('infiniteLoadBeginEdgeOffset does not always trigger infinite load on scroll', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
@@ -464,14 +448,14 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     expect(infiniteSpy).not.toHaveBeenCalled();
   });
 
-  it("triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginBottomOffset", function() {
+  it('triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
@@ -486,14 +470,14 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     expect(infiniteSpy).toHaveBeenCalled();
   });
 
-  it("does not always display the loadingSpinnerDelegate", function() {
+  it('does not always display the loadingSpinnerDelegate', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
@@ -507,18 +491,18 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     });
 
     expect(function() {
-      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div')
+      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div');
     }).toThrow();
   });
 
-  it("displays the loadingSpinnerDelegate when isInfiniteLoading", function() {
+  it('displays the loadingSpinnerDelegate when isInfiniteLoading', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
@@ -532,13 +516,13 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     });
 
     expect(function() {
-      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div')
+      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div');
     }).not.toThrow();
   });
 });
 
 describe("Maintaining React Infinite's internal scroll state", function() {
-  it("has does not have pointer-events: none by default", function() {
+  it('has does not have pointer-events: none by default', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
@@ -549,11 +533,11 @@ describe("Maintaining React Infinite's internal scroll state", function() {
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
       );
-  var wrapper = rootNode.refs.smoothScrollingWrapper;
-  expect(wrapper.props.style.pointerEvents).toBeUndefined();
+    var wrapper = rootNode.refs.smoothScrollingWrapper;
+    expect(wrapper.props.style.pointerEvents).toBeUndefined();
   });
 
-  it("has pointer-events: none upon scroll", function() {
+  it('has pointer-events: none upon scroll', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
@@ -574,7 +558,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
     var wrapper = rootNode.refs.smoothScrollingWrapper;
     expect(wrapper.props.style.pointerEvents).toEqual('none');
   });
-})
+});
 
 describe('Handling infinite scrolling', function() {
   it('triggers an infinite scroll the first time the component mounts if the elements do not fill the container', function() {
@@ -586,7 +570,7 @@ describe('Handling infinite scrolling', function() {
       rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   onInfiniteLoad={infiniteSpy}
                   timeScrollStateLastsForAfterUserScrolls={10000}
                   className={"correct-class-name"}>
@@ -793,20 +777,20 @@ describe('React Infinite when the window is used as the Container', function() {
 
       for (var i = 0; i < 2; i++) {
         expect(function() {
-          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
         }).toThrow();
       }
 
       for (var i = 2; i < 12; i++) {
         expect(function() {
-          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
         }).not.toThrow();
       }
 
       // Below the batch and its preloadAdditionalHeight
       for (var i = 12; i < 20; i++) {
         expect(function() {
-          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i)
+          TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
         }).toThrow();
       }
     });
@@ -897,12 +881,12 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 });
 
-describe("Rerendering React Infinite", function() {
-  it("updates the infinite computer", function() {
+describe('Rerendering React Infinite', function() {
+  it('updates the infinite computer', function() {
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={17}
                   containerHeight={450}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, 17)}
@@ -921,6 +905,5 @@ describe("Rerendering React Infinite", function() {
       elementHeight: [10, 20, 30]
     });
     expect(rootNode.state.infiniteComputer.heightData).toEqual([10, 20, 30]);
-
   });
 });

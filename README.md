@@ -5,11 +5,15 @@ React Infinite
 [![npm version](https://badge.fury.io/js/react-infinite.svg)](http://badge.fury.io/js/react-infinite)
 [![bitHound Score](https://www.bithound.io/github/seatgeek/react-infinite/badges/score.svg)](https://www.bithound.io/github/seatgeek/react-infinite)
 
-**A browser-ready efficient scrolling container based on UITableView. Now supports elements of variable heights!**
+**A browser-ready efficient scrolling container based on UITableView.**
 
-In the browser, when a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM even when they are scrolled out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long; the number of additional nodes may well reach the millions.
+- Support for both static and variable element heights
+- Built-in support for infinite loading of future pages
+- Ability to use the window as the scroll container
+- Ability to be used as a chat/messaging-style display
+- 94% test coverage with Jest and typechecked with Facebook's Flow
 
-React Infinite solves this with some inspiration from iOS's UITableView and AirBnB's Infinity.js by rendering only DOM nodes that the user is able to see or might soon see. Other DOM nodes are clustered and rendered as a single blank node.
+When a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM even when they are out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long. React Infinite solves this by rendering only DOM nodes that the user is able to see or might soon see. Other DOM nodes are clustered and rendered as a single blank node.
 
 ## Installation
 
@@ -49,6 +53,32 @@ If not all of the children have the same height, you must provide an array of in
 </Infinite>
 ```
 
+### Using the Window to Scroll (`useWindowAsScrollContainer` mode)
+React Infinite now supports being used as a chat box, i.e. appended elements appear at the bottom when added, and the loading of the next page occurs when the user scrolls to the top of the container. To do so, simply add the `displayBottomUpwards` prop.
+
+```xml
+<Infinite containerHeight={200} elementHeight={[111, 252, 143]}
+          displayBottomUpwards>
+    // insert messages for subsequent pages at this point
+    <div className="third-latest-chat"/>
+    <div className="second-latest-chat"/>
+    <div className="latest-chat-message"/>
+</Infinite>
+```
+
+### As A Chat or Message Box (`displayBottomUpwards` mode)
+React Infinite now supports being used as a chat box, i.e. appended elements appear at the bottom when added, and the loading of the next page occurs when the user scrolls to the top of the container. To do so, simply add the `displayBottomUpwards` prop.
+
+```xml
+<Infinite containerHeight={200} elementHeight={[111, 252, 143]}
+          displayBottomUpwards>
+    // insert messages for subsequent pages at this point
+    <div className="third-latest-chat"/>
+    <div className="second-latest-chat"/>
+    <div className="latest-chat-message"/>
+</Infinite>
+```
+
 ### Note on Smooth Scrolling
 A wrapper `div` is applied that disables pointer events on the children for a default of 150 milliseconds after the last user scroll action for browsers with inertial scrolling. To configure this, set `timeScrollStateLastsForAfterUserScrolls`.
 
@@ -62,11 +92,22 @@ This function allows a value to be specified for `preloadBatchSize` and `preload
 #### Children
 The children of the `<Infinite>` element are the components you want to render. This gives you as much flexibility as you need in the presentation of those components. Each child can be a different component if you desire. If you wish to render a set of children not all of which have the same height, you must map each component in the children array to an number representing its height and pass it in as the `elementHeight` prop.
 
+### Major Display Modes
+By default, React Infinite renders a single element with the provided `containerHeight`, and the list sticks to the top like a regular table. However, you can choose to use the entire window as the scroll container or make React Infinite like a chatbox with the following options. They can be used together if you wish.
+
+#### Bool `useWindowAsScrollContainer`
+Defaults to `false`. This option allows the window to be used as the scroll container, instead of an arbitrary `div`, when it is set to `true`. This means that scroll position is detected by `window.scrollY` instead of the `scrollTop` of the `div` that React Infinite creates. Using this option is a way of achieving smoother scrolling on mobile before the problem is solved for container `div`s.
+
+#### Bool `displayBottomUpwards`
+Defaults to `false`. This allows React Infinite to be used as a chatbox. This means that the scroll is stuck to the bottom by default, and the user scrolls up to the top of the container to load the next page. The `children` are displayed in the same order.
+
+### Configuration Options
+
 #### (Required) Number | [Number] `elementHeight`
 If each child element has the same height, you can pass a number representing that height as the `elementHeight` prop. If the children do not all have the same height, you can pass an array which is a map the children to numbers representing their heights to the `elementHeight` prop.
 
-#### (Required) **Number** `containerHeight`
-The height of the scrolling container in pixels.
+#### **Number** `containerHeight`
+The height of the scrolling container in pixels. This is a **required** prop if `useWindowAsScrollContainer` is not set to `true`.
 
 #### Number | Object `preloadBatchSize`
 Defaults to `this.props.containerHeight * 0.5`. Imagine the total height of the scrollable divs. Now divide this equally into blocks `preloadBatchSize` pixels high. Every time the container's scrollTop enters each of these blocks the set of elements rendered in full are those contained within the block and elements that are within `preloadAdditionalHeight` above and below it.
@@ -81,14 +122,20 @@ When working with the window as the scroll container, it is sometimes useful to 
 #### **Function** `handleScroll(DOMNode node)`
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
 
-#### Bool `useWindowAsScrollContainer`
-Defaults to `false`. This option allows the window to be used as the scroll container, instead of an arbitrary `div`, when it is set to `true`. This means that scroll position is detected by `window.scrollY` instead of the `scrollTop` of the `div` that React Infinite creates. Using this option is a way of achieving smoother scrolling on mobile before the problem is solved for container `div`s.
-
 #### **Number** `infiniteLoadBeginBottomOffset`
-Defaults to `undefined`, which means that infinite loading is disabled. When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
+**Deprecated as of 0.6.0. Please use `infiniteLoadBeginEdgeOffset`, which is identical but renamed.**
+
+#### **Number** `infiniteLoadBeginEdgeOffset`
+Defaults to `undefined`, which means that infinite loading is disabled. To disable infinite loading, do not provide this property or set it to undefined.
+
+**Regular Mode**
+When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`.
+
+**`displayBottomUpwards` mode**
+When the user reaches this number of pixels from the top of the container, the infinite load sequence will be triggered by showing the infinite loading spinner delegate at the top of the container and calling `onInfiniteLoad`.
 
 #### Function `onInfiniteLoad()`
-Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginBottomOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
+Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginEdgeOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
 
 1. Fetch a new page of records from the appropriate API
 2. When the AJAX call returns, send the new list of elements (with the items that were just fetched) back as the children of React Infinite.
@@ -163,7 +210,7 @@ var InfiniteList = React.createClass({
     render: function() {
         return <Infinite elementHeight={40}
                          containerHeight={250}
-                         infiniteLoadBeginBottomOffset={200}
+                         infiniteLoadBeginEdgeOffset={200}
                          onInfiniteLoad={this.handleInfiniteLoad}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
@@ -180,26 +227,6 @@ SeatGeek also currently uses React Infinite in production on our event pages; be
 
 ![](http://cl.ly/image/0y0L04220U2T/Screen%20Shot%202014-10-16%20at%2010.56.19%20AM.png)
 
-## Infinite Jest
-I am seated in an office, surrounded by heads and bodies. There I've written some tests for this package, using Facebook's Jest library<small><sup>1</sup></small>, which provides automatic mocking and jsdom testing.
+# Contributing to React Infinite
 
-Tests are located in the `__tests__` directory<small><sup>2</sup></small>, and can be run with `npm test` after `npm install`.
-
-## Developing
-React Infinite is built with Browserify and Gulp. To get started, install the development dependencies with `npm install`. If you do not already have Gulp, you might wish to install it globally with `npm install -g gulp`.
-
-The newly revamped development environment is based on `gulp develop`. When run, this command sets up a watch on the `/src` folder with Browserify as well as the `examples` folder.
-
-The other major command, `gulp release`, prepares files for release. It produces normal and minified versions of `react-infinite.js` in the `dist` folder and also directly transpiles the source to ES5 in the `build` folder so it can be required by other asset pipelines.
-
-### Infinite Computers
-
-Extending React Infinite to support different specifications of `elementHeight`s is now much easier. To do so, write a class that extends the `InfiniteComputer` and satisfies its interface of five methods (see `src/computers/infinite_computer.js`). You can consult `ConstantInfiniteComputer` and `ArrayInfiniteComputer` to see how constant and variable heights are handled respectively.
-
-## Future Development
-
-It would be useful for React Infinite to be adapted to any arbitrary two-dimensional grid.
-
-<small><sup>1</sup></small> In sum, Jest is a library that provides several layers on top of Jasmine. More information can be found on Facebook's [Jest page](https://facebook.github.io/jest/).
-
-<small><sup>2</sup></small> The directory name is specified by Jest. Tests can be written in JSX because they are first run through a preprocessor that compiles them to plain Javascript.
+Useful notes for [how to contribute](https://github.com/seatgeek/react-infinite/blob/master/docs/developing.md) are available.
