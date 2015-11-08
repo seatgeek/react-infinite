@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.5.11",
+  "version": "0.6.0",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "build/react-infinite.js",
   "repository": {
