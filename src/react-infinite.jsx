@@ -67,6 +67,7 @@ var Infinite = React.createClass({
   computedProps: {},
   utils: {},
   shouldAttachToBottom: false,
+  preservedScrollState: 0,
   deprecationWarned: false,
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
@@ -161,6 +162,13 @@ var Infinite = React.createClass({
 
   generateComputedUtilityFunctions(props: ReactInfiniteProps): ReactInfiniteUtilityFunctions {
     var utilities = {};
+    utilities.getLoadingSpinnerHeight = () => {
+      var loadingSpinnerHeight = 0;
+      if (this.refs && this.refs.loadingSpinner) {
+        loadingSpinnerHeight = React.findDOMNode(this.refs.loadingSpinner).offsetHeight || 0;
+      }
+      return loadingSpinnerHeight;
+    };
     if (props.useWindowAsScrollContainer) {
       utilities.subscribeToScrollListener = () => {
         window.addEventListener('scroll', this.infiniteHandleScroll);
@@ -253,6 +261,12 @@ var Infinite = React.createClass({
     this.setState(nextInternalState.newState);
   },
 
+  componentWillUpdate() {
+    if (this.props.displayBottomUpwards) {
+      this.preservedScrollState = this.utils.getScrollTop() - this.utils.getLoadingSpinnerHeight();
+    }
+  },
+
   componentDidUpdate(prevProps: ReactInfiniteProps, prevState: ReactInfiniteState) {
     if (this.props.displayBottomUpwards) {
       var lowestScrollTop = this.getLowestPossibleScrollTop();
@@ -260,7 +274,8 @@ var Infinite = React.createClass({
         this.utils.setScrollTop(lowestScrollTop);
       } else if (prevProps.isInfiniteLoading && !this.props.isInfiniteLoading) {
         this.utils.setScrollTop(this.state.infiniteComputer.getTotalScrollableHeight() -
-          prevState.infiniteComputer.getTotalScrollableHeight());
+          prevState.infiniteComputer.getTotalScrollableHeight() +
+          this.preservedScrollState);
       }
     }
     if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
@@ -388,7 +403,7 @@ var Infinite = React.createClass({
     if (this.computedProps.displayBottomUpwards) {
       var heightDifference = this.computedProps.containerHeight - this.state.infiniteComputer.getTotalScrollableHeight();
       if (heightDifference > 0) {
-        topSpacerHeight = heightDifference;
+        topSpacerHeight = heightDifference - this.utils.getLoadingSpinnerHeight();
       }
     }
 
