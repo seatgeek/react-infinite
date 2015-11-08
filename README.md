@@ -84,11 +84,11 @@ Defaults to `function(){}`. A function that is called when the container is scro
 #### Bool `useWindowAsScrollContainer`
 Defaults to `false`. This option allows the window to be used as the scroll container, instead of an arbitrary `div`, when it is set to `true`. This means that scroll position is detected by `window.scrollY` instead of the `scrollTop` of the `div` that React Infinite creates. Using this option is a way of achieving smoother scrolling on mobile before the problem is solved for container `div`s.
 
-#### **Number** `infiniteLoadBeginBottomOffset`
+#### **Number** `infiniteLoadBeginEdgeOffset`
 Defaults to `undefined`, which means that infinite loading is disabled. When the user reaches this number of pixels from the bottom, the infinite load sequence will be triggered by showing the infinite load spinner delegate and calling the function `onInfiniteLoad`. To disable infinite loading, do not provide this property.
 
 #### Function `onInfiniteLoad()`
-Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginBottomOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
+Defaults to `function(){}`. This function is called when the scroll exceeds `infiniteLoadBeginEdgeOffset`. Before this function is called, **the infinite loading spinner is automatically turned on**. You can set up infinite scrolling with this function like this:
 
 1. Fetch a new page of records from the appropriate API
 2. When the AJAX call returns, send the new list of elements (with the items that were just fetched) back as the children of React Infinite.
@@ -163,7 +163,7 @@ var InfiniteList = React.createClass({
     render: function() {
         return <Infinite elementHeight={40}
                          containerHeight={250}
-                         infiniteLoadBeginBottomOffset={200}
+                         infiniteLoadBeginEdgeOffset={200}
                          onInfiniteLoad={this.handleInfiniteLoad}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}

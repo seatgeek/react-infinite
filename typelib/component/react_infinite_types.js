@@ -45,7 +45,7 @@ type ReactInfiniteProps = {
 
   displayBottomUpwards: boolean,
 
-  infiniteLoadBeginBottomOffset?: number,
+  infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
   loadingSpinnerDelegate?: ReactElement<any, any, any>,
 
@@ -68,7 +68,7 @@ type ReactInfiniteComputedProps = {
 
   displayBottomUpwards: boolean,
 
-  infiniteLoadBeginBottomOffset?: number,
+  infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
   loadingSpinnerDelegate?: ReactElement<any, any, any>,
 

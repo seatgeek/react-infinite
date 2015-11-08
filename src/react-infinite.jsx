@@ -41,7 +41,7 @@ var Infinite = React.createClass({
 
     displayBottomUpwards: React.PropTypes.bool.isRequired,
 
-    infiniteLoadBeginBottomOffset: React.PropTypes.number,
+    infiniteLoadBeginEdgeOffset: React.PropTypes.number,
     onInfiniteLoad: React.PropTypes.func,
     loadingSpinnerDelegate: React.PropTypes.node,
 
@@ -68,6 +68,7 @@ var Infinite = React.createClass({
   computedProps: {},
   utils: {},
   shouldAttachToBottom: false,
+  deprecationWarned: false,
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
@@ -104,6 +105,7 @@ var Infinite = React.createClass({
   },
 
   generateComputedProps(props: ReactInfiniteProps): ReactInfiniteComputedProps {
+    // These are extracted so their type definitions do not conflict.
     var {containerHeight,
           preloadBatchSize,
           preloadAdditionalHeight,
@@ -112,6 +114,17 @@ var Infinite = React.createClass({
     var newProps = {};
     newProps.containerHeight = props.useWindowAsScrollContainer
       ? window.innerHeight : containerHeight;
+
+    if (oldProps.infiniteLoadBeginBottomOffset !== undefined) {
+      newProps.infiniteLoadBeginEdgeOffset = oldProps.infiniteLoadBeginBottomOffset;
+      if (!this.deprecationWarned) {
+        console.error(`Warning: React Infinite's infiniteLoadBeginBottomOffset prop
+        has been deprecated as of 0.6.0. Please use infiniteLoadBeginEdgeOffset.
+        Because this is a rather descriptive name, a simple find and replace
+        should suffice.`);
+        this.deprecationWarned = true;
+      }
+    }
 
     var defaultPreloadBatchSizeScaling = {
       type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
@@ -256,7 +269,7 @@ var Infinite = React.createClass({
 
   componentDidMount() {
     this.utils.subscribeToScrollListener();
-    if (_isFinite(this.computedProps.infiniteLoadBeginBottomOffset) &&
+    if (_isFinite(this.computedProps.infiniteLoadBeginEdgeOffset) &&
         this.state.infiniteComputer.getTotalScrollableHeight() < this.computedProps.containerHeight) {
       this.setState({
         isInfiniteLoading: true
@@ -317,7 +330,7 @@ var Infinite = React.createClass({
     var infiniteScrollBottomLimit = scrollTop >
         (this.state.infiniteComputer.getTotalScrollableHeight() -
           this.computedProps.containerHeight -
-          this.computedProps.infiniteLoadBeginBottomOffset);
+          this.computedProps.infiniteLoadBeginEdgeOffset);
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
       this.setState(Object.assign({}, newApertureState, {
         isInfiniteLoading: true

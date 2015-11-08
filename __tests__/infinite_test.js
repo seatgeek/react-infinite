@@ -442,14 +442,14 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
 
 describe("React Infinite's Infinite Scroll Capabilities", function() {
 
-  it("infiniteLoadBeginBottomOffset does not always trigger infinite load on scroll", function() {
+  it("infiniteLoadBeginEdgeOffset does not always trigger infinite load on scroll", function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
@@ -464,14 +464,14 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     expect(infiniteSpy).not.toHaveBeenCalled();
   });
 
-  it("triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginBottomOffset", function() {
+  it("triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset", function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
@@ -493,7 +493,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
@@ -518,7 +518,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, elementHeight)}
@@ -586,7 +586,7 @@ describe('Handling infinite scrolling', function() {
       rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   onInfiniteLoad={infiniteSpy}
                   timeScrollStateLastsForAfterUserScrolls={10000}
                   className={"correct-class-name"}>
@@ -902,7 +902,7 @@ describe("Rerendering React Infinite", function() {
     var rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={17}
                   containerHeight={450}
-                  infiniteLoadBeginBottomOffset={1000}
+                  infiniteLoadBeginEdgeOffset={1000}
                   loadingSpinnerDelegate={<div className={"delegate-div"} />}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(20, 17)}
