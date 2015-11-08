@@ -23,6 +23,7 @@
   "scripts": {
     "test": "node ./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
+    "fix": "./node_modules/.bin/eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
     "typecheck": "./node_modules/.bin/flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
     "preversion": "npm run verify",

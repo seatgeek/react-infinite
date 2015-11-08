@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 jest.dontMock('../src/computers/arrayInfiniteComputer.js');
 jest.dontMock('../src/computers/infiniteComputer.js');

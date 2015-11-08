@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 jest.dontMock('../src/computers/constantInfiniteComputer.js');
 jest.dontMock('../src/computers/infiniteComputer.js');
 

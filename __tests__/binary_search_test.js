@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 
 var bs = require('../src/utils/binaryIndexSearch.js'),
