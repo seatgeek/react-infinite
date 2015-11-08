@@ -1,7 +1,7 @@
 /* @flow */
 
 var React = global.React || require('react');
-require('./utils/polyfill-object-assign');
+require('./utils/establish-polyfills');
 var checkProps = require('./utils/checkProps');
 var preloadType = require('./utils/types').preloadType;
 var scaleEnum = require('./utils/scaleEnum');
@@ -97,38 +97,48 @@ var Infinite = React.createClass({
     return state;
   },
 
-  generateComputedProps(props: ReactInfiniteProps): ReactInfiniteProps {
-    var computedProps = Object.assign({}, props);
-    computedProps.containerHeight = props.useWindowAsScrollContainer
-      ? window.innerHeight : props.containerHeight;
+  generateComputedProps(props: ReactInfiniteProps): ReactInfiniteComputedProps {
+    var {containerHeight,
+          preloadBatchSize,
+          preloadAdditionalHeight,
+          ...untouchedProps} = props;
+
+    var newProps = {};
+    newProps.containerHeight = props.useWindowAsScrollContainer
+      ? window.innerHeight : containerHeight;
 
     var defaultPreloadBatchSizeScaling = {
       type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
       amount: 0.5
     };
-    var batchSize = props.preloadBatchSize && props.preloadBatchSize.type
-      ? props.preloadBatchSize
+    var batchSize = preloadBatchSize && preloadBatchSize.type
+      ? preloadBatchSize
       : defaultPreloadBatchSizeScaling;
-    if (_isFinite(props.preloadBatchSize)) {
-      computedProps.preloadBatchSize = props.preloadBatchSize;
+
+    if (typeof preloadBatchSize === 'number') {
+      newProps.preloadBatchSize = preloadBatchSize;
     } else if (batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      computedProps.preloadBatchSize = computedProps.containerHeight * batchSize.amount;
+      newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
+    } else {
+      newProps.preloadBatchSize = 0;
     }
 
     var defaultPreloadAdditionalHeightScaling = {
       type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
       amount: 1
     };
-    var additionalHeight = props.preloadAdditionalHeight && props.preloadAdditionalHeight.type
-      ? props.preloadAdditionalHeight
+    var additionalHeight = preloadAdditionalHeight && preloadAdditionalHeight.type
+      ? preloadAdditionalHeight
       : defaultPreloadAdditionalHeightScaling;
-    if (_isFinite(props.preloadAdditionalHeight)) {
-      computedProps.preloadAdditionalHeight = props.preloadAdditionalHeight;
+    if (typeof preloadAdditionalHeight === 'number') {
+      newProps.preloadAdditionalHeight = preloadAdditionalHeight;
     } else if (additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      computedProps.preloadAdditionalHeight = computedProps.containerHeight * additionalHeight.amount;
+      newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
+    } else {
+      newProps.preloadAdditionalHeight = 0;
     }
 
-    return computedProps;
+    return Object.assign(untouchedProps, newProps);
   },
 
   generateComputedUtilityFunctions(props: ReactInfiniteProps): ReactInfiniteUtilityFunctions {
@@ -169,7 +179,7 @@ var Infinite = React.createClass({
   },
 
   recomputeInternalStateFromProps(props: ReactInfiniteProps): {
-    computedProps: ReactInfiniteProps,
+    computedProps: ReactInfiniteComputedProps,
     utils: ReactInfiniteUtilityFunctions,
     newState: ReactInfiniteState
     } {
@@ -177,16 +187,20 @@ var Infinite = React.createClass({
     var computedProps = this.generateComputedProps(props);
     var utils = this.generateComputedUtilityFunctions(props);
 
-    var newState = {
-      numberOfChildren: React.Children.count(computedProps.children),
-      infiniteComputer: infiniteHelpers.createInfiniteComputer(
-        computedProps.elementHeight,
-        computedProps.children
-      ),
-      preloadBatchSize: computedProps.preloadBatchSize,
-      preloadAdditionalHeight: computedProps.preloadAdditionalHeight,
-      isInfiniteLoading: computedProps.isInfiniteLoading !== undefined
-    };
+    var newState = {};
+
+    newState.numberOfChildren = React.Children.count(computedProps.children);
+    newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(
+      computedProps.elementHeight,
+      computedProps.children
+    );
+
+    if (computedProps.isInfiniteLoading !== undefined) {
+      newState.isInfiniteLoading = computedProps.isInfiniteLoading;
+    }
+
+    newState.preloadBatchSize = computedProps.preloadBatchSize;
+    newState.preloadAdditionalHeight = computedProps.preloadAdditionalHeight;
 
     newState = Object.assign(newState,
       infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
@@ -276,7 +290,7 @@ var Infinite = React.createClass({
           this.computedProps.containerHeight -
           this.computedProps.infiniteLoadBeginBottomOffset);
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
-      this.setState(Object.assign(newApertureState, {
+      this.setState(Object.assign({}, newApertureState, {
         isInfiniteLoading: true
       }));
       this.computedProps.onInfiniteLoad();

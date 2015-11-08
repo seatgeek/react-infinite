@@ -50,6 +50,27 @@ type ReactInfiniteProps = {
   className?: string
 };
 
+type ReactInfiniteComputedProps = {
+  children: any,
+  handleScroll?: (event: any) => any,
+
+  preloadBatchSize: number,
+  preloadAdditionalHeight: number,
+
+  elementHeight: ElementHeight,
+  containerHeight: number,
+  useWindowAsScrollContainer?: boolean,
+
+  infiniteLoadBeginBottomOffset?: number,
+  onInfiniteLoad?: () => any,
+  loadingSpinnerDelegate?: ReactElement<any, any, any>,
+
+  isInfiniteLoading?: boolean,
+  timeScrollStateLastsForAfterUserScrolls?: number,
+
+  className?: string
+};
+
 type ReactInfiniteState = {
   numberOfChildren: number,
   infiniteComputer: InfiniteComputer,

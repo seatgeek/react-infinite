@@ -6,7 +6,7 @@ var InfiniteComputer = require('./infiniteComputer.js'),
 class ArrayInfiniteComputer extends InfiniteComputer {
   prefixHeightData: Array<number>;
 
-  constructor(heightData/* : Array<number> */, numberOfChildren/* : number */)/* : void */ {
+  constructor(heightData: Array<number>, numberOfChildren: number): void {
     super(heightData, numberOfChildren);
     this.prefixHeightData = this.heightData.reduce((acc, next) => {
       if (acc.length === 0) {
@@ -18,7 +18,7 @@ class ArrayInfiniteComputer extends InfiniteComputer {
     }, []);
   }
 
-  maybeIndexToIndex(index/* : ?number */)/* : number */ {
+  maybeIndexToIndex(index: ?number): number {
     if (typeof index === 'undefined' || index === null) {
       return this.prefixHeightData.length - 1;
     } else {
@@ -26,27 +26,27 @@ class ArrayInfiniteComputer extends InfiniteComputer {
     }
   }
 
-  getTotalScrollableHeight()/* : number */ {
+  getTotalScrollableHeight(): number {
     var length = this.prefixHeightData.length;
     return length === 0 ? 0 : this.prefixHeightData[length - 1];
   }
 
-  getDisplayIndexStart(windowTop/* : number */)/* : number */ {
+  getDisplayIndexStart(windowTop: number): number {
     var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
     return this.maybeIndexToIndex(foundIndex);
   }
 
-  getDisplayIndexEnd(windowBottom/* : number */)/* : number */ {
+  getDisplayIndexEnd(windowBottom: number): number {
     var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
     return this.maybeIndexToIndex(foundIndex);
   }
 
-  getTopSpacerHeight(displayIndexStart/* : number */)/* : number */ {
+  getTopSpacerHeight(displayIndexStart: number): number {
     var previous = displayIndexStart - 1;
     return previous < 0 ? 0 : this.prefixHeightData[previous];
   }
 
-  getBottomSpacerHeight(displayIndexEnd/* : number */)/* : number */ {
+  getBottomSpacerHeight(displayIndexEnd: number): number {
     if (displayIndexEnd === -1) {
       return 0;
     }
