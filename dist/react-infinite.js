@@ -2,8 +2,10 @@
 (function (global){
 'use strict';
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 var React = global.React || require('react');
-var _assign = require('object-assign');
+require('./utils/establish-polyfills');
 var checkProps = require('./utils/checkProps');
 var preloadType = require('./utils/types').preloadType;
 var scaleEnum = require('./utils/scaleEnum');
@@ -14,6 +16,8 @@ var Infinite = React.createClass({
   displayName: 'Infinite',
 
   propTypes: {
+    children: React.PropTypes.any,
+
     handleScroll: React.PropTypes.func,
 
     // preloadBatchSize causes updates only to
@@ -34,7 +38,7 @@ var Infinite = React.createClass({
     elementHeight: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.arrayOf(React.PropTypes.number)]).isRequired,
     // This is the total height of the visible window. One
     // of
-    containerHeight: React.PropTypes.number,
+    containerHeight: React.PropTypes.number.isRequired,
     useWindowAsScrollContainer: React.PropTypes.bool,
 
     infiniteLoadBeginBottomOffset: React.PropTypes.number,
@@ -59,14 +63,23 @@ var Infinite = React.createClass({
     }
   },
 
+  // Properties currently used but which may be
+  // refactored away in the future.
+  computedProps: {},
+  utils: {},
+
   getDefaultProps: function getDefaultProps() {
     return {
       handleScroll: function handleScroll() {},
-      loadingSpinnerDelegate: React.createElement('div', null),
+
+      useWindowAsScrollContainer: false,
+
       onInfiniteLoad: function onInfiniteLoad() {},
+      loadingSpinnerDelegate: React.createElement('div', null),
+
       isInfiniteLoading: false,
       timeScrollStateLastsForAfterUserScrolls: 150,
-      useWindowAsScrollContainer: false,
+
       className: ''
     };
   },
@@ -87,32 +100,43 @@ var Infinite = React.createClass({
   },
 
   generateComputedProps: function generateComputedProps(props) {
-    var computedProps = _assign({}, props);
-    computedProps.containerHeight = props.useWindowAsScrollContainer ? window.innerHeight : props.containerHeight;
+    var containerHeight = props.containerHeight;
+    var preloadBatchSize = props.preloadBatchSize;
+    var preloadAdditionalHeight = props.preloadAdditionalHeight;
+
+    var untouchedProps = _objectWithoutProperties(props, ['containerHeight', 'preloadBatchSize', 'preloadAdditionalHeight']);
+
+    var newProps = {};
+    newProps.containerHeight = props.useWindowAsScrollContainer ? window.innerHeight : containerHeight;
 
     var defaultPreloadBatchSizeScaling = {
       type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
       amount: 0.5
     };
-    var batchSize = props.preloadBatchSize && props.preloadBatchSize.type ? props.preloadBatchSize : defaultPreloadBatchSizeScaling;
-    if (_isFinite(props.preloadBatchSize)) {
-      computedProps.preloadBatchSize = props.preloadBatchSize;
+    var batchSize = preloadBatchSize && preloadBatchSize.type ? preloadBatchSize : defaultPreloadBatchSizeScaling;
+
+    if (typeof preloadBatchSize === 'number') {
+      newProps.preloadBatchSize = preloadBatchSize;
     } else if (batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      computedProps.preloadBatchSize = computedProps.containerHeight * batchSize.amount;
+      newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
+    } else {
+      newProps.preloadBatchSize = 0;
     }
 
     var defaultPreloadAdditionalHeightScaling = {
       type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
       amount: 1
     };
-    var additionalHeight = props.preloadAdditionalHeight && props.preloadAdditionalHeight.type ? props.preloadAdditionalHeight : defaultPreloadAdditionalHeightScaling;
-    if (_isFinite(props.preloadAdditionalHeight)) {
-      computedProps.preloadAdditionalHeight = props.preloadAdditionalHeight;
+    var additionalHeight = preloadAdditionalHeight && preloadAdditionalHeight.type ? preloadAdditionalHeight : defaultPreloadAdditionalHeightScaling;
+    if (typeof preloadAdditionalHeight === 'number') {
+      newProps.preloadAdditionalHeight = preloadAdditionalHeight;
     } else if (additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      computedProps.preloadAdditionalHeight = computedProps.containerHeight * additionalHeight.amount;
+      newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
+    } else {
+      newProps.preloadAdditionalHeight = 0;
     }
 
-    return computedProps;
+    return Object.assign(untouchedProps, newProps);
   },
 
   generateComputedUtilityFunctions: function generateComputedUtilityFunctions(props) {
@@ -167,10 +191,9 @@ var Infinite = React.createClass({
     var computedProps = this.generateComputedProps(props);
     var utils = this.generateComputedUtilityFunctions(props);
 
-    var newState = {
-      numberOfChildren: React.Children.count(computedProps.children)
-    };
+    var newState = {};
 
+    newState.numberOfChildren = React.Children.count(computedProps.children);
     newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(computedProps.elementHeight, computedProps.children);
 
     if (computedProps.isInfiniteLoading !== undefined) {
@@ -180,7 +203,7 @@ var Infinite = React.createClass({
     newState.preloadBatchSize = computedProps.preloadBatchSize;
     newState.preloadAdditionalHeight = computedProps.preloadAdditionalHeight;
 
-    _assign(newState, infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(newState, utils.getScrollTop()));
+    newState = Object.assign(newState, infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(newState, utils.getScrollTop()));
 
     return {
       computedProps: computedProps,
@@ -198,7 +221,7 @@ var Infinite = React.createClass({
     this.setState(nextInternalState.newState);
   },
 
-  componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate: function componentDidUpdate(prevProps) {
     if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
       var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state, this.utils.getScrollTop());
       this.setState(newApertureState);
@@ -207,6 +230,12 @@ var Infinite = React.createClass({
 
   componentDidMount: function componentDidMount() {
     this.utils.subscribeToScrollListener();
+    if (_isFinite(this.computedProps.infiniteLoadBeginBottomOffset) && this.state.infiniteComputer.getTotalScrollableHeight() < this.computedProps.containerHeight) {
+      this.setState({
+        isInfiniteLoading: true
+      });
+      this.computedProps.onInfiniteLoad();
+    }
   },
 
   componentWillUnmount: function componentWillUnmount() {
@@ -250,7 +279,7 @@ var Infinite = React.createClass({
 
     var infiniteScrollBottomLimit = scrollTop > this.state.infiniteComputer.getTotalScrollableHeight() - this.computedProps.containerHeight - this.computedProps.infiniteLoadBeginBottomOffset;
     if (infiniteScrollBottomLimit && !this.state.isInfiniteLoading) {
-      this.setState(_assign(newApertureState, {
+      this.setState(Object.assign({}, newApertureState, {
         isInfiniteLoading: true
       }));
       this.computedProps.onInfiniteLoad();
@@ -312,7 +341,7 @@ module.exports = Infinite;
 global.Infinite = Infinite;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./utils/checkProps":9,"./utils/infiniteHelpers":10,"./utils/scaleEnum":11,"./utils/types":12,"lodash.isfinite":3,"object-assign":4,"react":undefined}],2:[function(require,module,exports){
+},{"./utils/checkProps":9,"./utils/establish-polyfills":10,"./utils/infiniteHelpers":11,"./utils/scaleEnum":12,"./utils/types":13,"lodash.isfinite":3,"react":undefined}],2:[function(require,module,exports){
 /**
  * lodash 3.0.4 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -588,7 +617,7 @@ module.exports = Object.assign || function (target, source) {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -600,7 +629,7 @@ var InfiniteComputer = require('./infiniteComputer.js'),
 var ArrayInfiniteComputer = (function (_InfiniteComputer) {
   _inherits(ArrayInfiniteComputer, _InfiniteComputer);
 
-  function ArrayInfiniteComputer(heightData, /* : Array<number> */numberOfChildren /* : number */) /* : void */{
+  function ArrayInfiniteComputer(heightData, numberOfChildren) {
     _classCallCheck(this, ArrayInfiniteComputer);
 
     _get(Object.getPrototypeOf(ArrayInfiniteComputer.prototype), 'constructor', this).call(this, heightData, numberOfChildren);
@@ -616,7 +645,7 @@ var ArrayInfiniteComputer = (function (_InfiniteComputer) {
 
   _createClass(ArrayInfiniteComputer, [{
     key: 'maybeIndexToIndex',
-    value: function maybeIndexToIndex(index /* : ?number */) /* : number */{
+    value: function maybeIndexToIndex(index) {
       if (typeof index === 'undefined' || index === null) {
         return this.prefixHeightData.length - 1;
       } else {
@@ -625,31 +654,31 @@ var ArrayInfiniteComputer = (function (_InfiniteComputer) {
     }
   }, {
     key: 'getTotalScrollableHeight',
-    value: function getTotalScrollableHeight() /* : number */{
+    value: function getTotalScrollableHeight() {
       var length = this.prefixHeightData.length;
       return length === 0 ? 0 : this.prefixHeightData[length - 1];
     }
   }, {
     key: 'getDisplayIndexStart',
-    value: function getDisplayIndexStart(windowTop /* : number */) /* : number */{
+    value: function getDisplayIndexStart(windowTop) {
       var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
       return this.maybeIndexToIndex(foundIndex);
     }
   }, {
     key: 'getDisplayIndexEnd',
-    value: function getDisplayIndexEnd(windowBottom /* : number */) /* : number */{
+    value: function getDisplayIndexEnd(windowBottom) {
       var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
       return this.maybeIndexToIndex(foundIndex);
     }
   }, {
     key: 'getTopSpacerHeight',
-    value: function getTopSpacerHeight(displayIndexStart /* : number */) /* : number */{
+    value: function getTopSpacerHeight(displayIndexStart) {
       var previous = displayIndexStart - 1;
       return previous < 0 ? 0 : this.prefixHeightData[previous];
     }
   }, {
     key: 'getBottomSpacerHeight',
-    value: function getBottomSpacerHeight(displayIndexEnd /* : number */) /* : number */{
+    value: function getBottomSpacerHeight(displayIndexEnd) {
       if (displayIndexEnd === -1) {
         return 0;
       }
@@ -667,7 +696,7 @@ module.exports = ArrayInfiniteComputer;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -686,17 +715,17 @@ var ConstantInfiniteComputer = (function (_InfiniteComputer) {
 
   _createClass(ConstantInfiniteComputer, [{
     key: 'getTotalScrollableHeight',
-    value: function getTotalScrollableHeight() /* : number */{
+    value: function getTotalScrollableHeight() {
       return this.heightData * this.numberOfChildren;
     }
   }, {
     key: 'getDisplayIndexStart',
-    value: function getDisplayIndexStart(windowTop /* : number */) /* : number */{
+    value: function getDisplayIndexStart(windowTop) {
       return Math.floor(windowTop / this.heightData);
     }
   }, {
     key: 'getDisplayIndexEnd',
-    value: function getDisplayIndexEnd(windowBottom /* : number */) /* : number */{
+    value: function getDisplayIndexEnd(windowBottom) {
       var nonZeroIndex = Math.ceil(windowBottom / this.heightData);
       if (nonZeroIndex > 0) {
         return nonZeroIndex - 1;
@@ -705,12 +734,12 @@ var ConstantInfiniteComputer = (function (_InfiniteComputer) {
     }
   }, {
     key: 'getTopSpacerHeight',
-    value: function getTopSpacerHeight(displayIndexStart /* : number */) /* : number */{
+    value: function getTopSpacerHeight(displayIndexStart) {
       return displayIndexStart * this.heightData;
     }
   }, {
     key: 'getBottomSpacerHeight',
-    value: function getBottomSpacerHeight(displayIndexEnd /* : number */) /* : number */{
+    value: function getBottomSpacerHeight(displayIndexEnd) {
       var nonZeroIndex = displayIndexEnd + 1;
       return Math.max(0, (this.numberOfChildren - nonZeroIndex) * this.heightData);
     }
@@ -841,7 +870,6 @@ module.exports = {
 'use strict';
 
 var React = global.React || require('react');
-var _isArray = require('lodash.isarray');
 var _isFinite = require('lodash.isfinite');
 
 module.exports = function (props) {
@@ -850,11 +878,11 @@ module.exports = function (props) {
     throw new Error(rie + 'Either containerHeight or useWindowAsScrollContainer must be provided.');
   }
 
-  if (!(_isFinite(props.elementHeight) || _isArray(props.elementHeight))) {
+  if (!(_isFinite(props.elementHeight) || Array.isArray(props.elementHeight))) {
     throw new Error(rie + 'You must provide either a number or an array of numbers as the elementHeight.');
   }
 
-  if (_isArray(props.elementHeight)) {
+  if (Array.isArray(props.elementHeight)) {
     if (React.Children.count(props.children) !== props.elementHeight.length) {
       throw new Error(rie + 'There must be as many values provided in the elementHeight prop as there are children.');
     }
@@ -862,12 +890,21 @@ module.exports = function (props) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}],10:[function(require,module,exports){
+},{"lodash.isfinite":3,"react":undefined}],10:[function(require,module,exports){
+'use strict';
+
+if (!Object.assign) {
+  Object.assign = require('object-assign');
+}
+
+if (!Array.isArray) {
+  Array.isArray = require('lodash.isarray');
+}
+
+},{"lodash.isarray":2,"object-assign":4}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
-var _isArray = require('lodash.isarray');
-var _isFinite = require('lodash.isfinite');
 var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js');
 var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
 var React = global.React || require('react');
@@ -877,12 +914,11 @@ function createInfiniteComputer(data, children) {
   var numberOfChildren = React.Children.count(children);
 
   // This should be guaranteed by checkProps
-  if (_isFinite(data)) {
-    computer = new ConstantInfiniteComputer(data, numberOfChildren);
-  } else if (_isArray(data)) {
+  if (Array.isArray(data)) {
     computer = new ArrayInfiniteComputer(data, numberOfChildren);
+  } else {
+    computer = new ConstantInfiniteComputer(data, numberOfChildren);
   }
-
   return computer;
 }
 
@@ -895,17 +931,18 @@ function recomputeApertureStateFromOptionsAndScrollTop(_ref, scrollTop) {
   var preloadBatchSize = _ref.preloadBatchSize;
   var preloadAdditionalHeight = _ref.preloadAdditionalHeight;
   var infiniteComputer = _ref.infiniteComputer;
+  return (function () {
+    var blockNumber = preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / preloadBatchSize),
+        blockStart = preloadBatchSize * blockNumber,
+        blockEnd = blockStart + preloadBatchSize,
+        apertureTop = Math.max(0, blockStart - preloadAdditionalHeight),
+        apertureBottom = Math.min(infiniteComputer.getTotalScrollableHeight(), blockEnd + preloadAdditionalHeight);
 
-  var blockNumber = preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / preloadBatchSize),
-      blockStart = preloadBatchSize * blockNumber,
-      blockEnd = blockStart + preloadBatchSize,
-      apertureTop = Math.max(0, blockStart - preloadAdditionalHeight),
-      apertureBottom = Math.min(infiniteComputer.getTotalScrollableHeight(), blockEnd + preloadAdditionalHeight);
-
-  return {
-    displayIndexStart: infiniteComputer.getDisplayIndexStart(apertureTop),
-    displayIndexEnd: infiniteComputer.getDisplayIndexEnd(apertureBottom)
-  };
+    return {
+      displayIndexStart: infiniteComputer.getDisplayIndexStart(apertureTop),
+      displayIndexEnd: infiniteComputer.getDisplayIndexEnd(apertureBottom)
+    };
+  })();
 }
 
 module.exports = {
@@ -914,14 +951,14 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../computers/arrayInfiniteComputer.js":5,"../computers/constantInfiniteComputer.js":6,"lodash.isarray":2,"lodash.isfinite":3,"react":undefined}],11:[function(require,module,exports){
+},{"../computers/arrayInfiniteComputer.js":5,"../computers/constantInfiniteComputer.js":6,"react":undefined}],12:[function(require,module,exports){
 'use strict';
 
 module.exports = {
   CONTAINER_HEIGHT_SCALE_FACTOR: 'containerHeightScaleFactor'
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (global){
 'use strict';
 
