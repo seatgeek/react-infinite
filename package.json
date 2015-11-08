@@ -72,7 +72,7 @@
     "gulp-webserver": "^0.9.1",
     "jest-cli": "0.4.19",
     "moment": "^2.10.6",
-    "react-addons-test-utils": "^0.14.0",
+    "react-addons-test-utils": "0.14.2",
     "uglifyify": "3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
