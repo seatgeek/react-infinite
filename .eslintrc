@@ -18,7 +18,17 @@
   "globals": {
     "require": false,
     "module": false,
-    "global": false
+    "global": false,
+
+    "PreloadType": false,
+    "ElementHeight": false,
+    "CSSStyle": false,
+    "ReactInfiniteUtilityFunctions": false,
+    "ReactInfiniteProvidedDefaultProps": false,
+    "ReactInfiniteProps": false,
+    "ReactInfiniteComputedProps": false,
+    "ReactInfiniteState": false,
+    "InfiniteComputer": false
   },
 
   "env": {
