@@ -7,11 +7,12 @@ React Infinite
 
 **A browser-ready efficient scrolling container based on UITableView.**
 
-- Support for both static and variable element heights
-- Built-in support for infinite loading of future pages
-- Ability to use the window as the scroll container
-- Ability to be used as a chat/messaging-style display
-- 94% test coverage with Jest and typechecked with Facebook's Flow
+- Support for both static and [variable element heights](https://github.com/seatgeek/react-infinite#elements-of-varying-heights)
+- Built-in support for [infinite loading](https://github.com/seatgeek/react-infinite#number-infiniteloadbeginedgeoffset) of upcoming pages
+- Ability to use the [window as the scroll container](https://github.com/seatgeek/react-infinite#bool-usewindowasscrollcontainer)
+- Ability to be used as a [chat/messaging-style display](https://github.com/seatgeek/react-infinite#bool-displaybottomupwards)
+- [94% test coverage with Jest](https://coveralls.io/github/seatgeek/react-infinite) and typechecked with Facebook's Flow
+- [Examples are available](https://github.com/seatgeek/react-infinite/tree/master/examples) for experimentation
 
 When a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM even when they are out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long. React Infinite solves this by rendering only DOM nodes that the user is able to see or might soon see. Other DOM nodes are clustered and rendered as a single blank node.
 
