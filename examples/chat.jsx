@@ -23,7 +23,7 @@ var ListItem = React.createClass({
 var InfiniteList = React.createClass({
     getInitialState: function() {
         return {
-            elements: this.buildElements(0, 1),
+            elements: [],
             isInfiniteLoading: false
         }
     },
@@ -48,7 +48,6 @@ var InfiniteList = React.createClass({
     },
 
     handleInfiniteLoad: function() {
-      console.log("handling infinite load");
         var that = this;
         this.setState({
             isInfiniteLoading: true
