@@ -36,7 +36,7 @@ var Infinite = React.createClass({
     ]).isRequired,
     // This is the total height of the visible window. One
     // of
-    containerHeight: React.PropTypes.number.isRequired,
+    containerHeight: React.PropTypes.number,
     useWindowAsScrollContainer: React.PropTypes.bool,
 
     displayBottomUpwards: React.PropTypes.bool.isRequired,

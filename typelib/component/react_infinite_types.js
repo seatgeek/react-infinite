@@ -40,7 +40,7 @@ type ReactInfiniteProps = {
   preloadAdditionalHeight?: PreloadType,
 
   elementHeight: ElementHeight,
-  containerHeight: number,
+  containerHeight?: number,
   useWindowAsScrollContainer?: boolean,
 
   displayBottomUpwards: boolean,
