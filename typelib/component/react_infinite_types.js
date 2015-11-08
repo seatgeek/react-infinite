@@ -7,6 +7,7 @@ type ElementHeight = number | Array<number>;
 type CSSStyle = {[key: string]: string | number};
 
 type ReactInfiniteUtilityFunctions = {
+  getLoadingSpinnerHeight: () => number,
   subscribeToScrollListener: () => void,
   unsubscribeFromScrollListener: () => void,
   nodeScrollListener: (e: SyntheticEvent) => void,

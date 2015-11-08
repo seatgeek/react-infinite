@@ -68,6 +68,7 @@ var Infinite = React.createClass({
   utils: {},
   shouldAttachToBottom: false,
   preservedScrollState: 0,
+  loadingSpinnerHeight: 0,
   deprecationWarned: false,
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
@@ -165,7 +166,8 @@ var Infinite = React.createClass({
     utilities.getLoadingSpinnerHeight = () => {
       var loadingSpinnerHeight = 0;
       if (this.refs && this.refs.loadingSpinner) {
-        loadingSpinnerHeight = React.findDOMNode(this.refs.loadingSpinner).offsetHeight || 0;
+        var loadingSpinnerNode = React.findDOMNode(this.refs.loadingSpinner);
+        loadingSpinnerHeight = loadingSpinnerNode.offsetHeight || 0;
       }
       return loadingSpinnerHeight;
     };
@@ -263,11 +265,13 @@ var Infinite = React.createClass({
 
   componentWillUpdate() {
     if (this.props.displayBottomUpwards) {
-      this.preservedScrollState = this.utils.getScrollTop() - this.utils.getLoadingSpinnerHeight();
+      this.preservedScrollState = this.utils.getScrollTop() - this.loadingSpinnerHeight;
     }
   },
 
   componentDidUpdate(prevProps: ReactInfiniteProps, prevState: ReactInfiniteState) {
+    this.loadingSpinnerHeight = this.utils.getLoadingSpinnerHeight();
+
     if (this.props.displayBottomUpwards) {
       var lowestScrollTop = this.getLowestPossibleScrollTop();
       if (this.shouldAttachToBottom && this.utils.getScrollTop() < lowestScrollTop) {
@@ -403,7 +407,7 @@ var Infinite = React.createClass({
     if (this.computedProps.displayBottomUpwards) {
       var heightDifference = this.computedProps.containerHeight - this.state.infiniteComputer.getTotalScrollableHeight();
       if (heightDifference > 0) {
-        topSpacerHeight = heightDifference - this.utils.getLoadingSpinnerHeight();
+        topSpacerHeight = heightDifference - this.loadingSpinnerHeight;
       }
     }
 
