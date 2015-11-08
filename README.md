@@ -54,15 +54,14 @@ If not all of the children have the same height, you must provide an array of in
 ```
 
 ### Using the Window to Scroll (`useWindowAsScrollContainer` mode)
-React Infinite now supports being used as a chat box, i.e. appended elements appear at the bottom when added, and the loading of the next page occurs when the user scrolls to the top of the container. To do so, simply add the `displayBottomUpwards` prop.
+To use the entire window as a scroll container instead of just a single `div` (thus using `window.scrollY` instead of a DOM element's `scrollTop`), add the `useWindowAsScrollContainer` prop.
 
 ```xml
 <Infinite containerHeight={200} elementHeight={[111, 252, 143]}
-          displayBottomUpwards>
-    // insert messages for subsequent pages at this point
-    <div className="third-latest-chat"/>
-    <div className="second-latest-chat"/>
-    <div className="latest-chat-message"/>
+          useWindowAsScrollContainer>
+    <div className="111-px"/>
+    <div className="252-px"/>
+    <div className="143-px"/>
 </Infinite>
 ```
 
