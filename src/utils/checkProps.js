@@ -3,7 +3,6 @@
 // make the minimum amount of sense.
 
 var React = global.React || require('react');
-var _isArray = require('lodash.isarray');
 var _isFinite = require('lodash.isfinite');
 
 module.exports = function(props) {
@@ -12,11 +11,11 @@ module.exports = function(props) {
     throw new Error(rie + 'Either containerHeight or useWindowAsScrollContainer must be provided.');
   }
 
-  if (!(_isFinite(props.elementHeight) || _isArray(props.elementHeight))) {
+  if (!(_isFinite(props.elementHeight) || Array.isArray(props.elementHeight))) {
     throw new Error(rie + 'You must provide either a number or an array of numbers as the elementHeight.');
   }
 
-  if (_isArray(props.elementHeight)) {
+  if (Array.isArray(props.elementHeight)) {
     if (React.Children.count(props.children) !== props.elementHeight.length) {
       throw new Error(rie + 'There must be as many values provided in the elementHeight prop as there are children.');
     }

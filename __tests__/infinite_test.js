@@ -577,6 +577,32 @@ describe("Maintaining React Infinite's internal scroll state", function() {
 })
 
 describe('Handling infinite scrolling', function() {
+  it('triggers an infinite scroll the first time the component mounts if the elements do not fill the container', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    var rootNode;
+
+    runs(function() {
+      rootNode = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={elementHeight}
+                  containerHeight={800}
+                  infiniteLoadBeginBottomOffset={1000}
+                  onInfiniteLoad={infiniteSpy}
+                  timeScrollStateLastsForAfterUserScrolls={10000}
+                  className={"correct-class-name"}>
+        </Infinite>
+      );
+    });
+
+    waitsFor(function() {
+      return infiniteSpy.callCount > 0;
+    });
+
+    runs(function() {
+      expect(infiniteSpy).toHaveBeenCalled();
+    });
+  });
+
   it('considers a scroll to have occurred when the container itself is scrolled', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
@@ -787,7 +813,7 @@ describe('React Infinite when the window is used as the Container', function() {
   });
 });
 
-describe("Specifiying React Infinite's preload amounts", function() {
+describe("Specifying React Infinite's preload amounts", function() {
   it('has correct preload batch size defaults', function() {
     var infinite = TestUtils.renderIntoDocument(
       <Infinite elementHeight={200}

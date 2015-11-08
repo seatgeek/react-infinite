@@ -1,20 +1,19 @@
-var _isArray = require('lodash.isarray');
-var _isFinite = require('lodash.isfinite');
+/* @flow */
+
 var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js');
 var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
 var React = global.React || require('react');
 
-function createInfiniteComputer(data, children) {
+function createInfiniteComputer(data: ElementHeight, children: any): InfiniteComputer {
   var computer;
   var numberOfChildren = React.Children.count(children);
 
   // This should be guaranteed by checkProps
-  if (_isFinite(data)) {
-    computer = new ConstantInfiniteComputer(data, numberOfChildren);
-  } else if (_isArray(data)) {
+  if (Array.isArray(data)) {
     computer = new ArrayInfiniteComputer(data, numberOfChildren);
+  } else {
+    computer = new ConstantInfiniteComputer(data, numberOfChildren);
   }
-
   return computer;
 }
 
@@ -27,7 +26,14 @@ function recomputeApertureStateFromOptionsAndScrollTop({
   preloadBatchSize,
   preloadAdditionalHeight,
   infiniteComputer
-  }, scrollTop) {
+  }: {
+    preloadBatchSize: number;
+    preloadAdditionalHeight: number;
+    infiniteComputer: InfiniteComputer;
+  }, scrollTop: number): {
+    displayIndexStart: number;
+    displayIndexEnd: number;
+  } {
   var blockNumber = preloadBatchSize === 0 ? 0 : Math.floor(scrollTop / preloadBatchSize),
       blockStart = preloadBatchSize * blockNumber,
       blockEnd = blockStart + preloadBatchSize,
