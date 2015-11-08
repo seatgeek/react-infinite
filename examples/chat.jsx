@@ -34,10 +34,9 @@ var InfiniteList = React.createClass({
         var elemLength = that.state.elements.length,
             newElements = that.buildElements(elemLength, elemLength + 1);
         that.setState({
-            isInfiniteLoading: false,
             elements: that.state.elements.concat(newElements)
         });
-      }, 250);
+      }, 500);
     },
 
     buildElements: function(start, end) {
@@ -49,16 +48,17 @@ var InfiniteList = React.createClass({
     },
 
     handleInfiniteLoad: function() {
+      console.log("handling infinite load");
         var that = this;
         this.setState({
             isInfiniteLoading: true
         });
         setTimeout(function() {
             var elemLength = that.state.elements.length,
-                newElements = that.buildElements(elemLength, elemLength + 1);
+                newElements = that.buildElements(elemLength, elemLength + 20);
             that.setState({
                 isInfiniteLoading: false,
-                elements: that.state.elements.concat(newElements)
+                elements: newElements.concat(that.state.elements)
             });
         }, 2000);
     },
@@ -72,7 +72,7 @@ var InfiniteList = React.createClass({
     render: function() {
         return <Infinite elementHeight={51}
                          containerHeight={window.innerHeight}
-                         infiniteLoadBeginEdgeOffset={undefined}
+                         infiniteLoadBeginEdgeOffset={300}
                          onInfiniteLoad={this.handleInfiniteLoad}
                          loadingSpinnerDelegate={this.elementInfiniteLoad()}
                          isInfiniteLoading={this.state.isInfiniteLoading}
