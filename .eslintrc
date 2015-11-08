@@ -20,6 +20,9 @@
     "module": false,
     "global": false,
 
+    "SyntheticEvent": false,
+    "ReactElement": false,
+
     "PreloadType": false,
     "ElementHeight": false,
     "CSSStyle": false,
