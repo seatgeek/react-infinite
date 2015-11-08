@@ -172,7 +172,7 @@ var Infinite = React.createClass({
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.scrollY;
       utilities.setScrollTop = (top) => {
-        window.scrollY = top;
+        window.scroll(window.scrollX, top);
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
@@ -256,8 +256,9 @@ var Infinite = React.createClass({
 
   componentDidUpdate(prevProps: ReactInfiniteProps, prevState: ReactInfiniteState) {
     if (this.props.displayBottomUpwards) {
-      if (this.shouldAttachToBottom) {
-        this.utils.setScrollTop(this.getLowestPossibleScrollTop());
+      var lowestScrollTop = this.getLowestPossibleScrollTop();
+      if (this.shouldAttachToBottom && this.utils.getScrollTop() < lowestScrollTop) {
+        this.utils.setScrollTop(lowestScrollTop);
       } else if (prevProps.isInfiniteLoading && !this.props.isInfiniteLoading) {
         this.utils.setScrollTop(this.state.infiniteComputer.getTotalScrollableHeight() -
           prevState.infiniteComputer.getTotalScrollableHeight());

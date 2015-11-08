@@ -4,6 +4,7 @@ jest.dontMock('../src/computers/constantInfiniteComputer.js');
 jest.dontMock('../src/computers/arrayInfiniteComputer.js');
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 jest.dontMock('../src/utils/infiniteHelpers.js');
+jest.dontMock('./helpers/renderHelpers.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
@@ -11,26 +12,7 @@ var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 var Infinite = require('../src/react-infinite.jsx');
 
-var renderHelpers = {
-  divGenerator: function(number, height) {
-    number = number || 10;
-    height = height || 100;
-
-    var divArray = [];
-    for (var i = 0; i < number; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: height}}/>)
-    }
-
-    return divArray;
-  },
-  variableDivGenerator: function(heights) {
-    var divArray = [];
-    for (var i = 0; i < heights.length; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: heights[i]}}/>)
-    }
-    return divArray;
-  }
-}
+var renderHelpers = require('./helpers/renderHelpers');
 
 describe('Rendering the React Infinite Component Wrapper', function() {
   it('does not throw an error when given no children', function() {

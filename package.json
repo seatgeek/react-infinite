@@ -34,6 +34,9 @@
       "<rootDir>/__tests__",
       "<rootDir>/src"
     ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers"
+    ],
     "testFileExtensions": [
       "js",
       "jsx"
