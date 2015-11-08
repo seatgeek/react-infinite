@@ -2,15 +2,17 @@
 
 var React = global.React || require('react');
 require('./utils/establish-polyfills');
-var checkProps = require('./utils/checkProps');
-var preloadType = require('./utils/types').preloadType;
 var scaleEnum = require('./utils/scaleEnum');
 var infiniteHelpers = require('./utils/infiniteHelpers');
 var _isFinite = require('lodash.isfinite');
 
-var Infinite = React.createClass({
+var InfinitePropTypes = {};
+var checkProps = () => {};
 
-  propTypes: {
+if (process.env.NODE_ENV === 'development') {
+  checkProps = require('./utils/checkProps');
+  var preloadType = require('./utils/types').preloadType;
+  InfinitePropTypes = {
     children: React.PropTypes.any,
 
     handleScroll: React.PropTypes.func,
@@ -49,8 +51,11 @@ var Infinite = React.createClass({
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
 
     className: React.PropTypes.string
-  },
+  };
+}
 
+var Infinite = React.createClass({
+  propTypes: InfinitePropTypes,
   statics: {
     containerHeightScaleFactor(factor) {
       if (!_isFinite(factor)) {

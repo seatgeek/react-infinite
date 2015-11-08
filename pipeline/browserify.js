@@ -9,6 +9,8 @@ var uglify = require('gulp-uglify');
 var gulp = require('gulp');
 var size = require('gulp-size');
 
+var envify = require('envify/custom');
+
 function transformBundle(root, envObject) {
   root = root.bundle();
 
@@ -51,7 +53,14 @@ module.exports = function(shouldWatch, envObject, files) {
       standalone: 'Infinite'
     }, watchArgs))
       .transform(babelify)
+      .transform(envify({
+        NODE_ENV: envObject.production || envObject.release ? 'production' : 'development'
+      }))
       .exclude('react');
+
+    if (envObject.production || envObject.release) {
+      root = root.transform('uglifyify');
+    }
 
     if (shouldWatch) {
       root.on('update', function() {
