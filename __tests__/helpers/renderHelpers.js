@@ -7,7 +7,7 @@ module.exports = {
 
     var divArray = [];
     for (var i = 0; i < number; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: height}}/>)
+      divArray.push(<div className={'test-div-' + i} key={i} style={{height: height}}/>);
     }
 
     return divArray;
@@ -15,7 +15,7 @@ module.exports = {
   variableDivGenerator: function(heights) {
     var divArray = [];
     for (var i = 0; i < heights.length; i++) {
-      divArray.push(<div className={"test-div-" + i} key={i} style={{height: heights[i]}}/>)
+      divArray.push(<div className={'test-div-' + i} key={i} style={{height: heights[i]}}/>);
     }
     return divArray;
   }
