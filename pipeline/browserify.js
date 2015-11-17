@@ -56,7 +56,8 @@ module.exports = function(shouldWatch, envObject, files) {
       .transform(envify({
         NODE_ENV: envObject.production || envObject.release ? 'production' : 'development'
       }))
-      .exclude('react');
+      .exclude('react')
+      .exclude('react-dom');
 
     if (envObject.production || envObject.release) {
       root = root.transform('uglifyify');
