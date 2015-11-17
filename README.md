@@ -7,6 +7,8 @@ React Infinite
 
 **A browser-ready efficient scrolling container based on UITableView.**
 
+**React Infinite 0.7.1 only supports React 0.14 and above. Please pin your package to 0.6.0 for React 0.13 support.**
+
 - Support for both static and [variable element heights](https://github.com/seatgeek/react-infinite#elements-of-varying-heights)
 - Built-in support for [infinite loading](https://github.com/seatgeek/react-infinite#number-infiniteloadbeginedgeoffset) of upcoming pages
 - Ability to use the [window as the scroll container](https://github.com/seatgeek/react-infinite#bool-usewindowasscrollcontainer)
