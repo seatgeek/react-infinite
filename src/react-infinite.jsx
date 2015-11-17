@@ -169,7 +169,7 @@ var Infinite = React.createClass({
     utilities.getLoadingSpinnerHeight = () => {
       var loadingSpinnerHeight = 0;
       if (this.refs && this.refs.loadingSpinner) {
-        var loadingSpinnerNode = React.findDOMNode(this.refs.loadingSpinner);
+        var loadingSpinnerNode = ReactDOM.findDOMNode(this.refs.loadingSpinner);
         loadingSpinnerHeight = loadingSpinnerNode.offsetHeight || 0;
       }
       return loadingSpinnerHeight;
@@ -203,7 +203,7 @@ var Infinite = React.createClass({
       utilities.setScrollTop = (top) => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
-          scrollable = React.findDOMNode(this.refs.scrollable);
+          scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
         }
         if (scrollable) {
           scrollable.scrollTop = top;

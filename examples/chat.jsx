@@ -83,5 +83,5 @@ var InfiniteList = React.createClass({
     }
 });
 
-React.render(<InfiniteList/>,
+ReactDOM.render(<InfiniteList/>,
         document.getElementById('infinite-window-example'));
