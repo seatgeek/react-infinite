@@ -9,9 +9,11 @@ jest.dontMock('../src/utils/infiniteHelpers.js');
 jest.dontMock('./helpers/renderHelpers.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
+jest.dontMock('react-dom');
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
+var React = require('react');
+var ReactDOM = require('react-dom');
+var TestUtils = require('react-addons-test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
 var renderHelpers = require('./helpers/renderHelpers');
@@ -77,7 +79,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
                         <li>Test2</li>
                     </Infinite>);
 
-    TestUtils.Simulate.scroll(renderedInfinite.getDOMNode());
+    TestUtils.Simulate.scroll(ReactDOM.findDOMNode(renderedInfinite));
   });
 });
 
@@ -219,7 +221,7 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 1500;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -269,7 +271,7 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
       );
 
     // The total scrollable height here is 4000 pixels
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 3600;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -340,7 +342,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 700;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -393,7 +395,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
       );
 
     // The total scrollable height here is 4000 pixels
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 1000;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -439,7 +441,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 300;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -461,7 +463,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 3600;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -484,7 +486,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 100;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -509,7 +511,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 3600;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -549,7 +551,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
         </Infinite>
       );
 
-    var rootDomNode = rootNode.getDOMNode();
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     rootDomNode.scrollTop = 100;
     TestUtils.Simulate.scroll(rootDomNode, {
       target: rootDomNode
@@ -604,7 +606,7 @@ describe('Handling infinite scrolling', function() {
     var properDiv = TestUtils.findRenderedDOMComponentWithClass(rootNode, 'correct-class-name');
     properDiv.scrollTop = 100;
     TestUtils.Simulate.scroll(properDiv, {
-      target: properDiv.getDOMNode()
+      target: ReactDOM.findDOMNode(properDiv)
     });
 
     expect(infiniteSpy).toHaveBeenCalled();
@@ -627,7 +629,7 @@ describe('Handling infinite scrolling', function() {
     var childDiv = TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0');
     childDiv.scrollTop = 100;
     TestUtils.Simulate.scroll(childDiv, {
-      target: childDiv.getDOMNode()
+      target: ReactDOM.findDOMNode(childDiv)
     });
 
     expect(infiniteSpy).not.toHaveBeenCalled();

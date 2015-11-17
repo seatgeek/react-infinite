@@ -84,10 +84,8 @@
     "lodash.isarray": "3.0.4",
     "lodash.isfinite": "3.2.0",
     "object-assign": "4.0.1",
-    "react": ">= 0.13.0"
-  },
-  "peerDependencies": {
-    "react": ">= 0.13.0"
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0"
   },
   "browserify": {
     "transform": [

@@ -1,8 +1,11 @@
 /* @flow */
 
 var React = global.React || require('react');
+var ReactDOM = global.ReactDOM || require('react-dom');
+
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
+var _assign = require('object-assign');
 var infiniteHelpers = require('./utils/infiniteHelpers');
 var _isFinite = require('lodash.isfinite');
 
@@ -193,10 +196,11 @@ var Infinite = React.createClass({
       utilities.getScrollTop = () => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
-          scrollable = React.findDOMNode(this.refs.scrollable);
+          scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
         }
         return scrollable ? scrollable.scrollTop : 0;
       };
+
       utilities.setScrollTop = (top) => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
@@ -206,7 +210,8 @@ var Infinite = React.createClass({
           scrollable.scrollTop = top;
         }
       };
-      utilities.scrollShouldBeIgnored = event => event.target !== React.findDOMNode(this.refs.scrollable);
+      utilities.scrollShouldBeIgnored = event => event.target !== ReactDOM.findDOMNode(this.refs.scrollable);
+
       utilities.buildScrollableStyle = () => {
         return {
           height: this.computedProps.containerHeight,
@@ -318,7 +323,7 @@ var Infinite = React.createClass({
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
-    this.computedProps.handleScroll(React.findDOMNode(this.refs.scrollable));
+    this.computedProps.handleScroll(ReactDOM.findDOMNode(this.refs.scrollable));
     this.handleScroll(this.utils.getScrollTop());
   },
 
