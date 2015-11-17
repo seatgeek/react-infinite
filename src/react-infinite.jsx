@@ -5,7 +5,6 @@ var ReactDOM = global.ReactDOM || require('react-dom');
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
-var _assign = require('object-assign');
 var infiniteHelpers = require('./utils/infiniteHelpers');
 var _isFinite = require('lodash.isfinite');
 
