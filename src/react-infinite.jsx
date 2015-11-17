@@ -1,6 +1,8 @@
 /* @flow */
 
 var React = global.React || require('react');
+var ReactDOM = global.ReactDOM || require('react-dom');
+
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
 var infiniteHelpers = require('./utils/infiniteHelpers');
@@ -167,7 +169,7 @@ var Infinite = React.createClass({
     utilities.getLoadingSpinnerHeight = () => {
       var loadingSpinnerHeight = 0;
       if (this.refs && this.refs.loadingSpinner) {
-        var loadingSpinnerNode = React.findDOMNode(this.refs.loadingSpinner);
+        var loadingSpinnerNode = ReactDOM.findDOMNode(this.refs.loadingSpinner);
         loadingSpinnerHeight = loadingSpinnerNode.offsetHeight || 0;
       }
       return loadingSpinnerHeight;
@@ -193,20 +195,22 @@ var Infinite = React.createClass({
       utilities.getScrollTop = () => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
-          scrollable = React.findDOMNode(this.refs.scrollable);
+          scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
         }
         return scrollable ? scrollable.scrollTop : 0;
       };
+
       utilities.setScrollTop = (top) => {
         var scrollable;
         if (this.refs && this.refs.scrollable) {
-          scrollable = React.findDOMNode(this.refs.scrollable);
+          scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
         }
         if (scrollable) {
           scrollable.scrollTop = top;
         }
       };
-      utilities.scrollShouldBeIgnored = event => event.target !== React.findDOMNode(this.refs.scrollable);
+      utilities.scrollShouldBeIgnored = event => event.target !== ReactDOM.findDOMNode(this.refs.scrollable);
+
       utilities.buildScrollableStyle = () => {
         return {
           height: this.computedProps.containerHeight,
@@ -318,7 +322,7 @@ var Infinite = React.createClass({
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
-    this.computedProps.handleScroll(React.findDOMNode(this.refs.scrollable));
+    this.computedProps.handleScroll(ReactDOM.findDOMNode(this.refs.scrollable));
     this.handleScroll(this.utils.getScrollTop());
   },
 

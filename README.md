@@ -220,7 +220,7 @@ var InfiniteList = React.createClass({
     }
 });
 
-React.render(<InfiniteList/>, document.getElementById('react-example-one'));
+ReactDOM.render(<InfiniteList/>, document.getElementById('react-example-one'));
 ```
 
 SeatGeek also currently uses React Infinite in production on our event pages; because we only have pages for events in the future, a link would not be appropriate. To see one, head to one of our team pages for the [New York Giants](https://seatgeek.com/new-york-giants-tickets), or the [New York Mets](https://seatgeek.com/new-york-mets-tickets), or the [New York Knicks](https://seatgeek.com/new-york-knicks-tickets), and click on the green button for an event to see them in action in the Omnibox.
