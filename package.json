@@ -70,7 +70,7 @@
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
     "gulp-webserver": "^0.9.1",
-    "jest-cli": "0.6.0",
+    "jest-cli": "0.4.19",
     "moment": "^2.10.6",
     "react-addons-test-utils": "0.14.2",
     "uglifyify": "3.0.1",
