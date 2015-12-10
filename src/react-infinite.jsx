@@ -182,10 +182,9 @@ var Infinite = React.createClass({
         window.removeEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.nodeScrollListener = () => {};
-      utilities.getScrollTop = () => window.scrollY || window.pageYOffset;
+      utilities.getScrollTop = () => window.pageYOffset;
       utilities.setScrollTop = (top) => {
-        var scrollX = window.scrollX || window.pageXOffset;
-        window.scroll(scrollX, top);
+        window.scroll(window.pageXOffset, top);
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
