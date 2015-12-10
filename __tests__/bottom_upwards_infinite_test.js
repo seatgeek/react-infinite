@@ -256,7 +256,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
     });
 
     runs(function() {
-      window.scrollY = 299;
+      window.pageYOffset = 299;
       scrollListener();
 
       expect(infiniteLoader.mock.calls.length).toEqual(1);
@@ -292,7 +292,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
     });
 
     runs(function() {
-      window.scrollY = 301;
+      window.pageYOffset = 301;
       scrollListener();
 
       expect(infiniteLoader.mock.calls.length).toEqual(0);
@@ -396,7 +396,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
     });
 
     runs(function() {
-      window.scrollY = 298;
+      window.pageYOffset = 298;
       scrollListener();
       expect(infiniteLoader.mock.calls.length).toEqual(1);
 

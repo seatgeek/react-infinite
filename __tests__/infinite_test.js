@@ -685,7 +685,7 @@ describe('React Infinite when the window is used as the Container', function() {
     });
 
     runs(function() {
-      window.scrollY = 200;
+      window.pageYOffset = 200;
       scrollListener();
       expect(infiniteSpy).toHaveBeenCalled();
     });
@@ -774,7 +774,7 @@ describe('React Infinite when the window is used as the Container', function() {
     });
 
     runs(function() {
-      window.scrollY = 1500;
+      window.pageYOffset = 1500;
       scrollListener();
 
       for (var i = 0; i < 2; i++) {
