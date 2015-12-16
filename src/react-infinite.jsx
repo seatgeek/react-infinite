@@ -283,7 +283,8 @@ var Infinite = React.createClass({
           this.preservedScrollState);
       }
     }
-    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
+
+    if (this.state.numberOfChildren !== prevState.numberOfChildren) {
       var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
         this.state,
         this.utils.getScrollTop()
