@@ -49,6 +49,8 @@ var Infinite = React.createClass({
 
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
+    
+    disabled: React.PropTypes.bool,
 
     className: React.PropTypes.string
   },
