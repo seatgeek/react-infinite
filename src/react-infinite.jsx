@@ -215,7 +215,7 @@ var Infinite = React.createClass({
         return {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: 'scroll',
+          overflowY: this.computedProps.disabled ? 'hidden' : 'scroll',
           WebkitOverflowScrolling: 'touch'
         };
       };
