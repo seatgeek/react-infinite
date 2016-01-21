@@ -909,3 +909,68 @@ describe('Rerendering React Infinite', function() {
     expect(rootNode.state.infiniteComputer.heightData).toEqual([10, 20, 30]);
   });
 });
+
+describe('Requesting all visible rows', function () {
+  var InfiniteWrapper = React.createClass({
+    getInitialState() {
+      return { currentRows: 0, totalRequests: 0 }
+    },
+
+    onInfiniteLoad() {
+      this.setState({
+        totalRequests: this.state.totalRequests + 1
+      });
+
+      if (this.state.currentRows < this.props.totalRows) {
+        this.setState({
+          currentRows: this.state.currentRows + 1
+        });
+      }
+    },
+
+    render() {
+      return (
+        <Infinite elementHeight={this.props.elementHeight}
+                  containerHeight={this.props.containerHeight}
+                  onInfiniteLoad={this.onInfiniteLoad}
+                  infiniteLoadBeginEdgeOffset={100}
+                  className={"correct-class-name"}>
+          {renderHelpers.divGenerator(this.state.currentRows, this.props.elementHeight)}
+        </Infinite>
+      );
+    }
+  });
+
+  it('will request all possible rows until the scroll height is met', function () {
+    var rootNode = TestUtils.renderIntoDocument(
+      <InfiniteWrapper totalRows={50}
+                       elementHeight={40}
+                       containerHeight={400} />
+    );
+
+    expect(rootNode.state.totalRequests).toEqual(10);
+    expect(rootNode.state.currentRows).toEqual(10);
+  });
+
+  it('will stop requesting when no further rows are provided', function () {
+    var rootNode = TestUtils.renderIntoDocument(
+      <InfiniteWrapper totalRows={3}
+                       elementHeight={40}
+                       containerHeight={400} />
+    );
+
+    expect(rootNode.state.totalRequests).toEqual(4);
+    expect(rootNode.state.currentRows).toEqual(3);
+  });
+
+  it('will work when no possible rows can be loaded', function () {
+    var rootNode = TestUtils.renderIntoDocument(
+      <InfiniteWrapper totalRows={0}
+                       elementHeight={40}
+                       containerHeight={400} />
+    );
+
+    expect(rootNode.state.totalRequests).toEqual(1);
+    expect(rootNode.state.currentRows).toEqual(0);
+  });
+});
