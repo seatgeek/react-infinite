@@ -83,9 +83,11 @@
   "dependencies": {
     "lodash.isarray": "3.0.4",
     "lodash.isfinite": "3.2.0",
-    "object-assign": "4.0.1",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "object-assign": "4.0.1"
+  },
+  "peerDependencies": {
+    "react": "0.14.x",
+    "react-dom": "0.14.x"
   },
   "browserify": {
     "transform": [

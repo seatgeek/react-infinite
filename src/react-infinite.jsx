@@ -287,23 +287,27 @@ var Infinite = React.createClass({
           this.preservedScrollState);
       }
     }
-    if (React.Children.count(this.props.children) !== React.Children.count(prevProps.children)) {
+
+    const hasLoadedMoreChildren = React.Children.count(this.props.children) !== React.Children.count(prevProps.children);
+    if (hasLoadedMoreChildren) {
       var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
         this.state,
         this.utils.getScrollTop()
       );
       this.setState(newApertureState);
     }
+
+    const isMissingVisibleRows = hasLoadedMoreChildren && !this.hasAllVisibleItems() && !this.state.isInfiniteLoading;
+    if (isMissingVisibleRows) {
+      this.onInfiniteLoad();
+    }
   },
 
   componentDidMount() {
     this.utils.subscribeToScrollListener();
-    if (_isFinite(this.computedProps.infiniteLoadBeginEdgeOffset) &&
-        this.state.infiniteComputer.getTotalScrollableHeight() < this.computedProps.containerHeight) {
-      this.setState({
-        isInfiniteLoading: true
-      });
-      this.computedProps.onInfiniteLoad();
+
+    if (!this.hasAllVisibleItems()) {
+      this.onInfiniteLoad();
     }
 
     if (this.props.displayBottomUpwards) {
@@ -352,6 +356,11 @@ var Infinite = React.createClass({
     return this.state.infiniteComputer.getTotalScrollableHeight() - this.computedProps.containerHeight;
   },
 
+  hasAllVisibleItems(): boolean {
+    return !(_isFinite(this.computedProps.infiniteLoadBeginEdgeOffset) &&
+        this.state.infiniteComputer.getTotalScrollableHeight() < this.computedProps.containerHeight);
+  },
+
   passedEdgeForInfiniteScroll(scrollTop: number): boolean {
     if (this.computedProps.displayBottomUpwards) {
       return !this.shouldAttachToBottom && scrollTop < this.computedProps.infiniteLoadBeginEdgeOffset;
@@ -360,6 +369,11 @@ var Infinite = React.createClass({
           this.computedProps.containerHeight -
           this.computedProps.infiniteLoadBeginEdgeOffset;
     }
+  },
+
+  onInfiniteLoad() {
+    this.setState({ isInfiniteLoading: true });
+    this.computedProps.onInfiniteLoad();
   },
 
   handleScroll(scrollTop: number) {
@@ -374,10 +388,8 @@ var Infinite = React.createClass({
     );
 
     if (this.passedEdgeForInfiniteScroll(scrollTop) && !this.state.isInfiniteLoading) {
-      this.setState(Object.assign({}, newApertureState, {
-        isInfiniteLoading: true
-      }));
-      this.computedProps.onInfiniteLoad();
+      this.setState(Object.assign({}, newApertureState));
+      this.onInfiniteLoad();
     } else {
       this.setState(newApertureState);
     }
