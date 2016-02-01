@@ -50,7 +50,9 @@ var Infinite = React.createClass({
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
 
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+
+    overflowY: React.PropTypes.onOf(['visible', 'hidden', 'scroll', 'auto', 'initial', 'inherit'])
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -87,7 +89,9 @@ var Infinite = React.createClass({
       isInfiniteLoading: false,
       timeScrollStateLastsForAfterUserScrolls: 150,
 
-      className: ''
+      className: '',
+
+      overflowY: 'scroll'
     };
   },
 
@@ -215,7 +219,7 @@ var Infinite = React.createClass({
         return {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: 'scroll',
+          overflowY: this.computedProps.overflowY,
           WebkitOverflowScrolling: 'touch'
         };
       };

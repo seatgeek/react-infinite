@@ -30,7 +30,9 @@ type ReactInfiniteProvidedDefaultProps = {
   isInfiniteLoading: boolean,
   timeScrollStateLastsForAfterUserScrolls: number,
 
-  className: string
+  className: string,
+
+  overflowY: string
 }
 
 type ReactInfiniteProps = {
@@ -53,7 +55,9 @@ type ReactInfiniteProps = {
   isInfiniteLoading?: boolean,
   timeScrollStateLastsForAfterUserScrolls?: number,
 
-  className?: string
+  className?: string,
+
+  overflowY?: string
 };
 
 type ReactInfiniteComputedProps = {
