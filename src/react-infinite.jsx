@@ -91,7 +91,7 @@ var Infinite = React.createClass({
 
       className: '',
 
-      overflowY: {}
+      style: {}
     };
   },
 
