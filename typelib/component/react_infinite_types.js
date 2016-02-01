@@ -32,7 +32,7 @@ type ReactInfiniteProvidedDefaultProps = {
 
   className: string,
 
-  overflowY: string
+  style: object
 }
 
 type ReactInfiniteProps = {
@@ -57,7 +57,7 @@ type ReactInfiniteProps = {
 
   className?: string,
 
-  overflowY?: string
+  style?: object
 };
 
 type ReactInfiniteComputedProps = {

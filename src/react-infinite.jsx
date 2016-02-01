@@ -52,7 +52,7 @@ var Infinite = React.createClass({
 
     className: React.PropTypes.string,
 
-    overflowY: React.PropTypes.onOf(['visible', 'hidden', 'scroll', 'auto', 'initial', 'inherit'])
+    style: React.PropTypes.object
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -91,7 +91,7 @@ var Infinite = React.createClass({
 
       className: '',
 
-      overflowY: 'scroll'
+      overflowY: {}
     };
   },
 
@@ -216,12 +216,12 @@ var Infinite = React.createClass({
       utilities.scrollShouldBeIgnored = event => event.target !== ReactDOM.findDOMNode(this.refs.scrollable);
 
       utilities.buildScrollableStyle = () => {
-        return {
+        return Object.assign({}, {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: this.computedProps.overflowY,
+          overflowY: 'scroll',
           WebkitOverflowScrolling: 'touch'
-        };
+        }, this.computedProps.style);
       };
     }
     return utilities;
