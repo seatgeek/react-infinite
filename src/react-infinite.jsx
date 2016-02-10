@@ -365,9 +365,15 @@ var Infinite = React.createClass({
     if (this.computedProps.displayBottomUpwards) {
       return !this.shouldAttachToBottom && scrollTop < this.computedProps.infiniteLoadBeginEdgeOffset;
     } else {
-      return scrollTop > this.state.infiniteComputer.getTotalScrollableHeight() -
-          this.computedProps.containerHeight -
-          this.computedProps.infiniteLoadBeginEdgeOffset;
+      if (this.props.useWindowAsScrollContainer) {
+        var scrollableBottomAbsY = this.refs.scrollable.getBoundingClientRect().bottom - document.body.getBoundingClientRect().top;
+        var viewportBottomAbsY = scrollTop + window.innerHeight;
+        return this.computedProps.infiniteLoadBeginEdgeOffset >= scrollableBottomAbsY - viewportBottomAbsY;
+      } else {
+        return scrollTop > this.state.infiniteComputer.getTotalScrollableHeight() -
+            this.computedProps.containerHeight -
+            this.computedProps.infiniteLoadBeginEdgeOffset;
+      }
     }
   },
 
