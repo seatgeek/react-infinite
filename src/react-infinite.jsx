@@ -281,7 +281,7 @@ var Infinite = React.createClass({
       var lowestScrollTop = this.getLowestPossibleScrollTop();
       if (this.shouldAttachToBottom && this.utils.getScrollTop() < lowestScrollTop) {
         this.utils.setScrollTop(lowestScrollTop);
-      } else if (prevProps.isInfiniteLoading && !this.props.isInfiniteLoading) {
+      } else {
         this.utils.setScrollTop(this.state.infiniteComputer.getTotalScrollableHeight() -
           prevState.infiniteComputer.getTotalScrollableHeight() +
           this.preservedScrollState);

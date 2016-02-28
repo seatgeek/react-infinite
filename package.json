@@ -1,11 +1,11 @@
 {
   "name": "react-infinite",
   "version": "0.8.0",
-  "description": "A browser-ready efficient scrolling container based on UITableView",
-  "main": "build/react-infinite.js",
+  "description": "A browser-ready efficient scrolling container based on UITableView, modded by rom1@medici",
+  "main": "dist/react-infinite.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/seatgeek/react-infinite"
+    "url": "https://github.com/romainPellerin/react-infinite.git"
   },
   "keywords": [
     "react",
@@ -14,12 +14,7 @@
     "uitableview",
     "infinite"
   ],
-  "author": "Gareth Tan",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/seatgeek/react-infinite/issues"
-  },
-  "browser": "build/react-infinite.js",
+  "browser": "dist/react-infinite.min.js",
   "scripts": {
     "test": "node ./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
@@ -48,7 +43,7 @@
     "collectCoverage": true,
     "verbose": true
   },
-  "homepage": "https://github.com/seatgeek/react-infinite",
+  "homepage": "https://github.com/romainPellerin/react-infinite",
   "devDependencies": {
     "babel-eslint": "^4.0.7",
     "babel-jest": "^5.3.0",
@@ -86,8 +81,8 @@
     "object-assign": "4.0.1"
   },
   "peerDependencies": {
-    "react": "0.14.x",
-    "react-dom": "0.14.x"
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6"
   },
   "browserify": {
     "transform": [
