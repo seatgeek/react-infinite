@@ -1,3 +1,5 @@
+import type React from 'react';
+
 type PreloadType = number | {
   type: string,
   amount: number
@@ -23,7 +25,7 @@ type ReactInfiniteProvidedDefaultProps = {
   useWindowAsScrollContainer: boolean,
 
   onInfiniteLoad: () => any,
-  loadingSpinnerDelegate: ReactElement<any, any, any>,
+  loadingSpinnerDelegate: React.Element<any, any, any>,
 
   displayBottomUpwards: boolean,
 
@@ -52,15 +54,15 @@ type ReactInfiniteProps = {
 
   infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
-  loadingSpinnerDelegate?: ReactElement<any, any, any>,
+  loadingSpinnerDelegate?: React.Element<any, any, any>,
 
   isInfiniteLoading?: boolean,
   timeScrollStateLastsForAfterUserScrolls?: number,
 
   className?: string,
 
-  styles?: {
-    scrollableStyle: Object
+  styles: {
+    scrollableStyle?: Object
   }
 };
 
@@ -79,7 +81,7 @@ type ReactInfiniteComputedProps = {
 
   infiniteLoadBeginEdgeOffset?: number,
   onInfiniteLoad?: () => any,
-  loadingSpinnerDelegate?: ReactElement<any, any, any>,
+  loadingSpinnerDelegate?: React.Element<any, any, any>,
 
   isInfiniteLoading?: boolean,
   timeScrollStateLastsForAfterUserScrolls?: number,

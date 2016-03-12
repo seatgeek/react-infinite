@@ -54,7 +54,7 @@ var Infinite = React.createClass({
 
     styles: React.PropTypes.shape({
       scrollableStyle: React.PropTypes.object
-    })
+    }).isRequired
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -148,7 +148,7 @@ var Infinite = React.createClass({
 
     if (typeof preloadBatchSize === 'number') {
       newProps.preloadBatchSize = preloadBatchSize;
-    } else if (batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    } else if (typeof batchSize === 'object' && batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
       newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
     } else {
       newProps.preloadBatchSize = 0;
@@ -163,7 +163,7 @@ var Infinite = React.createClass({
       : defaultPreloadAdditionalHeightScaling;
     if (typeof preloadAdditionalHeight === 'number') {
       newProps.preloadAdditionalHeight = preloadAdditionalHeight;
-    } else if (additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    } else if (typeof additionalHeight === 'object' && additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
       newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
     } else {
       newProps.preloadAdditionalHeight = 0;
@@ -410,7 +410,7 @@ var Infinite = React.createClass({
     };
   },
 
-  render(): ReactElement<any, any, any> {
+  render(): React.Element<any, any, any> {
     var displayables;
     if (React.Children.count(this.computedProps.children) > 1) {
       displayables = this.computedProps.children.slice(this.state.displayIndexStart,

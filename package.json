@@ -62,7 +62,7 @@
     "eslint-config-standard": "^4.1.0",
     "eslint-plugin-react": "^3.2.3",
     "eslint-plugin-standard": "^1.2.0",
-    "flow-bin": "0.18.1",
+    "flow-bin": "0.22.0",
     "gulp": "^3.8.8",
     "gulp-babel": "^5.2.1",
     "gulp-concat": "^2.4.3",
