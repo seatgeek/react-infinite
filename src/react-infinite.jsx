@@ -50,7 +50,11 @@ var Infinite = React.createClass({
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
 
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+
+    styles: React.PropTypes.shape({
+      scrollableStyle: React.PropTypes.object
+    }).isRequired
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -75,11 +79,13 @@ var Infinite = React.createClass({
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
-      handleScroll: () => {},
+      handleScroll: () => {
+      },
 
       useWindowAsScrollContainer: false,
 
-      onInfiniteLoad: () => {},
+      onInfiniteLoad: () => {
+      },
       loadingSpinnerDelegate: <div/>,
 
       displayBottomUpwards: false,
@@ -87,7 +93,9 @@ var Infinite = React.createClass({
       isInfiniteLoading: false,
       timeScrollStateLastsForAfterUserScrolls: 150,
 
-      className: ''
+      className: '',
+
+      styles: {}
     };
   },
 
@@ -140,7 +148,7 @@ var Infinite = React.createClass({
 
     if (typeof preloadBatchSize === 'number') {
       newProps.preloadBatchSize = preloadBatchSize;
-    } else if (batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    } else if (typeof batchSize === 'object' && batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
       newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
     } else {
       newProps.preloadBatchSize = 0;
@@ -155,7 +163,7 @@ var Infinite = React.createClass({
       : defaultPreloadAdditionalHeightScaling;
     if (typeof preloadAdditionalHeight === 'number') {
       newProps.preloadAdditionalHeight = preloadAdditionalHeight;
-    } else if (additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    } else if (typeof additionalHeight === 'object' && additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
       newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
     } else {
       newProps.preloadAdditionalHeight = 0;
@@ -212,12 +220,12 @@ var Infinite = React.createClass({
       utilities.scrollShouldBeIgnored = event => event.target !== ReactDOM.findDOMNode(this.refs.scrollable);
 
       utilities.buildScrollableStyle = () => {
-        return {
+        return Object.assign({}, {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
           overflowY: 'scroll',
           WebkitOverflowScrolling: 'touch'
-        };
+        }, this.computedProps.styles.scrollableStyle || {});
       };
     }
     return utilities;
@@ -402,7 +410,7 @@ var Infinite = React.createClass({
     };
   },
 
-  render(): ReactElement<any, any, any> {
+  render(): React.Element<any, any, any> {
     var displayables;
     if (React.Children.count(this.computedProps.children) > 1) {
       displayables = this.computedProps.children.slice(this.state.displayIndexStart,

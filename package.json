@@ -62,7 +62,7 @@
     "eslint-config-standard": "^4.1.0",
     "eslint-plugin-react": "^3.2.3",
     "eslint-plugin-standard": "^1.2.0",
-    "flow-bin": "0.18.1",
+    "flow-bin": "0.22.0",
     "gulp": "^3.8.8",
     "gulp-babel": "^5.2.1",
     "gulp-concat": "^2.4.3",
@@ -72,7 +72,7 @@
     "gulp-webserver": "^0.9.1",
     "jest-cli": "0.4.19",
     "moment": "^2.10.6",
-    "react-addons-test-utils": "0.14.2",
+    "react-addons-test-utils": "15.0.0-rc.1",
     "uglifyify": "3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
@@ -86,8 +86,8 @@
     "object-assign": "4.0.1"
   },
   "peerDependencies": {
-    "react": "0.14.x",
-    "react-dom": "0.14.x"
+    "react": "15.0.0-rc.1",
+    "react-dom": "15.0.0-rc.1"
   },
   "browserify": {
     "transform": [
