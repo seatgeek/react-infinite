@@ -52,7 +52,9 @@ var Infinite = React.createClass({
 
     className: React.PropTypes.string,
 
-    style: React.PropTypes.object
+    styles: React.PropTypes.shape({
+      scrollableStyle: React.PropTypes.object
+    })
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -77,11 +79,13 @@ var Infinite = React.createClass({
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
-      handleScroll: () => {},
+      handleScroll: () => {
+      },
 
       useWindowAsScrollContainer: false,
 
-      onInfiniteLoad: () => {},
+      onInfiniteLoad: () => {
+      },
       loadingSpinnerDelegate: <div/>,
 
       displayBottomUpwards: false,
@@ -91,7 +95,7 @@ var Infinite = React.createClass({
 
       className: '',
 
-      style: {}
+      styles: {}
     };
   },
 
@@ -221,7 +225,7 @@ var Infinite = React.createClass({
           overflowX: 'hidden',
           overflowY: 'scroll',
           WebkitOverflowScrolling: 'touch'
-        }, this.computedProps.style);
+        }, this.computedProps.styles.scrollableStyle || {});
       };
     }
     return utilities;

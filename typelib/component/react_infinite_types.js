@@ -32,7 +32,9 @@ type ReactInfiniteProvidedDefaultProps = {
 
   className: string,
 
-  style: object
+  styles: {
+    scrollableStyle?: Object
+  }
 }
 
 type ReactInfiniteProps = {
@@ -57,7 +59,9 @@ type ReactInfiniteProps = {
 
   className?: string,
 
-  style?: object
+  styles?: {
+    scrollableStyle: Object
+  }
 };
 
 type ReactInfiniteComputedProps = {
