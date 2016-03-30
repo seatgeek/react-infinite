@@ -7,11 +7,14 @@ React Infinite
 
 **A browser-ready efficient scrolling container based on UITableView.**
 
-- Support for both static and variable element heights
-- Built-in support for infinite loading of future pages
-- Ability to use the window as the scroll container
-- Ability to be used as a chat/messaging-style display
-- 94% test coverage with Jest and typechecked with Facebook's Flow
+**React Infinite 0.7.1 only supports React 0.14 and above. Please pin your package to 0.6.0 for React 0.13 support.**
+
+- Support for both static and [variable element heights](https://github.com/seatgeek/react-infinite#elements-of-varying-heights)
+- Built-in support for [infinite loading](https://github.com/seatgeek/react-infinite#number-infiniteloadbeginedgeoffset) of upcoming pages
+- Ability to use the [window as the scroll container](https://github.com/seatgeek/react-infinite#bool-usewindowasscrollcontainer)
+- Ability to be used as a [chat/messaging-style display](https://github.com/seatgeek/react-infinite#bool-displaybottomupwards)
+- [94% test coverage with Jest](https://coveralls.io/github/seatgeek/react-infinite) and typechecked with Facebook's Flow
+- [Examples are available](https://github.com/seatgeek/react-infinite/tree/master/examples) for experimentation
 
 When a long list of DOM elements are placed in a scrollable container, all of them are kept in the DOM even when they are out the user's view. This is highly inefficient, especially in cases when scrolling lists can be tens or hundreds of thousands of items long. React Infinite solves this by rendering only DOM nodes that the user is able to see or might soon see. Other DOM nodes are clustered and rendered as a single blank node.
 
@@ -66,7 +69,7 @@ To use the entire window as a scroll container instead of just a single `div` (t
 ```
 
 ### As A Chat or Message Box (`displayBottomUpwards` mode)
-React Infinite now supports being used as a chat box, i.e. appended elements appear at the bottom when added, and the loading of the next page occurs when the user scrolls to the top of the container. To do so, simply add the `displayBottomUpwards` prop.
+React Infinite now supports being used as a chat box, i.e. appended elements appear at the bottom when added, and the loading of the next page occurs when the user scrolls to the top of the container. To do so, simply add the `displayBottomUpwards` prop. A [sample implementation](https://github.com/seatgeek/react-infinite/blob/master/examples/chat.jsx) can be consulted for more information - run `gulp develop` to compile the example files.
 
 ```xml
 <Infinite containerHeight={200} elementHeight={[111, 252, 143]}
@@ -219,7 +222,7 @@ var InfiniteList = React.createClass({
     }
 });
 
-React.render(<InfiniteList/>, document.getElementById('react-example-one'));
+ReactDOM.render(<InfiniteList/>, document.getElementById('react-example-one'));
 ```
 
 SeatGeek also currently uses React Infinite in production on our event pages; because we only have pages for events in the future, a link would not be appropriate. To see one, head to one of our team pages for the [New York Giants](https://seatgeek.com/new-york-giants-tickets), or the [New York Mets](https://seatgeek.com/new-york-mets-tickets), or the [New York Knicks](https://seatgeek.com/new-york-knicks-tickets), and click on the green button for an event to see them in action in the Omnibox.

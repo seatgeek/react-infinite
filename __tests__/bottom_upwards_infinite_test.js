@@ -11,6 +11,7 @@ jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TestUtils = require('react-addons-test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
@@ -138,7 +139,7 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
       </Infinite>
     );
 
-    var rootDomNode = React.findDOMNode(rootNode);
+    var rootDomNode = ReactDOM.findDOMNode(rootNode);
     expect(rootDomNode.scrollTop).toEqual(1200);
   });
 
@@ -173,7 +174,7 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
       </Infinite>
     );
 
-    var rootDOMNode = React.findDOMNode(rootNode);
+    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
     rootDOMNode.scrollTop = 504;
     TestUtils.Simulate.scroll(rootDOMNode, {
       target: rootDOMNode
@@ -196,7 +197,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       </Infinite>
     );
 
-    var rootDOMNode = React.findDOMNode(rootNode);
+    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
     rootDOMNode.scrollTop = 299;
     TestUtils.Simulate.scroll(rootDOMNode, {
       target: rootDOMNode
@@ -217,7 +218,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       </Infinite>
     );
 
-    var rootDOMNode = React.findDOMNode(rootNode);
+    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
     rootDOMNode.scrollTop = 301;
     TestUtils.Simulate.scroll(rootDOMNode, {
       target: rootDOMNode
@@ -255,7 +256,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
     });
 
     runs(function() {
-      window.scrollY = 299;
+      window.pageYOffset = 299;
       scrollListener();
 
       expect(infiniteLoader.mock.calls.length).toEqual(1);
@@ -291,7 +292,7 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
     });
 
     runs(function() {
-      window.scrollY = 301;
+      window.pageYOffset = 301;
       scrollListener();
 
       expect(infiniteLoader.mock.calls.length).toEqual(0);
@@ -310,7 +311,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
 
   it('scrolls to the correct place after new components come in', function() {
     var infiniteLoader = jest.genMockFunction();
-    var rootNode = React.render(
+    var rootNode = ReactDOM.render(
       <Infinite elementHeight={100}
                 infiniteLoadBeginEdgeOffset={300}
                 onInfiniteLoad={infiniteLoader}
@@ -321,7 +322,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
       renderNode
     );
 
-    var rootDOMNode = React.findDOMNode(rootNode);
+    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
     rootDOMNode.scrollTop = 299;
     TestUtils.Simulate.scroll(rootDOMNode, {
       target: rootDOMNode
@@ -331,7 +332,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
 
     //The parent component acknowledges that the component
     // is in the infinite loading state
-    rootNode = React.render(
+    rootNode = ReactDOM.render(
       <Infinite elementHeight={100}
                 infiniteLoadBeginEdgeOffset={300}
                 onInfiniteLoad={infiniteLoader}
@@ -346,7 +347,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
 
     // The component is now in the infinite loading state. We
     // disable infinite loading and give it new divs.
-    rootNode = React.render(
+    rootNode = ReactDOM.render(
       <Infinite elementHeight={100}
                 infiniteLoadBeginEdgeOffset={300}
                 onInfiniteLoad={infiniteLoader}
@@ -378,7 +379,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
     };
 
     runs(function() {
-      rootNode = React.render(
+      rootNode = ReactDOM.render(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}
@@ -395,11 +396,11 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
     });
 
     runs(function() {
-      window.scrollY = 298;
+      window.pageYOffset = 298;
       scrollListener();
       expect(infiniteLoader.mock.calls.length).toEqual(1);
 
-      rootNode = React.render(
+      rootNode = ReactDOM.render(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}
@@ -412,7 +413,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
         renderNode
       );
 
-      rootNode = React.render(
+      rootNode = ReactDOM.render(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}

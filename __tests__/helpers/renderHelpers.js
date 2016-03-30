@@ -1,10 +1,7 @@
 var React = require('react');
 
 module.exports = {
-  divGenerator: function(number, height) {
-    number = number || 10;
-    height = height || 100;
-
+  divGenerator: function(number = 10, height = 100) {
     var divArray = [];
     for (var i = 0; i < number; i++) {
       divArray.push(<div className={'test-div-' + i} key={i} style={{height: height}}/>);
