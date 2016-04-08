@@ -1,6 +1,6 @@
 {
   "name": "react-infinite",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A browser-ready efficient scrolling container based on UITableView",
   "main": "build/react-infinite.js",
   "repository": {
@@ -72,7 +72,7 @@
     "gulp-webserver": "^0.9.1",
     "jest-cli": "0.4.19",
     "moment": "^2.10.6",
-    "react-addons-test-utils": "15.0.0-rc.1",
+    "react-addons-test-utils": "^15.0.0",
     "uglifyify": "3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
@@ -86,8 +86,8 @@
     "object-assign": "4.0.1"
   },
   "peerDependencies": {
-    "react": "15.0.0-rc.1",
-    "react-dom": "15.0.0-rc.1"
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
   },
   "browserify": {
     "transform": [
