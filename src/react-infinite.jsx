@@ -296,7 +296,7 @@ var Infinite = React.createClass({
       }
     }
 
-    const hasLoadedMoreChildren = React.Children.count(this.props.children) !== React.Children.count(prevProps.children);
+    const hasLoadedMoreChildren = this.state.numberOfChildren !== prevState.numberOfChildren;
     if (hasLoadedMoreChildren) {
       var newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(
         this.state,
@@ -412,7 +412,7 @@ var Infinite = React.createClass({
 
   render(): React.Element<any, any, any> {
     var displayables;
-    if (React.Children.count(this.computedProps.children) > 1) {
+    if (this.state.numberOfChildren > 1) {
       displayables = this.computedProps.children.slice(this.state.displayIndexStart,
                                                        this.state.displayIndexEnd + 1);
     } else {
