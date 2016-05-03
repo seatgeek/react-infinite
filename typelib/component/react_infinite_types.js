@@ -49,6 +49,7 @@ type ReactInfiniteProps = {
   elementHeight: ElementHeight,
   containerHeight?: number,
   useWindowAsScrollContainer?: boolean,
+  getScrollable?: () => any,
 
   displayBottomUpwards: boolean,
 
