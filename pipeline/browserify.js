@@ -9,7 +9,7 @@ var uglify = require('gulp-uglify');
 var gulp = require('gulp');
 var size = require('gulp-size');
 
-var envify = require('envify/custom');
+var envify = require('loose-envify');
 
 function transformBundle(root, envObject) {
   root = root.bundle();
