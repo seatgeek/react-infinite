@@ -29,7 +29,7 @@ describe('Errors when the container height is not provided in some way', functio
 
     expect(function() {
       shallowRenderer.render(errorfulInfinite);
-    }).toThrow('Invariant Violation: Either containerHeight or useWindowAsScrollContainer must be provided.');
+    }).toThrowError('Invariant Violation: Either containerHeight or useWindowAsScrollContainer must be provided.');
   });
 });
 
@@ -47,7 +47,7 @@ describe('Errors when the elementHeight does not make sense', function() {
 
     expect(function() {
       shallowRenderer.render(errorfulInfinite);
-    }).toThrow('Invariant Violation: You must provide either a number or an array of numbers as the elementHeight.');
+    }).toThrowError('Invariant Violation: You must provide either a number or an array of numbers as the elementHeight.');
   });
 });
 
@@ -65,6 +65,6 @@ describe('Errors an error on elementHeight array length mismatch', function() {
 
     expect(function() {
       shallowRenderer.render(errorfulInfinite);
-    }).toThrow('Invariant Violation: There must be as many values provided in the elementHeight prop as there are children.');
+    }).toThrowError('Invariant Violation: There must be as many values provided in the elementHeight prop as there are children.');
   });
 });

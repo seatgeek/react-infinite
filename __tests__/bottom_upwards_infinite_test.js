@@ -146,23 +146,15 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
   it('keeps the scroll attached to the bottom even when the element is capable of scrolling upwards when the window is used as the container', function () {
     window.scroll = jest.genMockFunction();
     window.innerHeight = 768;
-    runs(function () {
-      TestUtils.renderIntoDocument(
-        <Infinite elementHeight={100}
-                  displayBottomUpwards
-                  useWindowAsScrollContainer>
-          {renderHelpers.divGenerator(20, 100)}
-        </Infinite>
-      )
-    });
+    TestUtils.renderIntoDocument(
+      <Infinite elementHeight={100}
+                displayBottomUpwards
+                useWindowAsScrollContainer>
+        {renderHelpers.divGenerator(20, 100)}
+      </Infinite>
+    )
 
-    waitsFor(function() {
-      return window.scroll.mock.calls.length > 0;
-    });
-
-    runs(function() {
-      expect(window.scroll).lastCalledWith(0, 2000 - 768);
-    });
+    expect(window.scroll).lastCalledWith(0, 2000 - 768);
   });
 
   it('allows upwards scrolling to proceed once the user starts scrolling', function() {
@@ -239,28 +231,20 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       }
     };
 
-    runs(function() {
-      rootNode = TestUtils.renderIntoDocument(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {renderHelpers.divGenerator(20, 100)}
-        </Infinite>
-      );
-    });
+    rootNode = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {renderHelpers.divGenerator(20, 100)}
+      </Infinite>
+    );
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
+    window.pageYOffset = 299;
+    scrollListener();
 
-    runs(function() {
-      window.pageYOffset = 299;
-      scrollListener();
-
-      expect(infiniteLoader.mock.calls.length).toEqual(1);
-    });
+    expect(infiniteLoader.mock.calls.length).toEqual(1);
   });
 
   it('does not trigger when the user does not pass the required point when the window is used as the scroll container', function() {
@@ -275,28 +259,20 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       }
     };
 
-    runs(function() {
-      rootNode = TestUtils.renderIntoDocument(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {renderHelpers.divGenerator(20, 100)}
-        </Infinite>
-      );
-    });
+    rootNode = TestUtils.renderIntoDocument(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {renderHelpers.divGenerator(20, 100)}
+      </Infinite>
+    );
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
+    window.pageYOffset = 301;
+    scrollListener();
 
-    runs(function() {
-      window.pageYOffset = 301;
-      scrollListener();
-
-      expect(infiniteLoader.mock.calls.length).toEqual(0);
-    });
+    expect(infiniteLoader.mock.calls.length).toEqual(0);
   });
 });
 
@@ -378,53 +354,45 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
       }
     };
 
-    runs(function() {
-      rootNode = ReactDOM.render(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {divs}
-        </Infinite>,
-        renderNode
-      );
-    });
+    rootNode = ReactDOM.render(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {divs}
+      </Infinite>,
+      renderNode
+    );
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
+    window.pageYOffset = 298;
+    scrollListener();
+    expect(infiniteLoader.mock.calls.length).toEqual(1);
 
-    runs(function() {
-      window.pageYOffset = 298;
-      scrollListener();
-      expect(infiniteLoader.mock.calls.length).toEqual(1);
+    rootNode = ReactDOM.render(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                isInfiniteLoading
+                loadingSpinnerDelegate={<div/>}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {divs}
+      </Infinite>,
+      renderNode
+    );
 
-      rootNode = ReactDOM.render(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  isInfiniteLoading
-                  loadingSpinnerDelegate={<div/>}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {divs}
-        </Infinite>,
-        renderNode
-      );
+    rootNode = ReactDOM.render(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                isInfiniteLoading={false}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {renderHelpers.divGenerator(30, 100)}
+      </Infinite>,
+      renderNode);
 
-      rootNode = ReactDOM.render(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  isInfiniteLoading={false}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {renderHelpers.divGenerator(30, 100)}
-        </Infinite>,
-        renderNode);
-
-      expect(window.scroll).lastCalledWith(0, 1000 + 298);
-    });
+    expect(window.scroll).lastCalledWith(0, 1000 + 298);
   });
 });

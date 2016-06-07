@@ -245,8 +245,7 @@ var Infinite = React.createClass({
     newState.numberOfChildren = React.Children.count(computedProps.children);
     newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(
       computedProps.elementHeight,
-      computedProps.children,
-      computedProps.displayBottomUpwards
+      computedProps.children
     );
 
     if (computedProps.isInfiniteLoading !== undefined) {
