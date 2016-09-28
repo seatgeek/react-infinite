@@ -438,7 +438,7 @@ var Infinite = React.createClass({
                 ref={(c) => { this.scrollable = c; }}
                 style={this.utils.buildScrollableStyle()}
                 onScroll={this.utils.nodeScrollListener}>
-      <div ref={(c) => { this.topSpsmoothScrollingWrapperacer = c; }} style={infiniteScrollStyles}>
+      <div ref={(c) => { this.smoothScrollingWrapper = c; }} style={infiniteScrollStyles}>
         <div ref={(c) => { this.topSpacer = c; }}
              style={this.buildHeightStyle(topSpacerHeight)}/>
         {this.computedProps.displayBottomUpwards && loadingSpinner}
