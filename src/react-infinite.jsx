@@ -1,7 +1,6 @@
 /* @flow */
 
 var React = global.React || require('react');
-var ReactDOM = global.ReactDOM || require('react-dom');
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
