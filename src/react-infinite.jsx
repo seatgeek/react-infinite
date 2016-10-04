@@ -76,6 +76,12 @@ var Infinite = React.createClass({
   loadingSpinnerHeight: 0,
   deprecationWarned: false,
 
+  scrollable: null,
+  topSpacer: null,
+  bottomSpacer: null,
+  smoothScrollingWrapper: null,
+  loadingSpinner: null,
+
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
       handleScroll: () => {

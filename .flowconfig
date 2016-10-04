@@ -3,6 +3,7 @@
 .*/build/.*
 .*/dist/.*
 .*/y18n/.*
+.*json
 
 [include]
 

@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - 0.10
+  - 6
 env:
   - TEST=1
   - TYPECHECK=1

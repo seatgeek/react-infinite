@@ -40,17 +40,14 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
     shallowRenderer.render(infinite);
 
     var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0]).toEqual(
-      <div ref="topSpacer"
-           style={{
-             width: '100%',
-             height: 700
-           }}/>
-    );
+    expect(rootNode.props.children.props.children[0].props.style).toEqual({
+      width: '100%',
+      height: 700
+    });
   });
 
   // jsdom cannot do offsetheight
-  //it('takes the loading spinner height into account when rendering the space-filling top spacer div', function() {
+  // it('takes the loading spinner height into account when rendering the space-filling top spacer div', function() {
   //  var infinite = <Infinite elementHeight={100}
   //                           containerHeight={800}
   //                           loadingSpinnerDelegate={<div style={{height: 100}}/>}
@@ -78,13 +75,10 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
     shallowRenderer.render(infinite);
 
     var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0]).toEqual(
-      <div ref="topSpacer"
-           style={{
-             width: '100%',
-             height: 0
-           }}/>
-    );
+    expect(rootNode.props.children.props.children[0].props.style).toEqual({
+      width: '100%',
+      height: 0
+    });
   });
 
   it('renders a space-filling top spacer div when the total element height is less than the container height when using the window as the container', function() {
@@ -97,13 +91,10 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
     shallowRenderer.render(infinite);
 
     var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0]).toEqual(
-      <div ref="topSpacer"
-           style={{
-             width: '100%',
-             height: 700
-           }}/>
-    );
+    expect(rootNode.props.children.props.children[0].props.style).toEqual({
+      width: '100%',
+      height: 700
+    });
   });
 
   it('does not render a space-filling top spacer div when the total element height begins to exceed the container height when using the window as the container', function() {
@@ -117,13 +108,10 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
     shallowRenderer.render(infinite);
 
     var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0]).toEqual(
-      <div ref="topSpacer"
-           style={{
-             width: '100%',
-             height: 0
-           }}/>
-    );
+    expect(rootNode.props.children.props.children[0].props.style).toEqual({
+      width: '100%',
+      height: 0
+    });
   });
 });
 
