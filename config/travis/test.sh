@@ -1,6 +1,9 @@
 #!/bin/bash
 
+set -e
+
 if [ "$TEST" = 1 ]; then
+    npm install react react-dom
     npm run test
 fi;
 
