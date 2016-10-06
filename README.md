@@ -157,6 +157,10 @@ Defaults to `150` (in milliseconds). On Apple and some other devices, scroll is 
 #### String `className`
 Allows a CSS class to be set on the scrollable container.
 
+#### Function `childrenRenderer(children)`
+Defaults to `undefined`, which can be used to provide custom wrapper to children items,
+such as `<table>{children}</table>` or `<ul>{children}</ul>`.
+
 ## Sample Code
 
 Code samples are now available in the `/examples` directory for your perusal. Two examples are provided, one for constant height with infinite loading and another with random variable heights with infinite loading. To generate the files necessary for the examples, execute `npm install && gulp build -E`. You may need to first install `gulp` with `npm install -g gulp`.

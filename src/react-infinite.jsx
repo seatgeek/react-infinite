@@ -39,6 +39,7 @@ var Infinite = React.createClass({
     // of
     containerHeight: React.PropTypes.number,
     useWindowAsScrollContainer: React.PropTypes.bool,
+    childrenRenderer: React.PropTypes.func,
 
     displayBottomUpwards: React.PropTypes.bool.isRequired,
 
@@ -448,7 +449,7 @@ var Infinite = React.createClass({
         <div ref={(c) => { this.topSpacer = c; }}
              style={this.buildHeightStyle(topSpacerHeight)}/>
         {this.computedProps.displayBottomUpwards && loadingSpinner}
-          {displayables}
+          {this.computedProps.childrenRenderer ? this.computedProps.childrenRenderer(displayables) : displayables}
         {!this.computedProps.displayBottomUpwards && loadingSpinner}
         <div ref={(c) => { this.bottomSpacer = c; }}
              style={this.buildHeightStyle(bottomSpacerHeight)}/>
