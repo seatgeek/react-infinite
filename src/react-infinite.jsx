@@ -305,6 +305,15 @@ var Infinite = React.createClass({
     if (isMissingVisibleRows) {
       this.onInfiniteLoad();
     }
+
+    if (this.props.containerHeight !== prevProps.containerHeight) {
+      const scrollTop = this.utils.getScrollTop();
+      const newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state, scrollTop);
+      if (this.passedEdgeForInfiniteScroll(scrollTop) && !this.state.isInfiniteLoading) {
+        this.setState({...newApertureState});
+        this.onInfiniteLoad();
+      }
+    }
   },
 
   componentDidMount() {

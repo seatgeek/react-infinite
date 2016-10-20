@@ -448,6 +448,37 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
     expect(infiniteSpy).not.toHaveBeenCalled();
   });
 
+  it('triggers the onInfiniteLoad function when containerHeight changes', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+
+    var rootNode = document.createElement('div');
+
+    ReactDOM.render(
+      <Infinite elementHeight={elementHeight}
+                containerHeight={400}
+                onInfiniteLoad={infiniteSpy}
+                infiniteLoadBeginEdgeOffset={100}
+                className={"correct-class-name"}>
+        {renderHelpers.divGenerator(2, elementHeight)}
+      </Infinite>,
+      rootNode
+    );
+
+    ReactDOM.render(
+      <Infinite elementHeight={elementHeight}
+              containerHeight={1000}
+              onInfiniteLoad={infiniteSpy}
+              infiniteLoadBeginEdgeOffset={100}
+              className={"correct-class-name"}>
+              {renderHelpers.divGenerator(2, elementHeight)}
+      </Infinite>,
+      rootNode
+    );
+
+    expect(infiniteSpy).toHaveBeenCalled();
+  });
+
   it('triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
