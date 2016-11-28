@@ -48,6 +48,7 @@ var Infinite = React.createClass({
 
     isInfiniteLoading: React.PropTypes.bool,
     timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
+    disabled: React.PropTypes.bool,
 
     className: React.PropTypes.string,
 
@@ -219,7 +220,7 @@ var Infinite = React.createClass({
         return Object.assign({}, {
           height: this.computedProps.containerHeight,
           overflowX: 'hidden',
-          overflowY: 'scroll',
+          overflowY: this.computedProps.disabled ? 'hidden' : 'scroll',
           WebkitOverflowScrolling: 'touch'
         }, this.computedProps.styles.scrollableStyle || {});
       };

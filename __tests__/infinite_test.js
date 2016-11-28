@@ -632,6 +632,21 @@ describe('Handling infinite scrolling', function() {
 
     expect(infiniteSpy).not.toHaveBeenCalled();
   });
+
+  it('is not scrollable when the disabled props is true', function() {
+    var infinite = TestUtils.renderIntoDocument(
+        <Infinite elementHeight={200}
+                  containerHeight={800}
+                  className={"root-scrollable-node"}
+                  disabled>
+          <div/>
+          <div/>
+        </Infinite>
+      );
+
+    var rootScrollable = TestUtils.findRenderedDOMComponentWithClass(infinite, 'root-scrollable-node');
+    expect(rootScrollable.style.overflowY).toEqual('hidden');
+  });
 });
 
 describe('React Infinite when the window is used as the Container', function() {
