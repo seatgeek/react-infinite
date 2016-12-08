@@ -444,15 +444,13 @@ var Infinite = React.createClass({
                 ref={(c) => { this.scrollable = c; }}
                 style={this.utils.buildScrollableStyle()}
                 onScroll={this.utils.nodeScrollListener}>
-      <div ref={(c) => { this.smoothScrollingWrapper = c; }} style={infiniteScrollStyles}>
-        <div ref={(c) => { this.topSpacer = c; }}
-             style={this.buildHeightStyle(topSpacerHeight)}/>
+      <div ref={(c) => { this.topSpacer = c; }}
+           style={this.buildHeightStyle(topSpacerHeight)}/>
         {this.computedProps.displayBottomUpwards && loadingSpinner}
-          {displayables}
+        {displayables}
         {!this.computedProps.displayBottomUpwards && loadingSpinner}
-        <div ref={(c) => { this.bottomSpacer = c; }}
-             style={this.buildHeightStyle(bottomSpacerHeight)}/>
-      </div>
+      <div ref={(c) => { this.bottomSpacer = c; }}
+           style={this.buildHeightStyle(bottomSpacerHeight)}/>
     </div>;
   }
 });
