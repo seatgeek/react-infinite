@@ -1,5 +1,4 @@
 *.map
-build
 coverage
 node_modules
 bower_components
