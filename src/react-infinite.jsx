@@ -434,9 +434,7 @@ var Infinite = React.createClass({
 
     var loadingSpinner = this.computedProps.infiniteLoadBeginEdgeOffset === undefined
       ? null
-      : <div ref={(c) => { this.loadingSpinner = c; }}>
-        {this.state.isInfiniteLoading ? this.computedProps.loadingSpinnerDelegate : null}
-      </div>;
+      : this.state.isInfiniteLoading ? this.computedProps.loadingSpinnerDelegate : null;
 
     // topSpacer and bottomSpacer take up the amount of space that the
     // rendered elements would have taken up otherwise
