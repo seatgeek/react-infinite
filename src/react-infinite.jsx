@@ -53,7 +53,9 @@ var Infinite = React.createClass({
 
     styles: React.PropTypes.shape({
       scrollableStyle: React.PropTypes.object
-    }).isRequired
+    }).isRequired,
+
+    windowScrollElement: React.PropTypes.object
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -88,6 +90,8 @@ var Infinite = React.createClass({
       },
 
       useWindowAsScrollContainer: false,
+
+      windowScrollElement: window,
 
       onInfiniteLoad: () => {
       },
@@ -125,12 +129,13 @@ var Infinite = React.createClass({
     var {containerHeight,
           preloadBatchSize,
           preloadAdditionalHeight,
+          windowScrollElement,
           ...oldProps} = props;
 
     var newProps = {};
     containerHeight = typeof containerHeight === 'number' ? containerHeight : 0;
     newProps.containerHeight = props.useWindowAsScrollContainer
-      ? window.innerHeight : containerHeight;
+      ? windowScrollElement.innerHeight : containerHeight;
 
     if (oldProps.infiniteLoadBeginBottomOffset !== undefined) {
       newProps.infiniteLoadBeginEdgeOffset = oldProps.infiniteLoadBeginBottomOffset;
@@ -188,15 +193,15 @@ var Infinite = React.createClass({
     };
     if (props.useWindowAsScrollContainer) {
       utilities.subscribeToScrollListener = () => {
-        window.addEventListener('scroll', this.infiniteHandleScroll);
+        windowScrollElement.addEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.unsubscribeFromScrollListener = () => {
-        window.removeEventListener('scroll', this.infiniteHandleScroll);
+        windowScrollElement.removeEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.pageYOffset;
       utilities.setScrollTop = (top) => {
-        window.scroll(window.pageXOffset, top);
+        windowScrollElement.scroll(window.pageXOffset, top);
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
