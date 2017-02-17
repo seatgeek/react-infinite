@@ -2,7 +2,7 @@
 
 var React = global.React || require('react');
 if (typeof window === 'undefined') {
-global.window = {};
+  global.window = {};
 }
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
