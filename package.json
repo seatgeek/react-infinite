@@ -21,7 +21,7 @@
   },
   "browser": "build/react-infinite.js",
   "scripts": {
-    "test": "node ./node_modules/.bin/jest",
+    "test": "./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
     "fix": "./node_modules/.bin/eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
     "typecheck": "./node_modules/.bin/flow version && ./node_modules/.bin/flow check",
@@ -72,7 +72,7 @@
     "gulp-webserver": "^0.9.1",
     "jest-cli": "0.8.2",
     "moment": "^2.10.6",
-    "react-addons-test-utils": "^15.0.0",
+    "react-test-renderer": "15.5.4",
     "uglifyify": "3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
@@ -86,8 +86,10 @@
     "object-assign": "4.0.1"
   },
   "peerDependencies": {
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0"
+    "react": "^15.5.0",
+    "react-dom": "^15.5.0",
+    "create-react-class": "15.5.0",
+    "prop-types": "15.5.0"
   },
   "browserify": {
     "transform": [

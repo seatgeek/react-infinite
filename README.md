@@ -164,7 +164,9 @@ Code samples are now available in the `/examples` directory for your perusal. Tw
 To get you started, here is some sample code that implements an infinite scroll with an simulated delay of 2.5 seconds. A [live demo of this example is available](http://chairnerd.seatgeek.com/react-infinite-a-browser-ready-efficient-scrolling-container-based-on-uitableview/) on our blog.
 
 ```js
-var ListItem = React.createClass({
+var createReactClass = require('create-react-class');
+
+var ListItem = createReactClass({
     render: function() {
         return <div className="infinite-list-item">
         List Item {this.props.num}
@@ -172,7 +174,7 @@ var ListItem = React.createClass({
     }
 });
 
-var InfiniteList = React.createClass({
+var InfiniteList = createReactClass({
     getInitialState: function() {
         return {
             elements: this.buildElements(0, 20),

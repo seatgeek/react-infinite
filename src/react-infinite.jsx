@@ -1,6 +1,8 @@
 /* @flow */
 
 var React = global.React || require('react');
+var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
@@ -10,11 +12,11 @@ var _isFinite = require('lodash.isfinite');
 var preloadType = require('./utils/types').preloadType;
 var checkProps = checkProps = require('./utils/checkProps');
 
-var Infinite = React.createClass({
+var Infinite = createReactClass({
   propTypes: {
-    children: React.PropTypes.any,
+    children: PropTypes.any,
 
-    handleScroll: React.PropTypes.func,
+    handleScroll: PropTypes.func,
 
     // preloadBatchSize causes updates only to
     // happen each preloadBatchSize pixels of scrolling.
@@ -31,28 +33,28 @@ var Infinite = React.createClass({
     // The provided elementHeight can be either
     //  1. a constant: all elements are the same height
     //  2. an array containing the height of each element
-    elementHeight: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.arrayOf(React.PropTypes.number)
+    elementHeight: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.arrayOf(PropTypes.number)
     ]).isRequired,
     // This is the total height of the visible window. One
     // of
-    containerHeight: React.PropTypes.number,
-    useWindowAsScrollContainer: React.PropTypes.bool,
+    containerHeight: PropTypes.number,
+    useWindowAsScrollContainer: PropTypes.bool,
 
-    displayBottomUpwards: React.PropTypes.bool.isRequired,
+    displayBottomUpwards: PropTypes.bool.isRequired,
 
-    infiniteLoadBeginEdgeOffset: React.PropTypes.number,
-    onInfiniteLoad: React.PropTypes.func,
-    loadingSpinnerDelegate: React.PropTypes.node,
+    infiniteLoadBeginEdgeOffset: PropTypes.number,
+    onInfiniteLoad: PropTypes.func,
+    loadingSpinnerDelegate: PropTypes.node,
 
-    isInfiniteLoading: React.PropTypes.bool,
-    timeScrollStateLastsForAfterUserScrolls: React.PropTypes.number,
+    isInfiniteLoading: PropTypes.bool,
+    timeScrollStateLastsForAfterUserScrolls: PropTypes.number,
 
-    className: React.PropTypes.string,
+    className: PropTypes.string,
 
-    styles: React.PropTypes.shape({
-      scrollableStyle: React.PropTypes.object
+    styles: PropTypes.shape({
+      scrollableStyle: PropTypes.object
     }).isRequired
   },
   statics: {

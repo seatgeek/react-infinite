@@ -11,16 +11,12 @@ jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
-var shallowRenderer;
+var shallowRenderer = require('react-test-renderer/shallow').createRenderer();
 
 describe('Errors when the container height is not provided in some way', function() {
-  beforeEach(function() {
-    shallowRenderer = TestUtils.createRenderer();
-  });
-
   it('throws an error when neither containerHeight nor useWindowAsScrollContainer is not provided', function() {
     var errorfulInfinite = <Infinite elementHeight={22}>
         <div/>
@@ -34,10 +30,6 @@ describe('Errors when the container height is not provided in some way', functio
 });
 
 describe('Errors when the elementHeight does not make sense', function() {
-  beforeEach(function() {
-    shallowRenderer = TestUtils.createRenderer();
-  });
-
   it('throws an error when the elementHeight is neither a number nor an array', function() {
     var errorfulInfinite = <Infinite elementHeight={"not a sensible element height"}
                                      containerHeight={400}>
@@ -52,10 +44,6 @@ describe('Errors when the elementHeight does not make sense', function() {
 });
 
 describe('Errors an error on elementHeight array length mismatch', function() {
-  beforeEach(function() {
-    shallowRenderer = TestUtils.createRenderer();
-  });
-
   it('throws an error when the number of children is not equal to the length of the elementHeight array when ', function() {
     var errorfulInfinite = <Infinite elementHeight={[1, 2, 3]}
                                      containerHeight={400}>
