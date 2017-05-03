@@ -3,7 +3,7 @@
 set -e
 
 if [ "$TEST" = 1 ]; then
-    npm install react react-dom
+    npm install react react-dom prop-types create-react-class
     npm run test
 fi;
 
