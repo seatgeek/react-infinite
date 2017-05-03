@@ -1,4 +1,4 @@
-var PropTypes = require('prop-types');
+var PropTypes = global.PropTypes || require('prop-types');
 
 module.exports = {
   preloadType: PropTypes.oneOfType([
