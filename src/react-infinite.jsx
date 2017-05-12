@@ -42,6 +42,9 @@ var Infinite = createReactClass({
     containerHeight: PropTypes.number,
     useWindowAsScrollContainer: PropTypes.bool,
 
+    useCustomScrollContainer: React.PropTypes.bool,
+    refCustomScrollContainer: React.PropTypes.func,
+
     displayBottomUpwards: PropTypes.bool.isRequired,
 
     infiniteLoadBeginEdgeOffset: PropTypes.number,
@@ -90,6 +93,9 @@ var Infinite = createReactClass({
       },
 
       useWindowAsScrollContainer: false,
+
+      useCustomScrollContainer: false,
+      refCustomScrollContainer: () => ({}),
 
       onInfiniteLoad: () => {
       },
@@ -195,10 +201,27 @@ var Infinite = createReactClass({
       utilities.unsubscribeFromScrollListener = () => {
         window.removeEventListener('scroll', this.infiniteHandleScroll);
       };
-      utilities.nodeScrollListener = () => {};
       utilities.getScrollTop = () => window.pageYOffset;
       utilities.setScrollTop = (top) => {
         window.scroll(window.pageXOffset, top);
+      };
+      utilities.nodeScrollListener = () => {
+      };
+      utilities.scrollShouldBeIgnored = () => false;
+      utilities.buildScrollableStyle = () => ({});
+    } else if (props.useCustomScrollContainer && typeof props.refCustomScrollContainer === 'function') {
+      const getContainer = props.refCustomScrollContainer;
+      utilities.subscribeToScrollListener = () => {
+        getContainer().addEventListener('scroll', this.infiniteHandleScroll);
+      };
+      utilities.unsubscribeFromScrollListener = () => {
+        getContainer().removeEventListener('scroll', this.infiniteHandleScroll);
+      };
+      utilities.getScrollTop = () => getContainer().scrollTop;
+      utilities.setScrollTop = (top) => {
+        getContainer().scrollTop = top;
+      };
+      utilities.nodeScrollListener = () => {
       };
       utilities.scrollShouldBeIgnored = () => false;
       utilities.buildScrollableStyle = () => ({});
