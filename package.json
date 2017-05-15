@@ -88,8 +88,8 @@
   "peerDependencies": {
     "react": "^15.5.0",
     "react-dom": "^15.5.0",
-    "create-react-class": "15.5.0",
-    "prop-types": "15.5.0"
+    "create-react-class": "^15.5.0",
+    "prop-types": "^15.5.0"
   },
   "browserify": {
     "transform": [
