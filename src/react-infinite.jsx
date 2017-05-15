@@ -1,8 +1,8 @@
 /* @flow */
 
 var React = global.React || require('react');
-var PropTypes = global.PropTypes || require('prop-types');
-var createReactClass = global.createReactClass || require('create-react-class');
+var PropTypes = global.PropTypes || React.PropTypes || require('prop-types');
+var createReactClass = global.createReactClass || React.createClass || require('create-react-class');
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
