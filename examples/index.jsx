@@ -1,5 +1,3 @@
-var createReactClass = require('create-react-class');
-
 var ListItem = createReactClass({
     getDefaultProps: function() {
         return {
