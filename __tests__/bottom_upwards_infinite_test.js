@@ -12,11 +12,11 @@ jest.dontMock('lodash.isarray');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
 var renderHelpers = require('./helpers/renderHelpers');
-var shallowRenderer = TestUtils.createRenderer();
+var shallowRenderer = require('react-test-renderer/shallow').createRenderer();
 
 describe('The Basic Behavior of the Bottom Upwards Display', function() {
   it('does not throw an error when set', function() {

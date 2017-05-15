@@ -1,11 +1,11 @@
-var React = global.React || require('react');
+var PropTypes = global.PropTypes || require('prop-types');
 
 module.exports = {
-  preloadType: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.shape({
-      type: React.PropTypes.oneOf(['containerHeightScaleFactor']).isRequired,
-      amount: React.PropTypes.number.isRequired
+  preloadType: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      type: PropTypes.oneOf(['containerHeightScaleFactor']).isRequired,
+      amount: PropTypes.number.isRequired
     })
   ])
 };
