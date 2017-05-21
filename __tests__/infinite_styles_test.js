@@ -17,7 +17,7 @@ jest.dontMock('lodash.isarray');
 jest.dontMock('react-dom');
 
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
 

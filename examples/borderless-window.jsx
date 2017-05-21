@@ -1,4 +1,4 @@
-var ListItem = React.createClass({
+var ListItem = createReactClass({
     getDefaultProps: function() {
         return {
             height: 50,
@@ -20,7 +20,7 @@ var ListItem = React.createClass({
     }
 });
 
-var InfiniteList = React.createClass({
+var InfiniteList = createReactClass({
     getInitialState: function() {
         return {
             elements: this.buildElements(0, 50),

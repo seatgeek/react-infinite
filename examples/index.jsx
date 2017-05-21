@@ -1,4 +1,4 @@
-var ListItem = React.createClass({
+var ListItem = createReactClass({
     getDefaultProps: function() {
         return {
             height: 50,
@@ -17,7 +17,7 @@ var ListItem = React.createClass({
     }
 });
 
-var InfiniteList = React.createClass({
+var InfiniteList = createReactClass({
     getInitialState: function() {
         return {
             elements: this.buildElements(0, 50),
@@ -68,7 +68,7 @@ var InfiniteList = React.createClass({
     }
 });
 
-var AdditionInfiniteList = React.createClass({
+var AdditionInfiniteList = createReactClass({
     componentDidMount: function() {
         setTimeout(this.handleInfiniteLoad, 3000);
     },
@@ -120,7 +120,7 @@ var AdditionInfiniteList = React.createClass({
     }
 });
 
-var VariableInfiniteList = React.createClass({
+var VariableInfiniteList = createReactClass({
     getInitialState: function() {
         return {
             elementHeights: this.generateVariableElementHeights(100),

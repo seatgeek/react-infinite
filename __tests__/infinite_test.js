@@ -12,8 +12,9 @@ jest.dontMock('lodash.isarray');
 jest.dontMock('react-dom');
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ReactDOM = require('react-dom');
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-dom/test-utils');
 var Infinite = require('../src/react-infinite.jsx');
 
 var renderHelpers = require('./helpers/renderHelpers');
@@ -952,7 +953,7 @@ describe('Rerendering React Infinite', function() {
 });
 
 describe('Requesting all visible rows', function () {
-  var InfiniteWrapper = React.createClass({
+  var InfiniteWrapper = createReactClass({
     getInitialState() {
       return { currentRows: 0, totalRequests: 0 }
     },
