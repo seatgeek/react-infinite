@@ -468,16 +468,50 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
 
     ReactDOM.render(
       <Infinite elementHeight={elementHeight}
-              containerHeight={1000}
-              onInfiniteLoad={infiniteSpy}
-              infiniteLoadBeginEdgeOffset={100}
-              className={"correct-class-name"}>
-              {renderHelpers.divGenerator(2, elementHeight)}
+                containerHeight={1000}
+                onInfiniteLoad={infiniteSpy}
+                infiniteLoadBeginEdgeOffset={100}
+                className={"correct-class-name"}>
+        {renderHelpers.divGenerator(2, elementHeight)}
       </Infinite>,
       rootNode
     );
 
     expect(infiniteSpy).toHaveBeenCalled();
+  });
+
+  it('does not trigger the onInfiniteLoad function when containerHeight changes and useWindowAsScrollContainer is true', function() {
+    var infiniteSpy = jasmine.createSpy('infiniteSpy');
+    var elementHeight = 200;
+    window.innerHeight = 400;
+
+    var rootNode = document.createElement('div');
+
+    ReactDOM.render(
+      <Infinite elementHeight={elementHeight}
+                containerHeight={400}
+                onInfiniteLoad={infiniteSpy}
+                infiniteLoadBeginEdgeOffset={100}
+                useWindowAsScrollContainer
+                className={"correct-class-name"}>
+        {renderHelpers.divGenerator(2, elementHeight)}
+      </Infinite>,
+      rootNode
+    );
+
+    ReactDOM.render(
+      <Infinite elementHeight={elementHeight}
+                containerHeight={1000}
+                onInfiniteLoad={infiniteSpy}
+                infiniteLoadBeginEdgeOffset={100}
+                useWindowAsScrollContainer
+                className={"correct-class-name"}>
+        {renderHelpers.divGenerator(2, elementHeight)}
+      </Infinite>,
+      rootNode
+    );
+
+    expect(infiniteSpy).not.toHaveBeenCalled();
   });
 
   it('triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset', function() {

@@ -308,13 +308,8 @@ var Infinite = createReactClass({
       this.onInfiniteLoad();
     }
 
-    if (this.props.containerHeight !== prevProps.containerHeight) {
-      const scrollTop = this.utils.getScrollTop();
-      const newApertureState = infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state, scrollTop);
-      if (this.passedEdgeForInfiniteScroll(scrollTop) && !this.state.isInfiniteLoading) {
-        this.setState({...newApertureState});
-        this.onInfiniteLoad();
-      }
+    if (this.computedProps.containerHeight !== this.generateComputedProps(prevProps).containerHeight) {
+      this.handleScroll(this.utils.getScrollTop());
     }
   },
 
