@@ -307,6 +307,10 @@ var Infinite = createReactClass({
     if (isMissingVisibleRows) {
       this.onInfiniteLoad();
     }
+
+    if (this.computedProps.containerHeight !== this.generateComputedProps(prevProps).containerHeight) {
+      this.handleScroll(this.utils.getScrollTop());
+    }
   },
 
   componentDidMount() {
