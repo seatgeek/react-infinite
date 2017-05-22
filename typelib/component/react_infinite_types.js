@@ -23,6 +23,8 @@ type ReactInfiniteProvidedDefaultProps = {
   handleScroll: () => any,
 
   useWindowAsScrollContainer: boolean,
+  useCustomScrollContainer: boolean,
+  refCustomScrollContainer: () => Object,
 
   onInfiniteLoad: () => any,
   loadingSpinnerDelegate: React.Element<any, any, any>,
@@ -49,6 +51,8 @@ type ReactInfiniteProps = {
   elementHeight: ElementHeight,
   containerHeight?: number,
   useWindowAsScrollContainer?: boolean,
+  useCustomScrollContainer?: boolean,
+  refCustomScrollContainer?: () => Object,
 
   displayBottomUpwards: boolean,
 
