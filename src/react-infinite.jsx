@@ -55,7 +55,9 @@ var Infinite = createReactClass({
 
     styles: PropTypes.shape({
       scrollableStyle: PropTypes.object
-    }).isRequired
+    }).isRequired,
+
+    onChangeScrollState : PropTypes.func
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -86,8 +88,6 @@ var Infinite = createReactClass({
 
   getDefaultProps(): ReactInfiniteProvidedDefaultProps {
     return {
-      handleScroll: () => {
-      },
 
       useWindowAsScrollContainer: false,
 
@@ -195,7 +195,7 @@ var Infinite = createReactClass({
       utilities.unsubscribeFromScrollListener = () => {
         window.removeEventListener('scroll', this.infiniteHandleScroll);
       };
-      utilities.nodeScrollListener = () => {};
+      utilities.nodeScrollListener = null;
       utilities.getScrollTop = () => window.pageYOffset;
       utilities.setScrollTop = (top) => {
         window.scroll(window.pageXOffset, top);
@@ -328,11 +328,19 @@ var Infinite = createReactClass({
     this.utils.unsubscribeFromScrollListener();
   },
 
+  componentDidUpdate(pastState){
+    if (typeof this.props.onChangeScrollState === 'function'){
+      if (this.state.isScrolling !== pastState.isScrolling){
+        return this.props.onChangeScrollState(this.state.isScrolling);
+      }
+    }
+  },
+
   infiniteHandleScroll(e: SyntheticEvent) {
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
-    this.computedProps.handleScroll(this.scrollable);
+    if (typeof this.computedProps.handleScroll === 'function') this.computedProps.handleScroll(this.scrollable);
     this.handleScroll(this.utils.getScrollTop());
   },
 
@@ -440,22 +448,31 @@ var Infinite = createReactClass({
         {this.state.isInfiniteLoading ? this.computedProps.loadingSpinnerDelegate : null}
       </div>;
 
+    function wrap(children : Element){
+      if (this.props.smoothScrollingWrapper){
+        return React.cloneElement(this.props.smoothScrollingWrapper, {}, children);
+      }
+      return (
+          null
+      );
+    }
+
     // topSpacer and bottomSpacer take up the amount of space that the
     // rendered elements would have taken up otherwise
-    return <div className={this.computedProps.className}
-                ref={(c) => { this.scrollable = c; }}
-                style={this.utils.buildScrollableStyle()}
-                onScroll={this.utils.nodeScrollListener}>
-      <div ref={(c) => { this.smoothScrollingWrapper = c; }} style={infiniteScrollStyles}>
-        <div ref={(c) => { this.topSpacer = c; }}
-             style={this.buildHeightStyle(topSpacerHeight)}/>
-        {this.computedProps.displayBottomUpwards && loadingSpinner}
+    return (
+      <div className={this.computedProps.className}
+        ref={(c) => { this.scrollable = c; }}
+        style={this.utils.buildScrollableStyle()}
+        onScroll={this.utils.nodeScrollListener}>
+        <div ref={(c) => { this.smoothScrollingWrapper = c; }} style={infiniteScrollStyles}>
+          <div ref={(c) => { this.topSpacer = c; }} style={this.buildHeightStyle(topSpacerHeight)}/>
+          {this.computedProps.displayBottomUpwards && loadingSpinner}
           {displayables}
-        {!this.computedProps.displayBottomUpwards && loadingSpinner}
-        <div ref={(c) => { this.bottomSpacer = c; }}
-             style={this.buildHeightStyle(bottomSpacerHeight)}/>
+          {!this.computedProps.displayBottomUpwards && loadingSpinner}
+          <div ref={(c) => { this.bottomSpacer = c; }} style={this.buildHeightStyle(bottomSpacerHeight)}/>
+        </div>
       </div>
-    </div>;
+    );
   }
 });
 
