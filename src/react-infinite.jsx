@@ -448,15 +448,6 @@ var Infinite = createReactClass({
         {this.state.isInfiniteLoading ? this.computedProps.loadingSpinnerDelegate : null}
       </div>;
 
-    function wrap(children : Element){
-      if (this.props.smoothScrollingWrapper){
-        return React.cloneElement(this.props.smoothScrollingWrapper, {}, children);
-      }
-      return (
-          null
-      );
-    }
-
     // topSpacer and bottomSpacer take up the amount of space that the
     // rendered elements would have taken up otherwise
     return (
