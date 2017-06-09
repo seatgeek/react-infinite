@@ -57,7 +57,7 @@ var Infinite = createReactClass({
       scrollableStyle: PropTypes.object
     }).isRequired,
 
-    onChangeScrollState : PropTypes.func
+    onChangeScrollState: PropTypes.func
   },
   statics: {
     containerHeightScaleFactor(factor) {
@@ -303,8 +303,8 @@ var Infinite = createReactClass({
       this.setState(newApertureState);
     }
 
-    if (typeof this.props.onChangeScrollState === 'function'){
-      if (this.state.isScrolling !== prevState.isScrolling){
+    if (typeof this.props.onChangeScrollState === 'function') {
+      if (this.state.isScrolling !== prevState.isScrolling) {
         return this.props.onChangeScrollState(this.state.isScrolling);
       }
     }
@@ -338,7 +338,7 @@ var Infinite = createReactClass({
     if (this.utils.scrollShouldBeIgnored(e)) {
       return;
     }
-    if (typeof this.computedProps.handleScroll === 'function') this.computedProps.handleScroll(this.scrollable);
+    if (typeof this.computedProps.handleScroll === 'function') { this.computedProps.handleScroll(this.scrollable); }
     this.handleScroll(this.utils.getScrollTop());
   },
 
