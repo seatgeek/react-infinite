@@ -274,9 +274,14 @@ var Infinite = createReactClass({
     this.setState(nextInternalState.newState);
   },
 
-  componentWillUpdate() {
+  componentWillUpdate(nextProps, nextState) {
     if (this.props.displayBottomUpwards) {
       this.preservedScrollState = this.utils.getScrollTop() - this.loadingSpinnerHeight;
+    }
+    if (typeof nextProps.onChangeScrollState === 'function') {
+      if (nextState.isScrolling !== this.state.isScrolling) {
+        return nextProps.onChangeScrollState(nextState.isScrolling);
+      }
     }
   },
 
@@ -301,12 +306,6 @@ var Infinite = createReactClass({
         this.utils.getScrollTop()
       );
       this.setState(newApertureState);
-    }
-
-    if (typeof this.props.onChangeScrollState === 'function') {
-      if (this.state.isScrolling !== prevState.isScrolling) {
-        return this.props.onChangeScrollState(this.state.isScrolling);
-      }
     }
 
     const isMissingVisibleRows = hasLoadedMoreChildren && !this.hasAllVisibleItems() && !this.state.isInfiniteLoading;
