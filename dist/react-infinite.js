@@ -1,6 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Infinite = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
-"use strict";function _objectWithoutProperties(e,t){var i={};for(var o in e)t.indexOf(o)>=0||Object.prototype.hasOwnProperty.call(e,o)&&(i[o]=e[o]);return i}var React=global.React||require("react"),PropTypes=global.PropTypes||require("prop-types"),createReactClass=global.createReactClass||require("create-react-class");require("./utils/establish-polyfills");var scaleEnum=require("./utils/scaleEnum"),infiniteHelpers=require("./utils/infiniteHelpers"),_isFinite=require("lodash.isfinite"),preloadType=require("./utils/types").preloadType,checkProps=checkProps=require("./utils/checkProps"),Infinite=createReactClass({propTypes:{children:PropTypes.any,handleScroll:PropTypes.func,preloadBatchSize:preloadType,preloadAdditionalHeight:preloadType,elementHeight:PropTypes.oneOfType([PropTypes.number,PropTypes.arrayOf(PropTypes.number)]).isRequired,containerHeight:PropTypes.number,useWindowAsScrollContainer:PropTypes.bool,displayBottomUpwards:PropTypes.bool.isRequired,infiniteLoadBeginEdgeOffset:PropTypes.number,onInfiniteLoad:PropTypes.func,loadingSpinnerDelegate:PropTypes.node,isInfiniteLoading:PropTypes.bool,timeScrollStateLastsForAfterUserScrolls:PropTypes.number,className:PropTypes.string,styles:PropTypes.shape({scrollableStyle:PropTypes.object}).isRequired},statics:{containerHeightScaleFactor:function(e){if(!_isFinite(e))throw new Error("The scale factor must be a number.");return{type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:e}}},computedProps:{},utils:{},shouldAttachToBottom:!1,preservedScrollState:0,loadingSpinnerHeight:0,deprecationWarned:!1,scrollable:null,topSpacer:null,bottomSpacer:null,smoothScrollingWrapper:null,loadingSpinner:null,getDefaultProps:function(){return{handleScroll:function(){},useWindowAsScrollContainer:!1,onInfiniteLoad:function(){},loadingSpinnerDelegate:React.createElement("div",null),displayBottomUpwards:!1,isInfiniteLoading:!1,timeScrollStateLastsForAfterUserScrolls:150,className:"",styles:{}}},getInitialState:function(){var e=this.recomputeInternalStateFromProps(this.props);this.computedProps=e.computedProps,this.utils=e.utils,this.shouldAttachToBottom=this.props.displayBottomUpwards;var t=e.newState;return t.scrollTimeout=void 0,t.isScrolling=!1,t},generateComputedProps:function(e){var t=e.containerHeight,i=e.preloadBatchSize,o=e.preloadAdditionalHeight,n=_objectWithoutProperties(e,["containerHeight","preloadBatchSize","preloadAdditionalHeight"]),r={};t="number"==typeof t?t:0,r.containerHeight=e.useWindowAsScrollContainer?window.innerHeight:t,void 0!==n.infiniteLoadBeginBottomOffset&&(r.infiniteLoadBeginEdgeOffset=n.infiniteLoadBeginBottomOffset,this.deprecationWarned||(console.error("Warning: React Infinite's infiniteLoadBeginBottomOffset prop\n        has been deprecated as of 0.6.0. Please use infiniteLoadBeginEdgeOffset.\n        Because this is a rather descriptive name, a simple find and replace\n        should suffice."),this.deprecationWarned=!0));var s={type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:.5},l=i&&i.type?i:s;"number"==typeof i?r.preloadBatchSize=i:"object"==typeof l&&l.type===scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR?r.preloadBatchSize=r.containerHeight*l.amount:r.preloadBatchSize=0;var a={type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:1},c=o&&o.type?o:a;return"number"==typeof o?r.preloadAdditionalHeight=o:"object"==typeof c&&c.type===scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR?r.preloadAdditionalHeight=r.containerHeight*c.amount:r.preloadAdditionalHeight=0,Object.assign(n,r)},generateComputedUtilityFunctions:function(e){var t=this,i={};return i.getLoadingSpinnerHeight=function(){var e=0;return t.loadingSpinner&&(e=t.loadingSpinner.offsetHeight||0),e},e.useWindowAsScrollContainer?(i.subscribeToScrollListener=function(){window.addEventListener("scroll",t.infiniteHandleScroll)},i.unsubscribeFromScrollListener=function(){window.removeEventListener("scroll",t.infiniteHandleScroll)},i.nodeScrollListener=function(){},i.getScrollTop=function(){return window.pageYOffset},i.setScrollTop=function(e){window.scroll(window.pageXOffset,e)},i.scrollShouldBeIgnored=function(){return!1},i.buildScrollableStyle=function(){return{}}):(i.subscribeToScrollListener=function(){},i.unsubscribeFromScrollListener=function(){},i.nodeScrollListener=this.infiniteHandleScroll,i.getScrollTop=function(){return t.scrollable?t.scrollable.scrollTop:0},i.setScrollTop=function(e){t.scrollable&&(t.scrollable.scrollTop=e)},i.scrollShouldBeIgnored=function(e){return e.target!==t.scrollable},i.buildScrollableStyle=function(){return Object.assign({},{height:t.computedProps.containerHeight,overflowX:"hidden",overflowY:"scroll",WebkitOverflowScrolling:"touch"},t.computedProps.styles.scrollableStyle||{})}),i},recomputeInternalStateFromProps:function(e){checkProps(e);var t=this.generateComputedProps(e),i=this.generateComputedUtilityFunctions(e),o={};return o.numberOfChildren=React.Children.count(t.children),o.infiniteComputer=infiniteHelpers.createInfiniteComputer(t.elementHeight,t.children,t.displayBottomUpwards),void 0!==t.isInfiniteLoading&&(o.isInfiniteLoading=t.isInfiniteLoading),o.preloadBatchSize=t.preloadBatchSize,o.preloadAdditionalHeight=t.preloadAdditionalHeight,o=Object.assign(o,infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(o,i.getScrollTop())),{computedProps:t,utils:i,newState:o}},componentWillReceiveProps:function(e){var t=this.recomputeInternalStateFromProps(e);this.computedProps=t.computedProps,this.utils=t.utils,this.setState(t.newState)},componentWillUpdate:function(){this.props.displayBottomUpwards&&(this.preservedScrollState=this.utils.getScrollTop()-this.loadingSpinnerHeight)},componentDidUpdate:function(e,t){if(this.loadingSpinnerHeight=this.utils.getLoadingSpinnerHeight(),this.props.displayBottomUpwards){var i=this.getLowestPossibleScrollTop();this.shouldAttachToBottom&&this.utils.getScrollTop()<i?this.utils.setScrollTop(i):e.isInfiniteLoading&&!this.props.isInfiniteLoading&&this.utils.setScrollTop(this.state.infiniteComputer.getTotalScrollableHeight()-t.infiniteComputer.getTotalScrollableHeight()+this.preservedScrollState)}var o=this.state.numberOfChildren!==t.numberOfChildren;if(o){var n=infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state,this.utils.getScrollTop());this.setState(n)}o&&!this.hasAllVisibleItems()&&!this.state.isInfiniteLoading&&this.onInfiniteLoad()},componentDidMount:function(){if(this.utils.subscribeToScrollListener(),this.hasAllVisibleItems()||this.onInfiniteLoad(),this.props.displayBottomUpwards){var e=this.getLowestPossibleScrollTop();this.shouldAttachToBottom&&this.utils.getScrollTop()<e&&this.utils.setScrollTop(e)}},componentWillUnmount:function(){this.utils.unsubscribeFromScrollListener()},infiniteHandleScroll:function(e){this.utils.scrollShouldBeIgnored(e)||(this.computedProps.handleScroll(this.scrollable),this.handleScroll(this.utils.getScrollTop()))},manageScrollTimeouts:function(){this.state.scrollTimeout&&clearTimeout(this.state.scrollTimeout);var e=this,t=setTimeout(function(){e.setState({isScrolling:!1,scrollTimeout:void 0})},this.computedProps.timeScrollStateLastsForAfterUserScrolls);this.setState({isScrolling:!0,scrollTimeout:t})},getLowestPossibleScrollTop:function(){return this.state.infiniteComputer.getTotalScrollableHeight()-this.computedProps.containerHeight},hasAllVisibleItems:function(){return!(_isFinite(this.computedProps.infiniteLoadBeginEdgeOffset)&&this.state.infiniteComputer.getTotalScrollableHeight()<this.computedProps.containerHeight)},passedEdgeForInfiniteScroll:function(e){return this.computedProps.displayBottomUpwards?!this.shouldAttachToBottom&&e<this.computedProps.infiniteLoadBeginEdgeOffset:e>this.state.infiniteComputer.getTotalScrollableHeight()-this.computedProps.containerHeight-this.computedProps.infiniteLoadBeginEdgeOffset},onInfiniteLoad:function(){this.setState({isInfiniteLoading:!0}),this.computedProps.onInfiniteLoad()},handleScroll:function(e){this.shouldAttachToBottom=this.computedProps.displayBottomUpwards&&e>=this.getLowestPossibleScrollTop(),this.manageScrollTimeouts();var t=infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state,e);this.passedEdgeForInfiniteScroll(e)&&!this.state.isInfiniteLoading?(this.setState(Object.assign({},t)),this.onInfiniteLoad()):this.setState(t)},buildHeightStyle:function(e){return{width:"100%",height:Math.ceil(e)}},render:function(){var e,t=this;e=this.state.numberOfChildren>1?this.computedProps.children.slice(this.state.displayIndexStart,this.state.displayIndexEnd+1):this.computedProps.children;var i={};this.state.isScrolling&&(i.pointerEvents="none");var o=this.state.infiniteComputer.getTopSpacerHeight(this.state.displayIndexStart),n=this.state.infiniteComputer.getBottomSpacerHeight(this.state.displayIndexEnd);if(this.computedProps.displayBottomUpwards){var r=this.computedProps.containerHeight-this.state.infiniteComputer.getTotalScrollableHeight();r>0&&(o=r-this.loadingSpinnerHeight)}var s=void 0===this.computedProps.infiniteLoadBeginEdgeOffset?null:React.createElement("div",{ref:function(e){t.loadingSpinner=e}},this.state.isInfiniteLoading?this.computedProps.loadingSpinnerDelegate:null);return React.createElement("div",{className:this.computedProps.className,ref:function(e){t.scrollable=e},style:this.utils.buildScrollableStyle(),onScroll:this.utils.nodeScrollListener},React.createElement("div",{ref:function(e){t.smoothScrollingWrapper=e},style:i},React.createElement("div",{ref:function(e){t.topSpacer=e},style:this.buildHeightStyle(o)}),this.computedProps.displayBottomUpwards&&s,e,!this.computedProps.displayBottomUpwards&&s,React.createElement("div",{ref:function(e){t.bottomSpacer=e},style:this.buildHeightStyle(n)})))}});module.exports=Infinite,global.Infinite=Infinite;
+"use strict";function _objectWithoutProperties(e,t){var i={};for(var o in e)t.indexOf(o)>=0||Object.prototype.hasOwnProperty.call(e,o)&&(i[o]=e[o]);return i}var React=global.React||require("react"),PropTypes=global.PropTypes||require("prop-types"),createReactClass=global.createReactClass||require("create-react-class");"undefined"==typeof window&&(global.window={}),require("./utils/establish-polyfills");var scaleEnum=require("./utils/scaleEnum"),infiniteHelpers=require("./utils/infiniteHelpers"),_isFinite=require("lodash.isfinite"),preloadType=require("./utils/types").preloadType,checkProps=checkProps=require("./utils/checkProps"),Infinite=createReactClass({propTypes:{children:PropTypes.any,handleScroll:PropTypes.func,preloadBatchSize:preloadType,preloadAdditionalHeight:preloadType,elementHeight:PropTypes.oneOfType([PropTypes.number,PropTypes.arrayOf(PropTypes.number)]).isRequired,containerHeight:PropTypes.number,useWindowAsScrollContainer:PropTypes.bool,displayBottomUpwards:PropTypes.bool.isRequired,infiniteLoadBeginEdgeOffset:PropTypes.number,onInfiniteLoad:PropTypes.func,loadingSpinnerDelegate:PropTypes.node,isInfiniteLoading:PropTypes.bool,timeScrollStateLastsForAfterUserScrolls:PropTypes.number,className:PropTypes.string,styles:PropTypes.shape({scrollableStyle:PropTypes.object}).isRequired},statics:{containerHeightScaleFactor:function(e){if(!_isFinite(e))throw new Error("The scale factor must be a number.");return{type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:e}}},computedProps:{},utils:{},shouldAttachToBottom:!1,preservedScrollState:0,loadingSpinnerHeight:0,deprecationWarned:!1,scrollable:null,topSpacer:null,bottomSpacer:null,smoothScrollingWrapper:null,loadingSpinner:null,getDefaultProps:function(){return{handleScroll:function(){},useWindowAsScrollContainer:!1,onInfiniteLoad:function(){},loadingSpinnerDelegate:React.createElement("div",null),displayBottomUpwards:!1,isInfiniteLoading:!1,timeScrollStateLastsForAfterUserScrolls:150,className:"",styles:{}}},getInitialState:function(){var e=this.recomputeInternalStateFromProps(this.props);this.computedProps=e.computedProps,this.utils=e.utils,this.shouldAttachToBottom=this.props.displayBottomUpwards;var t=e.newState;return t.scrollTimeout=void 0,t.isScrolling=!1,t},generateComputedProps:function(e){var t=e.containerHeight,i=e.preloadBatchSize,o=e.preloadAdditionalHeight,n=_objectWithoutProperties(e,["containerHeight","preloadBatchSize","preloadAdditionalHeight"]),r={};t="number"==typeof t?t:0,r.containerHeight=e.useWindowAsScrollContainer?window.innerHeight:t,void 0!==n.infiniteLoadBeginBottomOffset&&(r.infiniteLoadBeginEdgeOffset=n.infiniteLoadBeginBottomOffset,this.deprecationWarned||(console.error("Warning: React Infinite's infiniteLoadBeginBottomOffset prop\n        has been deprecated as of 0.6.0. Please use infiniteLoadBeginEdgeOffset.\n        Because this is a rather descriptive name, a simple find and replace\n        should suffice."),this.deprecationWarned=!0));var s={type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:.5},l=i&&i.type?i:s;"number"==typeof i?r.preloadBatchSize=i:"object"==typeof l&&l.type===scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR?r.preloadBatchSize=r.containerHeight*l.amount:r.preloadBatchSize=0;var a={type:scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,amount:1},c=o&&o.type?o:a;return"number"==typeof o?r.preloadAdditionalHeight=o:"object"==typeof c&&c.type===scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR?r.preloadAdditionalHeight=r.containerHeight*c.amount:r.preloadAdditionalHeight=0,Object.assign(n,r)},generateComputedUtilityFunctions:function(e){var t=this,i={};return i.getLoadingSpinnerHeight=function(){var e=0;return t.loadingSpinner&&(e=t.loadingSpinner.offsetHeight||0),e},e.useWindowAsScrollContainer?(i.subscribeToScrollListener=function(){window.addEventListener("scroll",t.infiniteHandleScroll)},i.unsubscribeFromScrollListener=function(){window.removeEventListener("scroll",t.infiniteHandleScroll)},i.nodeScrollListener=function(){},i.getScrollTop=function(){return window.pageYOffset},i.setScrollTop=function(e){window.scroll(window.pageXOffset,e)},i.scrollShouldBeIgnored=function(){return!1},i.buildScrollableStyle=function(){return{}}):(i.subscribeToScrollListener=function(){},i.unsubscribeFromScrollListener=function(){},i.nodeScrollListener=this.infiniteHandleScroll,i.getScrollTop=function(){return t.scrollable?t.scrollable.scrollTop:0},i.setScrollTop=function(e){t.scrollable&&(t.scrollable.scrollTop=e)},i.scrollShouldBeIgnored=function(e){return e.target!==t.scrollable},i.buildScrollableStyle=function(){return Object.assign({},{height:t.computedProps.containerHeight,overflowX:"hidden",overflowY:"scroll",WebkitOverflowScrolling:"touch"},t.computedProps.styles.scrollableStyle||{})}),i},recomputeInternalStateFromProps:function(e){checkProps(e);var t=this.generateComputedProps(e),i=this.generateComputedUtilityFunctions(e),o={};return o.numberOfChildren=React.Children.count(t.children),o.infiniteComputer=infiniteHelpers.createInfiniteComputer(t.elementHeight,t.children,t.displayBottomUpwards),void 0!==t.isInfiniteLoading&&(o.isInfiniteLoading=t.isInfiniteLoading),o.preloadBatchSize=t.preloadBatchSize,o.preloadAdditionalHeight=t.preloadAdditionalHeight,o=Object.assign(o,infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(o,i.getScrollTop())),{computedProps:t,utils:i,newState:o}},componentWillReceiveProps:function(e){var t=this.recomputeInternalStateFromProps(e);this.computedProps=t.computedProps,this.utils=t.utils,this.setState(t.newState)},componentWillUpdate:function(){this.props.displayBottomUpwards&&(this.preservedScrollState=this.utils.getScrollTop()-this.loadingSpinnerHeight)},componentDidUpdate:function(e,t){if(this.loadingSpinnerHeight=this.utils.getLoadingSpinnerHeight(),this.props.displayBottomUpwards){var i=this.getLowestPossibleScrollTop();this.shouldAttachToBottom&&this.utils.getScrollTop()<i?this.utils.setScrollTop(i):e.isInfiniteLoading&&!this.props.isInfiniteLoading&&this.utils.setScrollTop(this.state.infiniteComputer.getTotalScrollableHeight()-t.infiniteComputer.getTotalScrollableHeight()+this.preservedScrollState)}var o=this.state.numberOfChildren!==t.numberOfChildren;if(o){var n=infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state,this.utils.getScrollTop());this.setState(n)}o&&!this.hasAllVisibleItems()&&!this.state.isInfiniteLoading&&this.onInfiniteLoad()},componentDidMount:function(){if(this.utils.subscribeToScrollListener(),this.hasAllVisibleItems()||this.onInfiniteLoad(),this.props.displayBottomUpwards){var e=this.getLowestPossibleScrollTop();this.shouldAttachToBottom&&this.utils.getScrollTop()<e&&this.utils.setScrollTop(e)}},componentWillUnmount:function(){this.utils.unsubscribeFromScrollListener()},infiniteHandleScroll:function(e){this.utils.scrollShouldBeIgnored(e)||(this.computedProps.handleScroll(this.scrollable),this.handleScroll(this.utils.getScrollTop()))},manageScrollTimeouts:function(){this.state.scrollTimeout&&clearTimeout(this.state.scrollTimeout);var e=this,t=setTimeout(function(){e.setState({isScrolling:!1,scrollTimeout:void 0})},this.computedProps.timeScrollStateLastsForAfterUserScrolls);this.setState({isScrolling:!0,scrollTimeout:t})},getLowestPossibleScrollTop:function(){return this.state.infiniteComputer.getTotalScrollableHeight()-this.computedProps.containerHeight},hasAllVisibleItems:function(){return!(_isFinite(this.computedProps.infiniteLoadBeginEdgeOffset)&&this.state.infiniteComputer.getTotalScrollableHeight()<this.computedProps.containerHeight)},passedEdgeForInfiniteScroll:function(e){return this.computedProps.displayBottomUpwards?!this.shouldAttachToBottom&&e<this.computedProps.infiniteLoadBeginEdgeOffset:e>this.state.infiniteComputer.getTotalScrollableHeight()-this.computedProps.containerHeight-this.computedProps.infiniteLoadBeginEdgeOffset},onInfiniteLoad:function(){this.setState({isInfiniteLoading:!0}),this.computedProps.onInfiniteLoad()},handleScroll:function(e){this.shouldAttachToBottom=this.computedProps.displayBottomUpwards&&e>=this.getLowestPossibleScrollTop(),this.manageScrollTimeouts();var t=infiniteHelpers.recomputeApertureStateFromOptionsAndScrollTop(this.state,e);this.passedEdgeForInfiniteScroll(e)&&!this.state.isInfiniteLoading?(this.setState(Object.assign({},t)),this.onInfiniteLoad()):this.setState(t)},buildHeightStyle:function(e){return{width:"100%",height:Math.ceil(e)}},render:function(){var e,t=this;e=this.state.numberOfChildren>1?this.computedProps.children.slice(this.state.displayIndexStart,this.state.displayIndexEnd+1):this.computedProps.children;var i={};this.state.isScrolling&&(i.pointerEvents="none");var o=this.state.infiniteComputer.getTopSpacerHeight(this.state.displayIndexStart),n=this.state.infiniteComputer.getBottomSpacerHeight(this.state.displayIndexEnd);if(this.computedProps.displayBottomUpwards){var r=this.computedProps.containerHeight-this.state.infiniteComputer.getTotalScrollableHeight();r>0&&(o=r-this.loadingSpinnerHeight)}var s=void 0===this.computedProps.infiniteLoadBeginEdgeOffset?null:React.createElement("div",{ref:function(e){t.loadingSpinner=e}},this.state.isInfiniteLoading?this.computedProps.loadingSpinnerDelegate:null);return React.createElement("div",{className:this.computedProps.className,ref:function(e){t.scrollable=e},style:this.utils.buildScrollableStyle(),onScroll:this.utils.nodeScrollListener},React.createElement("div",{ref:function(e){t.smoothScrollingWrapper=e},style:i},React.createElement("div",{ref:function(e){t.topSpacer=e},style:this.buildHeightStyle(o)}),this.computedProps.displayBottomUpwards&&s,e,!this.computedProps.displayBottomUpwards&&s,React.createElement("div",{ref:function(e){t.bottomSpacer=e},style:this.buildHeightStyle(n)})))}});module.exports=Infinite,global.Infinite=Infinite;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./utils/checkProps":22,"./utils/establish-polyfills":23,"./utils/infiniteHelpers":24,"./utils/scaleEnum":25,"./utils/types":26,"create-react-class":3,"lodash.isfinite":10,"prop-types":16,"react":undefined}],2:[function(require,module,exports){
 (function (process){
@@ -38,7 +38,7 @@ if (process.env.NODE_ENV !== 'production') {
   ReactPropTypeLocationNames = {
     prop: 'prop',
     context: 'context',
-    childContext: 'child context',
+    childContext: 'child context'
   };
 } else {
   ReactPropTypeLocationNames = {};
@@ -48,7 +48,6 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
   /**
    * Policies that describe methods in `ReactClassInterface`.
    */
-
 
   var injectedMixins = [];
 
@@ -75,7 +74,6 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
    * @internal
    */
   var ReactClassInterface = {
-
     /**
      * An array of Mixin objects to include when defining your component.
      *
@@ -166,7 +164,6 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
      *   }
      *
      * @return {ReactComponent}
-     * @nosideeffects
      * @required
      */
     render: 'DEFINE_ONCE',
@@ -294,7 +291,6 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
      * @overridable
      */
     updateComponent: 'OVERRIDE_BASE'
-
   };
 
   /**
@@ -307,71 +303,106 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
    * which all other static methods are defined.
    */
   var RESERVED_SPEC_KEYS = {
-    displayName: function (Constructor, displayName) {
+    displayName: function(Constructor, displayName) {
       Constructor.displayName = displayName;
     },
-    mixins: function (Constructor, mixins) {
+    mixins: function(Constructor, mixins) {
       if (mixins) {
         for (var i = 0; i < mixins.length; i++) {
           mixSpecIntoComponent(Constructor, mixins[i]);
         }
       }
     },
-    childContextTypes: function (Constructor, childContextTypes) {
+    childContextTypes: function(Constructor, childContextTypes) {
       if (process.env.NODE_ENV !== 'production') {
         validateTypeDef(Constructor, childContextTypes, 'childContext');
       }
-      Constructor.childContextTypes = _assign({}, Constructor.childContextTypes, childContextTypes);
+      Constructor.childContextTypes = _assign(
+        {},
+        Constructor.childContextTypes,
+        childContextTypes
+      );
     },
-    contextTypes: function (Constructor, contextTypes) {
+    contextTypes: function(Constructor, contextTypes) {
       if (process.env.NODE_ENV !== 'production') {
         validateTypeDef(Constructor, contextTypes, 'context');
       }
-      Constructor.contextTypes = _assign({}, Constructor.contextTypes, contextTypes);
+      Constructor.contextTypes = _assign(
+        {},
+        Constructor.contextTypes,
+        contextTypes
+      );
     },
     /**
      * Special case getDefaultProps which should move into statics but requires
      * automatic merging.
      */
-    getDefaultProps: function (Constructor, getDefaultProps) {
+    getDefaultProps: function(Constructor, getDefaultProps) {
       if (Constructor.getDefaultProps) {
-        Constructor.getDefaultProps = createMergedResultFunction(Constructor.getDefaultProps, getDefaultProps);
+        Constructor.getDefaultProps = createMergedResultFunction(
+          Constructor.getDefaultProps,
+          getDefaultProps
+        );
       } else {
         Constructor.getDefaultProps = getDefaultProps;
       }
     },
-    propTypes: function (Constructor, propTypes) {
+    propTypes: function(Constructor, propTypes) {
       if (process.env.NODE_ENV !== 'production') {
         validateTypeDef(Constructor, propTypes, 'prop');
       }
       Constructor.propTypes = _assign({}, Constructor.propTypes, propTypes);
     },
-    statics: function (Constructor, statics) {
+    statics: function(Constructor, statics) {
       mixStaticSpecIntoComponent(Constructor, statics);
     },
-    autobind: function () {} };
+    autobind: function() {}
+  };
 
   function validateTypeDef(Constructor, typeDef, location) {
     for (var propName in typeDef) {
       if (typeDef.hasOwnProperty(propName)) {
         // use a warning instead of an _invariant so components
         // don't show up in prod but only in __DEV__
-        process.env.NODE_ENV !== 'production' ? warning(typeof typeDef[propName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', Constructor.displayName || 'ReactClass', ReactPropTypeLocationNames[location], propName) : void 0;
+        if (process.env.NODE_ENV !== 'production') {
+          warning(
+            typeof typeDef[propName] === 'function',
+            '%s: %s type `%s` is invalid; it must be a function, usually from ' +
+              'React.PropTypes.',
+            Constructor.displayName || 'ReactClass',
+            ReactPropTypeLocationNames[location],
+            propName
+          );
+        }
       }
     }
   }
 
   function validateMethodOverride(isAlreadyDefined, name) {
-    var specPolicy = ReactClassInterface.hasOwnProperty(name) ? ReactClassInterface[name] : null;
+    var specPolicy = ReactClassInterface.hasOwnProperty(name)
+      ? ReactClassInterface[name]
+      : null;
 
     // Disallow overriding of base class methods unless explicitly allowed.
     if (ReactClassMixin.hasOwnProperty(name)) {
-      _invariant(specPolicy === 'OVERRIDE_BASE', 'ReactClassInterface: You are attempting to override ' + '`%s` from your class specification. Ensure that your method names ' + 'do not overlap with React methods.', name);
+      _invariant(
+        specPolicy === 'OVERRIDE_BASE',
+        'ReactClassInterface: You are attempting to override ' +
+          '`%s` from your class specification. Ensure that your method names ' +
+          'do not overlap with React methods.',
+        name
+      );
     }
 
     // Disallow defining methods more than once unless explicitly allowed.
     if (isAlreadyDefined) {
-      _invariant(specPolicy === 'DEFINE_MANY' || specPolicy === 'DEFINE_MANY_MERGED', 'ReactClassInterface: You are attempting to define ' + '`%s` on your component more than once. This conflict may be due ' + 'to a mixin.', name);
+      _invariant(
+        specPolicy === 'DEFINE_MANY' || specPolicy === 'DEFINE_MANY_MERGED',
+        'ReactClassInterface: You are attempting to define ' +
+          '`%s` on your component more than once. This conflict may be due ' +
+          'to a mixin.',
+        name
+      );
     }
   }
 
@@ -385,14 +416,33 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
         var typeofSpec = typeof spec;
         var isMixinValid = typeofSpec === 'object' && spec !== null;
 
-        process.env.NODE_ENV !== 'production' ? warning(isMixinValid, '%s: You\'re attempting to include a mixin that is either null ' + 'or not an object. Check the mixins included by the component, ' + 'as well as any mixins they include themselves. ' + 'Expected object but got %s.', Constructor.displayName || 'ReactClass', spec === null ? null : typeofSpec) : void 0;
+        if (process.env.NODE_ENV !== 'production') {
+          warning(
+            isMixinValid,
+            "%s: You're attempting to include a mixin that is either null " +
+              'or not an object. Check the mixins included by the component, ' +
+              'as well as any mixins they include themselves. ' +
+              'Expected object but got %s.',
+            Constructor.displayName || 'ReactClass',
+            spec === null ? null : typeofSpec
+          );
+        }
       }
 
       return;
     }
 
-    _invariant(typeof spec !== 'function', 'ReactClass: You\'re attempting to ' + 'use a component class or function as a mixin. Instead, just use a ' + 'regular object.');
-    _invariant(!isValidElement(spec), 'ReactClass: You\'re attempting to ' + 'use a component as a mixin. Instead, just use a regular object.');
+    _invariant(
+      typeof spec !== 'function',
+      "ReactClass: You're attempting to " +
+        'use a component class or function as a mixin. Instead, just use a ' +
+        'regular object.'
+    );
+    _invariant(
+      !isValidElement(spec),
+      "ReactClass: You're attempting to " +
+        'use a component as a mixin. Instead, just use a regular object.'
+    );
 
     var proto = Constructor.prototype;
     var autoBindPairs = proto.__reactAutoBindPairs;
@@ -427,7 +477,11 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
         // 2. Overridden methods (that were mixed in).
         var isReactClassMethod = ReactClassInterface.hasOwnProperty(name);
         var isFunction = typeof property === 'function';
-        var shouldAutoBind = isFunction && !isReactClassMethod && !isAlreadyDefined && spec.autobind !== false;
+        var shouldAutoBind =
+          isFunction &&
+          !isReactClassMethod &&
+          !isAlreadyDefined &&
+          spec.autobind !== false;
 
         if (shouldAutoBind) {
           autoBindPairs.push(name, property);
@@ -437,7 +491,15 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
             var specPolicy = ReactClassInterface[name];
 
             // These cases should already be caught by validateMethodOverride.
-            _invariant(isReactClassMethod && (specPolicy === 'DEFINE_MANY_MERGED' || specPolicy === 'DEFINE_MANY'), 'ReactClass: Unexpected spec policy %s for key %s ' + 'when mixing in component specs.', specPolicy, name);
+            _invariant(
+              isReactClassMethod &&
+                (specPolicy === 'DEFINE_MANY_MERGED' ||
+                  specPolicy === 'DEFINE_MANY'),
+              'ReactClass: Unexpected spec policy %s for key %s ' +
+                'when mixing in component specs.',
+              specPolicy,
+              name
+            );
 
             // For methods which are defined more than once, call the existing
             // methods before calling the new property, merging if appropriate.
@@ -472,10 +534,23 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
       }
 
       var isReserved = name in RESERVED_SPEC_KEYS;
-      _invariant(!isReserved, 'ReactClass: You are attempting to define a reserved ' + 'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' + 'as an instance property instead; it will still be accessible on the ' + 'constructor.', name);
+      _invariant(
+        !isReserved,
+        'ReactClass: You are attempting to define a reserved ' +
+          'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' +
+          'as an instance property instead; it will still be accessible on the ' +
+          'constructor.',
+        name
+      );
 
       var isInherited = name in Constructor;
-      _invariant(!isInherited, 'ReactClass: You are attempting to define ' + '`%s` on your component more than once. This conflict may be ' + 'due to a mixin.', name);
+      _invariant(
+        !isInherited,
+        'ReactClass: You are attempting to define ' +
+          '`%s` on your component more than once. This conflict may be ' +
+          'due to a mixin.',
+        name
+      );
       Constructor[name] = property;
     }
   }
@@ -488,11 +563,22 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
    * @return {object} one after it has been mutated to contain everything in two.
    */
   function mergeIntoWithNoDuplicateKeys(one, two) {
-    _invariant(one && two && typeof one === 'object' && typeof two === 'object', 'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.');
+    _invariant(
+      one && two && typeof one === 'object' && typeof two === 'object',
+      'mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.'
+    );
 
     for (var key in two) {
       if (two.hasOwnProperty(key)) {
-        _invariant(one[key] === undefined, 'mergeIntoWithNoDuplicateKeys(): ' + 'Tried to merge two objects with the same key: `%s`. This conflict ' + 'may be due to a mixin; in particular, this may be caused by two ' + 'getInitialState() or getDefaultProps() methods returning objects ' + 'with clashing keys.', key);
+        _invariant(
+          one[key] === undefined,
+          'mergeIntoWithNoDuplicateKeys(): ' +
+            'Tried to merge two objects with the same key: `%s`. This conflict ' +
+            'may be due to a mixin; in particular, this may be caused by two ' +
+            'getInitialState() or getDefaultProps() methods returning objects ' +
+            'with clashing keys.',
+          key
+        );
         one[key] = two[key];
       }
     }
@@ -553,8 +639,14 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
       boundMethod.__reactBoundArguments = null;
       var componentName = component.constructor.displayName;
       var _bind = boundMethod.bind;
-      boundMethod.bind = function (newThis) {
-        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      boundMethod.bind = function(newThis) {
+        for (
+          var _len = arguments.length,
+            args = Array(_len > 1 ? _len - 1 : 0),
+            _key = 1;
+          _key < _len;
+          _key++
+        ) {
           args[_key - 1] = arguments[_key];
         }
 
@@ -562,9 +654,24 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
         // ignore the value of "this" that the user is trying to use, so
         // let's warn.
         if (newThis !== component && newThis !== null) {
-          process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): React component methods may only be bound to the ' + 'component instance. See %s', componentName) : void 0;
+          if (process.env.NODE_ENV !== 'production') {
+            warning(
+              false,
+              'bind(): React component methods may only be bound to the ' +
+                'component instance. See %s',
+              componentName
+            );
+          }
         } else if (!args.length) {
-          process.env.NODE_ENV !== 'production' ? warning(false, 'bind(): You are binding a component method to the component. ' + 'React does this for you automatically in a high-performance ' + 'way, so you can safely remove this call. See %s', componentName) : void 0;
+          if (process.env.NODE_ENV !== 'production') {
+            warning(
+              false,
+              'bind(): You are binding a component method to the component. ' +
+                'React does this for you automatically in a high-performance ' +
+                'way, so you can safely remove this call. See %s',
+              componentName
+            );
+          }
           return boundMethod;
         }
         var reboundMethod = _bind.apply(boundMethod, arguments);
@@ -591,11 +698,14 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
     }
   }
 
-  var IsMountedMixin = {
-    componentDidMount: function () {
+  var IsMountedPreMixin = {
+    componentDidMount: function() {
       this.__isMounted = true;
-    },
-    componentWillUnmount: function () {
+    }
+  };
+
+  var IsMountedPostMixin = {
+    componentWillUnmount: function() {
       this.__isMounted = false;
     }
   };
@@ -605,12 +715,11 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
    * therefore not already part of the modern ReactComponent.
    */
   var ReactClassMixin = {
-
     /**
      * TODO: This will be deprecated because state should always keep a consistent
      * type signature and the only use case for this, is to avoid that.
      */
-    replaceState: function (newState, callback) {
+    replaceState: function(newState, callback) {
       this.updater.enqueueReplaceState(this, newState, callback);
     },
 
@@ -620,17 +729,29 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
      * @protected
      * @final
      */
-    isMounted: function () {
+    isMounted: function() {
       if (process.env.NODE_ENV !== 'production') {
-        process.env.NODE_ENV !== 'production' ? warning(this.__didWarnIsMounted, '%s: isMounted is deprecated. Instead, make sure to clean up ' + 'subscriptions and pending requests in componentWillUnmount to ' + 'prevent memory leaks.', this.constructor && this.constructor.displayName || this.name || 'Component') : void 0;
+        warning(
+          this.__didWarnIsMounted,
+          '%s: isMounted is deprecated. Instead, make sure to clean up ' +
+            'subscriptions and pending requests in componentWillUnmount to ' +
+            'prevent memory leaks.',
+          (this.constructor && this.constructor.displayName) ||
+            this.name ||
+            'Component'
+        );
         this.__didWarnIsMounted = true;
       }
       return !!this.__isMounted;
     }
   };
 
-  var ReactClassComponent = function () {};
-  _assign(ReactClassComponent.prototype, ReactComponent.prototype, ReactClassMixin);
+  var ReactClassComponent = function() {};
+  _assign(
+    ReactClassComponent.prototype,
+    ReactComponent.prototype,
+    ReactClassMixin
+  );
 
   /**
    * Creates a composite component class given a class specification.
@@ -644,12 +765,16 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
     // To keep our warnings more understandable, we'll use a little hack here to
     // ensure that Constructor.name !== 'Constructor'. This makes sure we don't
     // unnecessarily identify a class without displayName as 'Constructor'.
-    var Constructor = identity(function (props, context, updater) {
+    var Constructor = identity(function(props, context, updater) {
       // This constructor gets overridden by mocks. The argument is used
       // by mocks to assert on what gets mounted.
 
       if (process.env.NODE_ENV !== 'production') {
-        process.env.NODE_ENV !== 'production' ? warning(this instanceof Constructor, 'Something is calling a React component directly. Use a factory or ' + 'JSX instead. See: https://fb.me/react-legacyfactory') : void 0;
+        warning(
+          this instanceof Constructor,
+          'Something is calling a React component directly. Use a factory or ' +
+            'JSX instead. See: https://fb.me/react-legacyfactory'
+        );
       }
 
       // Wire up auto-binding
@@ -670,13 +795,20 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
       var initialState = this.getInitialState ? this.getInitialState() : null;
       if (process.env.NODE_ENV !== 'production') {
         // We allow auto-mocks to proceed as if they're returning null.
-        if (initialState === undefined && this.getInitialState._isMockFunction) {
+        if (
+          initialState === undefined &&
+          this.getInitialState._isMockFunction
+        ) {
           // This is probably bad practice. Consider warning here and
           // deprecating this convenience.
           initialState = null;
         }
       }
-      _invariant(typeof initialState === 'object' && !Array.isArray(initialState), '%s.getInitialState(): must return an object or null', Constructor.displayName || 'ReactCompositeComponent');
+      _invariant(
+        typeof initialState === 'object' && !Array.isArray(initialState),
+        '%s.getInitialState(): must return an object or null',
+        Constructor.displayName || 'ReactCompositeComponent'
+      );
 
       this.state = initialState;
     });
@@ -686,8 +818,9 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
 
     injectedMixins.forEach(mixSpecIntoComponent.bind(null, Constructor));
 
-    mixSpecIntoComponent(Constructor, IsMountedMixin);
+    mixSpecIntoComponent(Constructor, IsMountedPreMixin);
     mixSpecIntoComponent(Constructor, spec);
+    mixSpecIntoComponent(Constructor, IsMountedPostMixin);
 
     // Initialize the defaultProps property after all mixins have been merged.
     if (Constructor.getDefaultProps) {
@@ -707,11 +840,26 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
       }
     }
 
-    _invariant(Constructor.prototype.render, 'createClass(...): Class specification must implement a `render` method.');
+    _invariant(
+      Constructor.prototype.render,
+      'createClass(...): Class specification must implement a `render` method.'
+    );
 
     if (process.env.NODE_ENV !== 'production') {
-      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentShouldUpdate, '%s has a method called ' + 'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' + 'The name is phrased as a question because the function is ' + 'expected to return a value.', spec.displayName || 'A component') : void 0;
-      process.env.NODE_ENV !== 'production' ? warning(!Constructor.prototype.componentWillRecieveProps, '%s has a method called ' + 'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?', spec.displayName || 'A component') : void 0;
+      warning(
+        !Constructor.prototype.componentShouldUpdate,
+        '%s has a method called ' +
+          'componentShouldUpdate(). Did you mean shouldComponentUpdate()? ' +
+          'The name is phrased as a question because the function is ' +
+          'expected to return a value.',
+        spec.displayName || 'A component'
+      );
+      warning(
+        !Constructor.prototype.componentWillRecieveProps,
+        '%s has a method called ' +
+          'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?',
+        spec.displayName || 'A component'
+      );
     }
 
     // Reduce time spent doing lookups by setting these on the prototype.
@@ -745,6 +893,13 @@ module.exports = factory;
 
 var React = require('react');
 var factory = require('./factory');
+
+if (typeof React === 'undefined') {
+  throw Error(
+    'create-react-class could not find the React object. If you are using script tags, ' +
+      'make sure that React is being loaded before create-react-class.'
+  );
+}
 
 // Hack to grab NoopUpdateQueue from isomorphic React
 var ReactNoopUpdateQueue = new React.Component().updater;
@@ -992,45 +1147,43 @@ var emptyFunction = require('./emptyFunction');
 var warning = emptyFunction;
 
 if (process.env.NODE_ENV !== 'production') {
-  (function () {
-    var printWarning = function printWarning(format) {
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
       }
 
-      var argIndex = 0;
-      var message = 'Warning: ' + format.replace(/%s/g, function () {
-        return args[argIndex++];
-      });
-      if (typeof console !== 'undefined') {
-        console.error(message);
-      }
-      try {
-        // --- Welcome to debugging React ---
-        // This error was thrown as a convenience so that you can use this stack
-        // to find the callsite that caused this warning to fire.
-        throw new Error(message);
-      } catch (x) {}
-    };
-
-    warning = function warning(condition, format) {
-      if (format === undefined) {
-        throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-      }
-
-      if (format.indexOf('Failed Composite propType: ') === 0) {
-        return; // Ignore CompositeComponent proptype check.
-      }
-
-      if (!condition) {
-        for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-          args[_key2 - 2] = arguments[_key2];
-        }
-
-        printWarning.apply(undefined, [format].concat(args));
-      }
-    };
-  })();
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
 }
 
 module.exports = warning;
