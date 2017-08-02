@@ -4,6 +4,10 @@ var React = global.React || require('react');
 var PropTypes = global.PropTypes || require('prop-types');
 var createReactClass = global.createReactClass || require('create-react-class');
 
+if (typeof window === 'undefined') {
+  global.window = {};
+}
+
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
 var infiniteHelpers = require('./utils/infiniteHelpers');
