@@ -685,6 +685,46 @@ describe('React Infinite when the window is used as the Container', function() {
       window.addEventListener = oldAdd;
     });
   });
+
+  it('reacts to window scroll events when useWindowAsScrollContainer is enabled after the initial render', function() {
+    const infiniteSpy = jest.fn();
+    const elementHeight = 200;
+
+    const oldAdd = window.addEventListener;
+
+    const listenerTriggered = new Promise((resolve, reject) => {
+      window.addEventListener = function(event, f) {
+        if (event === 'scroll') {
+          resolve(f);
+        }
+      };
+    });
+
+    const rootNode = mount(
+      <Infinite
+        elementHeight={elementHeight}
+        handleScroll={infiniteSpy}
+        timeScrollStateLastsForAfterUserScrolls={10000}
+        className={'correct-class-name'}
+        containerHeight={700}
+      >
+        {renderHelpers.divGenerator(20, elementHeight)}
+      </Infinite>
+    );
+
+    expect(mountToJson(rootNode)).toMatchSnapshot();
+
+    rootNode.setProps({
+      useWindowAsScrollContainer: true
+    });
+
+    return listenerTriggered.then(listener => {
+      window.pageYOffset = 200;
+      listener();
+      expect(mountToJson(rootNode)).toMatchSnapshot();
+      window.addEventListener = oldAdd;
+    });
+  });
 });
 
 describe("Specifying React Infinite's preload amounts", function() {
