@@ -7,6 +7,7 @@
 
 jest.dontMock('../src/react-infinite.jsx');
 jest.dontMock('../src/utils/checkProps');
+jest.dontMock('../src/utils/window.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 
