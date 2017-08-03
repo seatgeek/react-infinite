@@ -56,7 +56,7 @@
     "browserify": "^9.0.3",
     "coveralls": "^2.11.2",
     "del": "2.0.2",
-    "envify": "3.4.0",
+    "loose-envify": "1.1.0",
     "eslint": "1.9.0",
     "eslint-config-semistandard": "^5.0.0",
     "eslint-config-standard": "^4.1.0",
@@ -93,7 +93,7 @@
   },
   "browserify": {
     "transform": [
-      "envify"
+      "loose-envify"
     ]
   }
 }
