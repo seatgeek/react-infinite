@@ -4,9 +4,19 @@ var React = global.React || require('react');
 var PropTypes = global.PropTypes || require('prop-types');
 var createReactClass = global.createReactClass || require('create-react-class');
 
-if (typeof window === 'undefined') {
-  global.window = {};
+var win;
+
+if (typeof window !== 'undefined') {
+  win = window;
+} else if (typeof global !== 'undefined') {
+  win = global;
+} else if (typeof self !== 'undefined') {
+  win = self;
+} else {
+  win = {};
 }
+
+var window = win;
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
