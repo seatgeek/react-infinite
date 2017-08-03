@@ -1,22 +1,11 @@
 /* @flow */
 
+
 var React = global.React || require('react');
 var PropTypes = global.PropTypes || require('prop-types');
 var createReactClass = global.createReactClass || require('create-react-class');
 
-var win;
-
-if (typeof window !== 'undefined') {
-  win = window;
-} else if (typeof global !== 'undefined') {
-  win = global;
-} else if (typeof self !== 'undefined') {
-  win = self;
-} else {
-  win = {};
-}
-
-var window = win;
+var window = require('./utils/window');
 
 require('./utils/establish-polyfills');
 var scaleEnum = require('./utils/scaleEnum');
@@ -249,16 +238,15 @@ var Infinite = createReactClass({
     newState: ReactInfiniteState
     } {
     checkProps(props);
-    var computedProps = this.generateComputedProps(props);
-    var utils = this.generateComputedUtilityFunctions(props);
+    var computedProps: ReactInfiniteComputedProps = this.generateComputedProps(props);
+    var utils: ReactInfiniteUtilityFunctions = this.generateComputedUtilityFunctions(props);
 
     var newState = {};
 
     newState.numberOfChildren = React.Children.count(computedProps.children);
     newState.infiniteComputer = infiniteHelpers.createInfiniteComputer(
       computedProps.elementHeight,
-      computedProps.children,
-      computedProps.displayBottomUpwards
+      computedProps.children
     );
 
     if (computedProps.isInfiniteLoading !== undefined) {
@@ -422,7 +410,7 @@ var Infinite = createReactClass({
     };
   },
 
-  render(): React.Element<any, any, any> {
+  render() {
     var displayables;
     if (this.state.numberOfChildren > 1) {
       displayables = this.computedProps.children.slice(this.state.displayIndexStart,
