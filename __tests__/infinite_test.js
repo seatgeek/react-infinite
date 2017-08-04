@@ -304,11 +304,10 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
 });
 
 describe("React Infinite's Infinite Scroll Capabilities", function() {
-
   it('infiniteLoadBeginEdgeOffset does not always trigger infinite load on scroll', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
@@ -318,9 +317,9 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 300;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
@@ -328,9 +327,9 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
   });
 
   it('triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
@@ -340,9 +339,9 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 3600;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
@@ -350,9 +349,9 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
   });
 
   it('does not always display the loadingSpinnerDelegate', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
@@ -363,21 +362,19 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 100;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
-    expect(function() {
-      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div');
-    }).toThrow();
+    expect(rootNode.find('.delegate-div').exists()).toBe(false);
   });
 
   it('displays the loadingSpinnerDelegate when isInfiniteLoading', function() {
     var infiniteSpy = jasmine.createSpy('infiniteSpy');
     var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    var rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   onInfiniteLoad={infiniteSpy}
@@ -388,23 +385,20 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 3600;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
-    expect(function() {
-      TestUtils.findRenderedDOMComponentWithClass(rootNode, 'delegate-div');
-    }).not.toThrow();
+    expect(rootNode.find('.delegate-div').exists()).toBe(true);
   });
 });
 
 describe("Maintaining React Infinite's internal scroll state", function() {
   it('has does not have pointer-events: none by default', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = renderer.create(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   timeScrollStateLastsForAfterUserScrolls={10000}
@@ -412,14 +406,13 @@ describe("Maintaining React Infinite's internal scroll state", function() {
           {renderHelpers.divGenerator(20, elementHeight)}
         </Infinite>
       );
-    var wrapper = rootNode.smoothScrollingWrapper;
-    expect(wrapper._style._values['pointer-events']).toBeUndefined();
+
+    expect(rootNode).toMatchSnapshot();
   });
 
   it('has pointer-events: none upon scroll', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   timeScrollStateLastsForAfterUserScrolls={10000}
@@ -428,14 +421,13 @@ describe("Maintaining React Infinite's internal scroll state", function() {
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 100;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
-    var wrapper = rootNode.smoothScrollingWrapper;
-    expect(wrapper._style._values['pointer-events']).toEqual('none');
+    expect(toJson.mountToJson(rootNode)).toMatchSnapshot();
   });
 });
 

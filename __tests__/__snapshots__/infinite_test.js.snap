@@ -1,5 +1,191 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Maintaining React Infinite's internal scroll state has does not have pointer-events: none by default 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 2800,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Maintaining React Infinite's internal scroll state has pointer-events: none upon scroll 1`] = `
+<Component
+  className="correct-class-name"
+  containerHeight={800}
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 800,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-0"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-1"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Component>
+`;
+
 exports[`The Behavior of the Variable Height React Infinite Component functions correctly at the end of its range 1`] = `
 <Component
   className="correct-class-name"
