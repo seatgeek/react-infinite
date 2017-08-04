@@ -11,12 +11,19 @@ jest.dontMock('../src/utils/window.js');
 jest.dontMock('lodash.isfinite');
 jest.dontMock('lodash.isarray');
 jest.dontMock('react-dom');
+jest.dontMock('react-test-renderer');
+jest.dontMock('enzyme');
+jest.dontMock('enzyme-to-json');
 
 var React = require('react');
 var createReactClass = require('create-react-class');
+var renderer = require('react-test-renderer');
 var ReactDOM = require('react-dom');
+var enzyme = require('enzyme');
 var TestUtils = require('react-dom/test-utils');
 var Infinite = require('../src/react-infinite.jsx');
+var toJson = require('enzyme-to-json');
+
 
 var renderHelpers = require('./helpers/renderHelpers');
 
@@ -87,7 +94,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
 
 describe('The Children of the React Infinite Component', function() {
   it('renders its children when no hiding behavior is required', function() {
-    var rootNode = TestUtils.renderIntoDocument(
+    const rootNode = renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"correct-class-name"}>
@@ -96,25 +103,19 @@ describe('The Children of the React Infinite Component', function() {
         </Infinite>
       );
 
-    expect(rootNode.topSpacer._style._values.height).toEqual('0px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('0px');
-
-    expect(TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0')).not.toBeUndefined();
-    expect(TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1')).not.toBeUndefined();
+    const tree = rootNode.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   it('renders its children when some DOM nodes are hidden', function() {
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = renderer.create(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   className={"correct-class-name"}>
           {renderHelpers.divGenerator(10, elementHeight)}
         </Infinite>
       );
-
-    expect(rootNode.topSpacer._style._values.height).toEqual('0px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('800px');
 
     // Why are six nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
@@ -124,22 +125,13 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to the containerHeight, 800 pixels
     //
     // Their sum is 1200 pixels, or 6 200-pixel elements.
-    for (var i = 0; i < 6; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
-
-    for (var i = 6; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
+    const tree = rootNode.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   it('renders more children when preloadAdditionalHeight is increased beyond its default', function() {
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = renderer.create(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   preloadAdditionalHeight={1000}
@@ -147,9 +139,6 @@ describe('The Children of the React Infinite Component', function() {
           {renderHelpers.divGenerator(10, elementHeight)}
         </Infinite>
       );
-
-    expect(rootNode.topSpacer._style._values.height).toEqual('0px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('600px');
 
     // Why are seven nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
@@ -159,23 +148,13 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight is declared as 1000 pixels
     //
     // Their sum is 1400 pixels, or 7 200-pixel elements.
-
-    for (var i = 0; i < 7; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
-
-    for (var i = 7; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
+    const tree = rootNode.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   it('renders more children when preloadBatchSize is increased beyond its default', function() {
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = renderer.create(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   preloadBatchSize={800}
@@ -183,9 +162,6 @@ describe('The Children of the React Infinite Component', function() {
           {renderHelpers.divGenerator(10, elementHeight)}
         </Infinite>
       );
-
-    expect(rootNode.topSpacer._style._values.height).toEqual('0px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('400px');
 
     // Why are eight nodes rendered? Since we have not scrolled at
     // all, the extent that React Infinite will render is
@@ -195,25 +171,15 @@ describe('The Children of the React Infinite Component', function() {
     // preloadAdditionalHeight defaults to containerHeight, 800 pixels
     //
     // Their sum is 1600 pixels, or 8 200-pixel elements.
-    for (var i = 0; i < 8; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
-
-    for (var i = 8; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
-
+    const tree = rootNode.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });
 
 describe('The Scrolling Behavior of the Constant Height React Infinite Component', function() {
   it('hides visible elements when the user scrolls sufficiently', function() {
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   className={"correct-class-name"}>
@@ -221,9 +187,9 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 1500;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
@@ -235,34 +201,14 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
     //  1600 pixels: blockEnd, end of block that scrollTop of 1500 pixels is in
     //  2400 pixels: windowBottom, end of first displayed element
     //  4000 pixels: end of bottomSpacer element
-    expect(rootNode.topSpacer._style._values.height).toEqual('400px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('1600px');
-
-    // Above the batch and its preloadAdditionalHeight
-    for (var i = 0; i < 2; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
-
-    // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 2; i < 12; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
-
-    // Below the batch and its preloadAdditionalHeight
-    for (var i = 12; i < 20; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
+    // expect(rootNode.topSpacer._style._values.height).toEqual('400px');
+    // expect(rootNode.bottomSpacer._style._values.height).toEqual('1600px');
+    expect(toJson.mountToJson(rootNode)).toMatchSnapshot();
   });
 
   it('functions correctly at the end of its range', function() {
-    var elementHeight = 200;
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = 200;
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   className={"correct-class-name"}>
@@ -271,36 +217,21 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
       );
 
     // The total scrollable height here is 4000 pixels
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 3600;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
-    expect(rootNode.topSpacer._style._values.height).toEqual('2800px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('0px');
-
-    // Above the batch and its preloadAdditionalHeight
-    for (var i = 0; i < 14; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
-
-    // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 14; i < 20; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
+    expect(toJson.mountToJson(rootNode)).toMatchSnapshot();
   });
 });
 
 describe('The Behavior of the Variable Height React Infinite Component', function() {
   it('hides elements when the user has not yet scrolled', function() {
                       // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
-    var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
+    const rootNode = renderer.create(
         <Infinite elementHeight={elementHeight}
                   containerHeight={420}
                   className={"correct-class-name"}>
@@ -313,28 +244,14 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     //  420 pixels: end of container
     //  630 pixels: end of windowBottom
     //  1400 pixels: end of bottomSpacer element
-    expect(rootNode.topSpacer._style._values.height).toEqual('0px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('675px');
-
-    // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 1; i < 11; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
-
-    // Below the batch and its preloadAdditionalHeight
-    for (var i = 11; i < 16; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
+    const tree = rootNode.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   it('hides visible elements when the user scrolls sufficiently', function() {
                       // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (17)
-    var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={400}
                   className={"correct-class-name"}>
@@ -342,9 +259,9 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
         </Infinite>
       );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 700;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
@@ -355,32 +272,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     //  800 pixels: blockEnd, end of the block that the scrollTop of 700 pixels is in
     //  1200 pixels: windowBottom, end of displayed element
     //  1400 pixels: end of bottomSpacer element
-
-    expect(rootNode.topSpacer._style._values.height).toEqual('40px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('100px');
-
-    // Above the batch and its preloadAdditionalHeight
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-0') }).toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-1') }).toThrow();
-
-    // Within the batch and its preloadAdditionalHeight, top and bottom
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-2') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-3');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-4') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-5');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-6');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-7');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-8') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-9');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-10') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-11') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-12') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-13') }).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-14');}).not.toThrow();
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-15') }).not.toThrow();
-
-    // Below the batch and its preloadAdditionalHeight
-    expect(function() { TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-16');}).toThrow();
+    expect(toJson.mountToJson(rootNode)).toMatchSnapshot();
   });
 
   it('functions correctly at the end of its range', function() {
