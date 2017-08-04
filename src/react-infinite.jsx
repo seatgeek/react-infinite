@@ -180,7 +180,7 @@ var Infinite = createReactClass({
     newState: ReactInfiniteState
     } {
     checkProps(props);
-    var computedProps: ReactInfiniteComputedProps = infiniteHelpers.generateComputedProps(props);
+    var computedProps = infiniteHelpers.generateComputedProps(props);
     var utils: ReactInfiniteUtilityFunctions = this.generateComputedUtilityFunctions(props);
 
     var newState = {};
