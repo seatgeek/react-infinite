@@ -1,31 +1,14 @@
 /* eslint-env jest, jasmine */
 
-jest.dontMock('../src/react-infinite.jsx');
-jest.dontMock('../src/computers/infiniteComputer.js');
-jest.dontMock('../src/computers/constantInfiniteComputer.js');
-jest.dontMock('../src/computers/arrayInfiniteComputer.js');
-jest.dontMock('../src/utils/binaryIndexSearch.js');
-jest.dontMock('../src/utils/infiniteHelpers.js');
-jest.dontMock('./helpers/renderHelpers.js');
-jest.dontMock('../src/utils/window.js');
-jest.dontMock('lodash.isfinite');
-jest.dontMock('lodash.isarray');
-jest.dontMock('react-dom');
-jest.dontMock('react-test-renderer');
-jest.dontMock('enzyme');
-jest.dontMock('enzyme-to-json');
-
-var React = require('react');
-var createReactClass = require('create-react-class');
-var renderer = require('react-test-renderer');
-var ReactDOM = require('react-dom');
-var enzyme = require('enzyme');
-var TestUtils = require('react-dom/test-utils');
-var Infinite = require('../src/react-infinite.jsx');
-var toJson = require('enzyme-to-json');
-
-
-var renderHelpers = require('./helpers/renderHelpers');
+import React from 'react';
+import createReactClass from 'create-react-class';
+import renderer from 'react-test-renderer';
+import ReactDOM from 'react-dom';
+import enzyme from 'enzyme';
+import TestUtils from 'react-dom/test-utils';
+import Infinite from '../src/react-infinite.jsx';
+import toJson from 'enzyme-to-json';
+import renderHelpers from './helpers/renderHelpers';
 
 describe('Rendering the React Infinite Component Wrapper', function() {
   it('does not throw an error when given no children', function() {
@@ -459,10 +442,10 @@ describe('Handling infinite scrolling', function() {
   });
 
   it('considers a scroll to have occurred when the container itself is scrolled', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
 
-    var rootNode = TestUtils.renderIntoDocument(
+    const rootNode = TestUtils.renderIntoDocument(
         <Infinite elementHeight={elementHeight}
                   containerHeight={800}
                   handleScroll={infiniteSpy}
