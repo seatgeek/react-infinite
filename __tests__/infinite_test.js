@@ -277,8 +277,8 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
 
   it('functions correctly at the end of its range', function() {
                       // 20  40  200  300  350 500  525 550 575 600 725  805 880 900 1050 1300 1400 (16)
-    var elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
-    var rootNode = TestUtils.renderIntoDocument(
+    const elementHeight = [20, 20, 160, 100, 50, 150, 25, 25, 25, 25, 125, 80, 75, 20, 150, 250, 100];
+    const rootNode = enzyme.mount(
         <Infinite elementHeight={elementHeight}
                   containerHeight={400}
                   className={"correct-class-name"}>
@@ -287,9 +287,9 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
       );
 
     // The total scrollable height here is 4000 pixels
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
+    const rootDomNode = rootNode.getDOMNode();
     rootDomNode.scrollTop = 1000;
-    TestUtils.Simulate.scroll(rootDomNode, {
+    rootNode.simulate('scroll', {
       target: rootDomNode
     });
 
@@ -299,22 +299,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     //  1000 pixels: start of block
     //  1400 pixels: end of block
     //  1400 pixels: end of windowBottom
-    expect(rootNode.topSpacer._style._values.height).toEqual('575px');
-    expect(rootNode.bottomSpacer._style._values.height).toEqual('0px');
-
-    // Above the batch and its preloadAdditionalHeight
-    for (var i = 0; i < 9; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
-
-    // Within the batch and its preloadAdditionalHeight, top and bottom
-    for (var i = 9; i < 15; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
+    expect(toJson.mountToJson(rootNode)).toMatchSnapshot();
   });
 });
 
