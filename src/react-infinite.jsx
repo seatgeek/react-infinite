@@ -1,6 +1,5 @@
 /* @flow */
 
-
 var React = global.React || require('react');
 var PropTypes = global.PropTypes || require('prop-types');
 var createReactClass = global.createReactClass || require('create-react-class');
@@ -125,63 +124,6 @@ var Infinite = createReactClass({
     return state;
   },
 
-  generateComputedProps(props: ReactInfiniteProps): ReactInfiniteComputedProps {
-    // These are extracted so their type definitions do not conflict.
-    var {containerHeight,
-          preloadBatchSize,
-          preloadAdditionalHeight,
-          ...oldProps} = props;
-
-    var newProps = {};
-    containerHeight = typeof containerHeight === 'number' ? containerHeight : 0;
-    newProps.containerHeight = props.useWindowAsScrollContainer
-      ? window.innerHeight : containerHeight;
-
-    if (oldProps.infiniteLoadBeginBottomOffset !== undefined) {
-      newProps.infiniteLoadBeginEdgeOffset = oldProps.infiniteLoadBeginBottomOffset;
-      if (!this.deprecationWarned) {
-        console.error(`Warning: React Infinite's infiniteLoadBeginBottomOffset prop
-        has been deprecated as of 0.6.0. Please use infiniteLoadBeginEdgeOffset.
-        Because this is a rather descriptive name, a simple find and replace
-        should suffice.`);
-        this.deprecationWarned = true;
-      }
-    }
-
-    var defaultPreloadBatchSizeScaling = {
-      type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
-      amount: 0.5
-    };
-    var batchSize = preloadBatchSize && preloadBatchSize.type
-      ? preloadBatchSize
-      : defaultPreloadBatchSizeScaling;
-
-    if (typeof preloadBatchSize === 'number') {
-      newProps.preloadBatchSize = preloadBatchSize;
-    } else if (typeof batchSize === 'object' && batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
-    } else {
-      newProps.preloadBatchSize = 0;
-    }
-
-    var defaultPreloadAdditionalHeightScaling = {
-      type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
-      amount: 1
-    };
-    var additionalHeight = preloadAdditionalHeight && preloadAdditionalHeight.type
-      ? preloadAdditionalHeight
-      : defaultPreloadAdditionalHeightScaling;
-    if (typeof preloadAdditionalHeight === 'number') {
-      newProps.preloadAdditionalHeight = preloadAdditionalHeight;
-    } else if (typeof additionalHeight === 'object' && additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
-      newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
-    } else {
-      newProps.preloadAdditionalHeight = 0;
-    }
-
-    return Object.assign(oldProps, newProps);
-  },
-
   generateComputedUtilityFunctions(props: ReactInfiniteProps): ReactInfiniteUtilityFunctions {
     var utilities = {};
     utilities.getLoadingSpinnerHeight = () => {
@@ -238,7 +180,7 @@ var Infinite = createReactClass({
     newState: ReactInfiniteState
     } {
     checkProps(props);
-    var computedProps: ReactInfiniteComputedProps = this.generateComputedProps(props);
+    var computedProps: ReactInfiniteComputedProps = infiniteHelpers.generateComputedProps(props);
     var utils: ReactInfiniteUtilityFunctions = this.generateComputedUtilityFunctions(props);
 
     var newState = {};
@@ -403,13 +345,6 @@ var Infinite = createReactClass({
     }
   },
 
-  buildHeightStyle(height: number): CSSStyle {
-    return {
-      width: '100%',
-      height: Math.ceil(height)
-    };
-  },
-
   render() {
     var displayables;
     if (this.state.numberOfChildren > 1) {
@@ -450,12 +385,12 @@ var Infinite = createReactClass({
                 onScroll={this.utils.nodeScrollListener}>
       <div ref={(c) => { this.smoothScrollingWrapper = c; }} style={infiniteScrollStyles}>
         <div ref={(c) => { this.topSpacer = c; }}
-             style={this.buildHeightStyle(topSpacerHeight)}/>
+             style={infiniteHelpers.buildHeightStyle(topSpacerHeight)}/>
         {this.computedProps.displayBottomUpwards && loadingSpinner}
           {displayables}
         {!this.computedProps.displayBottomUpwards && loadingSpinner}
         <div ref={(c) => { this.bottomSpacer = c; }}
-             style={this.buildHeightStyle(bottomSpacerHeight)}/>
+             style={infiniteHelpers.buildHeightStyle(bottomSpacerHeight)}/>
       </div>
     </div>;
   }

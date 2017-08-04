@@ -2,7 +2,9 @@
 
 var ConstantInfiniteComputer = require('../computers/constantInfiniteComputer.js');
 var ArrayInfiniteComputer = require('../computers/arrayInfiniteComputer.js');
+var scaleEnum = require('./scaleEnum');
 var React = global.React || require('react');
+var window = require('./window');
 
 function createInfiniteComputer(data: ElementHeight,
                                 children: any): InfiniteComputer {
@@ -48,7 +50,62 @@ function recomputeApertureStateFromOptionsAndScrollTop({
   };
 }
 
+function generateComputedProps(props: ReactInfiniteProps): ReactInfiniteComputedProps {
+  // These are extracted so their type definitions do not conflict.
+  var {containerHeight,
+        preloadBatchSize,
+        preloadAdditionalHeight,
+        ...oldProps} = props;
+
+  var newProps = {};
+  containerHeight = typeof containerHeight === 'number' ? containerHeight : 0;
+  newProps.containerHeight = props.useWindowAsScrollContainer
+    ? window.innerHeight : containerHeight;
+
+  var defaultPreloadBatchSizeScaling = {
+    type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
+    amount: 0.5
+  };
+  var batchSize = preloadBatchSize && preloadBatchSize.type
+    ? preloadBatchSize
+    : defaultPreloadBatchSizeScaling;
+
+  if (typeof preloadBatchSize === 'number') {
+    newProps.preloadBatchSize = preloadBatchSize;
+  } else if (typeof batchSize === 'object' && batchSize.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    newProps.preloadBatchSize = newProps.containerHeight * batchSize.amount;
+  } else {
+    newProps.preloadBatchSize = 0;
+  }
+
+  var defaultPreloadAdditionalHeightScaling = {
+    type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,
+    amount: 1
+  };
+  var additionalHeight = preloadAdditionalHeight && preloadAdditionalHeight.type
+    ? preloadAdditionalHeight
+    : defaultPreloadAdditionalHeightScaling;
+  if (typeof preloadAdditionalHeight === 'number') {
+    newProps.preloadAdditionalHeight = preloadAdditionalHeight;
+  } else if (typeof additionalHeight === 'object' && additionalHeight.type === scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR) {
+    newProps.preloadAdditionalHeight = newProps.containerHeight * additionalHeight.amount;
+  } else {
+    newProps.preloadAdditionalHeight = 0;
+  }
+
+  return Object.assign(oldProps, newProps);
+}
+
+function buildHeightStyle(height: number): CSSStyle {
+  return {
+    width: '100%',
+    height: Math.ceil(height)
+  };
+}
+
 module.exports = {
   createInfiniteComputer,
-  recomputeApertureStateFromOptionsAndScrollTop
+  recomputeApertureStateFromOptionsAndScrollTop,
+  generateComputedProps,
+  buildHeightStyle
 };
