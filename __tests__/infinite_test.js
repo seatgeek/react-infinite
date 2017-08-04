@@ -494,80 +494,51 @@ describe('React Infinite when the window is used as the Container', function() {
 
 
   it('considers a scroll to have occurred when the window is scrolled', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
 
-    var oldAdd = window.addEventListener;
-    var scrollListener;
+    const oldAdd = window.addEventListener;
 
-    // I would very much like to know if there
-    // is a better way of doing this.
-    window.addEventListener = function(event, f) {
-      if (event === 'scroll') {
-        scrollListener = f;
-      }
-    };
-
-    var rootNode;
-    runs(function() {
-      rootNode = TestUtils.renderIntoDocument(
-        <Infinite elementHeight={elementHeight}
-                  handleScroll={infiniteSpy}
-                  timeScrollStateLastsForAfterUserScrolls={10000}
-                  className={"correct-class-name"}
-                  useWindowAsScrollContainer>
-          {renderHelpers.divGenerator(20, elementHeight)}
-        </Infinite>
-      );
+    const listenerTriggered = new Promise((resolve, reject) => {
+      window.addEventListener = function(event, f) {
+        if (event === 'scroll') {
+          resolve(f);
+        }
+      };
     });
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
-
-    runs(function() {
-      window.pageYOffset = 200;
-      scrollListener();
-      expect(infiniteSpy).toHaveBeenCalled();
-    });
-  });
-
-  it('hides DOM elements that are below the visible range of the window', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
-    window.innerHeight = 800;
-
-    var oldAdd = window.addEventListener;
-    var scrollListener;
-
-    // I would very much like to know if there
-    // is a better way of doing this.
-    window.addEventListener = function(event, f) {
-      if (event === 'scroll') {
-        scrollListener = f;
-      }
-    };
-
-    var rootNode = TestUtils.renderIntoDocument(
+    mount(
       <Infinite elementHeight={elementHeight}
                 handleScroll={infiniteSpy}
                 timeScrollStateLastsForAfterUserScrolls={10000}
                 className={"correct-class-name"}
                 useWindowAsScrollContainer>
         {renderHelpers.divGenerator(20, elementHeight)}
-      </Infinite>);
+      </Infinite>
+    );
 
-    for (var i = 0; i < 6; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).not.toThrow();
-    }
+    return listenerTriggered.then((listener) => {
+      window.pageYOffset = 200;
+      listener();
+      expect(infiniteSpy).toHaveBeenCalled();
+      window.addEventListener = oldAdd;
+    });
+  });
 
-    for (var i = 6; i < 10; i++) {
-      expect(function() {
-        TestUtils.findRenderedDOMComponentWithClass(rootNode, 'test-div-' + i);
-      }).toThrow();
-    }
+  it('hides DOM elements that are below the visible range of the window', function() {
+    const elementHeight = 200;
+    window.innerHeight = 800;
+
+    const rootNode = mount(
+      <Infinite elementHeight={elementHeight}
+                timeScrollStateLastsForAfterUserScrolls={10000}
+                className={"correct-class-name"}
+                useWindowAsScrollContainer>
+        {renderHelpers.divGenerator(20, elementHeight)}
+      </Infinite>
+    );
+
+    expect(mountToJson(rootNode)).toMatchSnapshot();
   });
 
   it('alters the elements displayed when a scroll has occurred', function() {
