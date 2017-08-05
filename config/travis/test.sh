@@ -14,3 +14,8 @@ fi;
 if [ "$LINT" = 1 ]; then
     npm run lint
 fi;
+
+if [ "$BROWSER" = 1 ]; then
+    npm run develop
+    cypress run --record --key
+fi;
