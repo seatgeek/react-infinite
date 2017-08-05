@@ -12,12 +12,14 @@ import renderer from 'react-test-renderer';
 describe('Infinite Styles Override: can override styles on the scrollable container', function() {
   it('will be able to override styles on the scrollable container', function() {
     const rootNode = renderer.create(
-      <Infinite elementHeight={200}
-                containerHeight={800}
-                className={"correct-class-name"}
-                styles={{scrollableStyle: {'overflowY': 'hidden'}}}>
-        <div className={"test-div-0"}/>
-        <div className={"test-div-1"}/>
+      <Infinite
+        elementHeight={200}
+        containerHeight={800}
+        className={'correct-class-name'}
+        styles={{ scrollableStyle: { overflowY: 'hidden' } }}
+      >
+        <div className={'test-div-0'} />
+        <div className={'test-div-1'} />
       </Infinite>
     );
 
