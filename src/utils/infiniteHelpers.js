@@ -55,12 +55,17 @@ function generateComputedProps(props: ReactInfiniteProps): ReactInfiniteComputed
   var {containerHeight,
         preloadBatchSize,
         preloadAdditionalHeight,
+        handleScroll,
+        onInfiniteLoad,
         ...oldProps} = props;
 
   var newProps = {};
   containerHeight = typeof containerHeight === 'number' ? containerHeight : 0;
   newProps.containerHeight = props.useWindowAsScrollContainer
     ? window.innerHeight : containerHeight;
+
+  newProps.handleScroll = handleScroll || (() => {});
+  newProps.onInfiniteLoad = onInfiniteLoad || (() => {});
 
   var defaultPreloadBatchSizeScaling = {
     type: scaleEnum.CONTAINER_HEIGHT_SCALE_FACTOR,

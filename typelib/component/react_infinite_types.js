@@ -1,9 +1,9 @@
 import type React from 'react';
 
-type PreloadType = number | {
+type PreloadType = number | {|
   type: string,
   amount: number
-};
+|};
 type ElementHeight = number | Array<number>;
 
 type CSSStyle = {[key: string]: string | number};
@@ -62,13 +62,13 @@ type ReactInfiniteProps = {
   className?: string,
 
   styles: {
-    scrollableStyle?: Object
+    scrollableStyle?: CSSStyle
   }
 };
 
 type ReactInfiniteComputedProps = {
   children: any,
-  handleScroll?: (event: any) => any,
+  handleScroll: (event: any) => any,
 
   preloadBatchSize: number,
   preloadAdditionalHeight: number,
@@ -80,13 +80,16 @@ type ReactInfiniteComputedProps = {
   displayBottomUpwards: boolean,
 
   infiniteLoadBeginEdgeOffset?: number,
-  onInfiniteLoad?: () => any,
-  loadingSpinnerDelegate?: React.Element<any, any, any>,
+  onInfiniteLoad: () => any,
+  loadingSpinnerDelegate?: React.Element<*>,
 
   isInfiniteLoading?: boolean,
   timeScrollStateLastsForAfterUserScrolls?: number,
 
-  className?: string
+  className?: string,
+  styles: {
+    scrollableStyle?: CSSStyle
+  }
 };
 
 type ReactInfiniteState = {
