@@ -19,6 +19,7 @@ fi;
 
 if [ "$BROWSER" = 1 ]; then
     npm install -g cypress-cli http-server
+    npm install react react-dom create-react-class
     http-server --silent &
     cypress run --record
 fi;
