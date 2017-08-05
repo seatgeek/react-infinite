@@ -32,7 +32,8 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": "npm run fix"
+    "*.js": "npm run fix",
+    "*.jsx": "npm run fix"
   },
   "jest": {
     "transform": {
