@@ -20,5 +20,5 @@ fi;
 if [ "$BROWSER" = 1 ]; then
     npm install -g cypress-cli http-server
     http-server --silent &
-    cypress run --record --key
+    cypress run --record
 fi;
