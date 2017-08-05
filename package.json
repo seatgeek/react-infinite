@@ -21,10 +21,10 @@
   },
   "browser": "build/react-infinite.js",
   "scripts": {
-    "test": "./node_modules/.bin/jest",
-    "lint": "./node_modules/.bin/eslint ./src --ext .jsx --ext .js",
-    "fix": "./node_modules/.bin/eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
-    "typecheck": "./node_modules/.bin/flow version && ./node_modules/.bin/flow check",
+    "test": "jest",
+    "lint": "eslint ./src --ext .jsx --ext .js",
+    "fix": "eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
+    "typecheck": "flow version && flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
     "preversion": "npm run verify",
     "prepublish": "gulp release"
@@ -49,7 +49,11 @@
   "homepage": "https://github.com/seatgeek/react-infinite",
   "devDependencies": {
     "babel-eslint": "^4.0.7",
-    "babel-jest": "^5.3.0",
+    "babel-jest": "20.0.3",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-object-rest-spread": "6.23.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
     "babelify": "^6.3.0",
     "browserify": "^9.0.3",
     "coveralls": "^2.11.2",
@@ -81,14 +85,17 @@
     "yargs": "^1.3.2"
   },
   "dependencies": {
+    "create-react-class": "15.6.0",
     "lodash.isarray": "3.0.4",
     "lodash.isfinite": "3.2.0",
-    "object-assign": "4.0.1"
+    "object-assign": "4.0.1",
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-dom": "15.6.1"
   },
   "peerDependencies": {
     "react": "^15.5.0",
     "react-dom": "^15.5.0",
-    "create-react-class": "^15.5.0",
     "prop-types": "^15.5.0"
   },
   "browserify": {
