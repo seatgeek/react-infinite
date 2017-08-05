@@ -569,6 +569,44 @@ exports[`React Infinite when the window is used as the Container hides DOM eleme
 </Component>
 `;
 
+exports[`Rendering the React Infinite Component Wrapper applies the provided class name to the root node 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div />
+    <div />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`Rendering the React Infinite Component Wrapper renders itself into the DOM with the correct container styles 1`] = `
 <div
   className="root-scrollable-node"

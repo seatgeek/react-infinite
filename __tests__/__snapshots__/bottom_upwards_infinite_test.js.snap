@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Basic Behavior of the Bottom Upwards Display does not render a space-filling top spacer div when the total element height begins to exceed the container height 1`] = `
+<div
+  className=""
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-6"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-7"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-8"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Basic Behavior of the Bottom Upwards Display does not render a space-filling top spacer div when the total element height begins to exceed the container height when using the window as the container 1`] = `
+<div
+  className=""
+  onScroll={[Function]}
+  style={Object {}}
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-6"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-7"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-8"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Basic Behavior of the Bottom Upwards Display renders a space-filling top spacer div when the total element height is less than the container height 1`] = `
+<div
+  className=""
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 700,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Basic Behavior of the Bottom Upwards Display renders a space-filling top spacer div when the total element height is less than the container height when using the window as the container 1`] = `
+<div
+  className=""
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 700,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;

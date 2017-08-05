@@ -1,28 +1,18 @@
 /* eslint-env jest */
 
-jest.dontMock('../src/react-infinite.jsx');
-jest.dontMock('../src/computers/infiniteComputer.js');
-jest.dontMock('../src/computers/constantInfiniteComputer.js');
-jest.dontMock('../src/computers/arrayInfiniteComputer.js');
-jest.dontMock('../src/utils/binaryIndexSearch.js');
-jest.dontMock('../src/utils/infiniteHelpers.js');
-jest.dontMock('./helpers/renderHelpers.js');
-jest.dontMock('../src/utils/window.js');
-jest.dontMock('lodash.isfinite');
-jest.dontMock('lodash.isarray');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-dom/test-utils';
+import Infinite from '../src/react-infinite.jsx';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var TestUtils = require('react-dom/test-utils');
-var Infinite = require('../src/react-infinite.jsx');
-
-var renderHelpers = require('./helpers/renderHelpers');
-var shallowRenderer = require('react-test-renderer/shallow').createRenderer();
+import renderHelpers from './helpers/renderHelpers';
 
 describe('The Basic Behavior of the Bottom Upwards Display', function() {
   it('does not throw an error when set', function() {
     expect(function() {
-      TestUtils.renderIntoDocument(
+      renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"root-scrollable-node"}
@@ -33,18 +23,13 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
   });
 
   it('renders a space-filling top spacer div when the total element height is less than the container height', function() {
-    var infinite = <Infinite elementHeight={100}
+    var infinite = renderer.create(<Infinite elementHeight={100}
                              containerHeight={800}
                              displayBottomUpwards>
       {renderHelpers.divGenerator(1, 100)}
-    </Infinite>;
-    shallowRenderer.render(infinite);
+    </Infinite>);
 
-    var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0].props.style).toEqual({
-      width: '100%',
-      height: 700
-    });
+    expect(infinite).toMatchSnapshot();
   });
 
   // jsdom cannot do offsetheight
@@ -68,51 +53,35 @@ describe('The Basic Behavior of the Bottom Upwards Display', function() {
   //});
 
   it('does not render a space-filling top spacer div when the total element height begins to exceed the container height', function() {
-    var infinite = <Infinite elementHeight={100}
-                             containerHeight={800}
-                             displayBottomUpwards>
+    var infinite = renderer.create(<Infinite elementHeight={100}
+                                             containerHeight={800}
+                                             displayBottomUpwards>
       {renderHelpers.divGenerator(9, 100)}
-    </Infinite>;
-    shallowRenderer.render(infinite);
-
-    var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0].props.style).toEqual({
-      width: '100%',
-      height: 0
-    });
+    </Infinite>);
+    expect(infinite).toMatchSnapshot();
   });
 
   it('renders a space-filling top spacer div when the total element height is less than the container height when using the window as the container', function() {
-    var infinite = <Infinite elementHeight={100}
+    var infinite = renderer.create(<Infinite elementHeight={100}
                              containerHeight={800}
                              displayBottomUpwards
                              useWindowAsContainer>
       {renderHelpers.divGenerator(1, 100)}
-    </Infinite>;
-    shallowRenderer.render(infinite);
+    </Infinite>);
 
-    var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0].props.style).toEqual({
-      width: '100%',
-      height: 700
-    });
+    expect(infinite).toMatchSnapshot();
   });
 
   it('does not render a space-filling top spacer div when the total element height begins to exceed the container height when using the window as the container', function() {
-    var infinite = <Infinite elementHeight={100}
+    var infinite = renderer.create(<Infinite elementHeight={100}
                              containerHeight={800}
                              useWindowAsScrollContainer
                              displayBottomUpwards
                              useWindowAsContainer>
       {renderHelpers.divGenerator(9, 100)}
-    </Infinite>;
-    shallowRenderer.render(infinite);
+    </Infinite>);
 
-    var rootNode = shallowRenderer.getRenderOutput();
-    expect(rootNode.props.children.props.children[0].props.style).toEqual({
-      width: '100%',
-      height: 0
-    });
+    expect(infinite).toMatchSnapshot();
   });
 });
 
@@ -120,7 +89,7 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
   // Check that it handles browser elasticity as well
 
   it('keeps the scroll attached to the bottom even when the element is capable of scrolling upwards', function() {
-    var rootNode = TestUtils.renderIntoDocument(
+    const rootNode = mount(
       <Infinite elementHeight={100}
                 containerHeight={800}
                 displayBottomUpwards>
@@ -128,34 +97,28 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
       </Infinite>
     );
 
-    var rootDomNode = ReactDOM.findDOMNode(rootNode);
-    expect(rootDomNode.scrollTop).toEqual(1200);
+    expect(rootNode.getDOMNode().scrollTop).toEqual(1200);
   });
 
   it('keeps the scroll attached to the bottom even when the element is capable of scrolling upwards when the window is used as the container', function () {
     window.scroll = jest.genMockFunction();
     window.innerHeight = 768;
-    runs(function () {
-      TestUtils.renderIntoDocument(
-        <Infinite elementHeight={100}
-                  displayBottomUpwards
-                  useWindowAsScrollContainer>
-          {renderHelpers.divGenerator(20, 100)}
-        </Infinite>
-      )
-    });
 
-    waitsFor(function() {
-      return window.scroll.mock.calls.length > 0;
-    });
+    mount(
+      <Infinite elementHeight={100}
+                displayBottomUpwards
+                useWindowAsScrollContainer>
+        {renderHelpers.divGenerator(20, 100)}
+      </Infinite>
+    );
 
-    runs(function() {
+    return Promise.resolve().then(() => {
       expect(window.scroll).lastCalledWith(0, 2000 - 768);
     });
   });
 
   it('allows upwards scrolling to proceed once the user starts scrolling', function() {
-    var rootNode = TestUtils.renderIntoDocument(
+    const rootNode = mount(
       <Infinite elementHeight={100}
                 containerHeight={800}
                 displayBottomUpwards>
@@ -163,20 +126,22 @@ describe('The Bottom Scroll Preserving Behavior of the Bottom Upwards Display', 
       </Infinite>
     );
 
-    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
-    rootDOMNode.scrollTop = 504;
-    TestUtils.Simulate.scroll(rootDOMNode, {
-      target: rootDOMNode
+    const rootDomNode = rootNode.getDOMNode();
+    // Secretly set the scroll to 504 without telling the component
+    rootDomNode.scrollTop = 504;
+    // Simulates the user scrolling upwards to 504
+    rootNode.simulate('scroll', {
+      target: rootDomNode
     });
 
-    expect(rootDOMNode.scrollTop).toEqual(504);
+    expect(rootDomNode.scrollTop).toEqual(504);
   });
 });
 
 describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display', function() {
   it('triggers when the user passes the required point when scrolling upwards', function() {
-    var infiniteLoader = jest.genMockFunction();
-    var rootNode = TestUtils.renderIntoDocument(
+    const infiniteLoader = jest.genMockFunction();
+    const rootNode = mount(
       <Infinite elementHeight={100}
                 infiniteLoadBeginEdgeOffset={300}
                 onInfiniteLoad={infiniteLoader}
@@ -186,18 +151,18 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       </Infinite>
     );
 
-    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
-    rootDOMNode.scrollTop = 299;
-    TestUtils.Simulate.scroll(rootDOMNode, {
-      target: rootDOMNode
+    const rootDomNode = rootNode.getDOMNode();
+    rootDomNode.scrollTop = 299;
+    rootNode.simulate('scroll', {
+      target: rootDomNode
     });
 
     expect(infiniteLoader.mock.calls.length).toEqual(1);
   });
 
   it('does not trigger when the user does not pass the required point when scrolling upwards', function() {
-    var infiniteLoader = jest.genMockFunction();
-    var rootNode = TestUtils.renderIntoDocument(
+    const infiniteLoader = jest.genMockFunction();
+    const rootNode = mount(
       <Infinite elementHeight={100}
                 infiniteLoadBeginEdgeOffset={300}
                 onInfiniteLoad={infiniteLoader}
@@ -207,10 +172,10 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
       </Infinite>
     );
 
-    var rootDOMNode = ReactDOM.findDOMNode(rootNode);
-    rootDOMNode.scrollTop = 301;
-    TestUtils.Simulate.scroll(rootDOMNode, {
-      target: rootDOMNode
+    const rootDomNode = rootNode.getDOMNode();
+    rootDomNode.scrollTop = 301;
+    rootNode.simulate('scroll', {
+      target: rootDomNode
     });
 
     expect(infiniteLoader.mock.calls.length).toEqual(0);
@@ -219,53 +184,43 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
   it('triggers when the user passes the required point when the window is used as the scroll container', function() {
     var infiniteLoader = jest.genMockFunction();
 
-    var rootNode;
-    var scrollListener;
-
-    window.addEventListener = function(event, f) {
-      if (event === 'scroll') {
-        scrollListener = f;
-      }
-    };
-
-    runs(function() {
-      rootNode = TestUtils.renderIntoDocument(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {renderHelpers.divGenerator(20, 100)}
-        </Infinite>
-      );
+    const listenerTriggered = new Promise((resolve, reject) => {
+      window.addEventListener = function(event, f) {
+        if (event === 'scroll') {
+          resolve(f);
+        }
+      };
     });
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
+    mount(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {renderHelpers.divGenerator(20, 100)}
+      </Infinite>
+    );
 
-    runs(function() {
+    return listenerTriggered.then((listener) => {
       window.pageYOffset = 299;
-      scrollListener();
-
+      listener();
       expect(infiniteLoader.mock.calls.length).toEqual(1);
     });
   });
 
   it('does not trigger when the user does not pass the required point when the window is used as the scroll container', function() {
-    var infiniteLoader = jest.genMockFunction();
+    const infiniteLoader = jest.genMockFunction();
 
-    var rootNode;
-    var scrollListener;
+    const listenerTriggered = new Promise((resolve, reject) => {
+      window.addEventListener = function(event, f) {
+        if (event === 'scroll') {
+          resolve(f);
+        }
+      };
+    });
 
-    window.addEventListener = function(event, f) {
-      if (event === 'scroll') {
-        scrollListener = f;
-      }
-    };
-
-    runs(function() {
-      rootNode = TestUtils.renderIntoDocument(
+    mount(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}
@@ -273,16 +228,11 @@ describe('The Infinite Loading Triggering Behavior of the Bottom Upwards Display
                   displayBottomUpwards>
           {renderHelpers.divGenerator(20, 100)}
         </Infinite>
-      );
-    });
+    );
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
-
-    runs(function() {
+    return listenerTriggered.then((listener) => {
       window.pageYOffset = 301;
-      scrollListener();
+      listener();
 
       expect(infiniteLoader.mock.calls.length).toEqual(0);
     });
@@ -319,7 +269,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
 
     expect(infiniteLoader.mock.calls.length).toEqual(1);
 
-    //The parent component acknowledges that the component
+    // The parent component acknowledges that the component
     // is in the infinite loading state
     rootNode = ReactDOM.render(
       <Infinite elementHeight={100}
@@ -356,40 +306,34 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
 
   it('scrolls to the correct place after new components come in when the window is the scroll container', function() {
     var infiniteLoader = jest.genMockFunction();
-
-    var rootNode;
-    var scrollListener;
     window.scroll = jest.genMockFunction();
 
-    window.addEventListener = function(event, f) {
-      if (event === 'scroll') {
-        scrollListener = f;
-      }
-    };
-
-    runs(function() {
-      rootNode = ReactDOM.render(
-        <Infinite elementHeight={100}
-                  infiniteLoadBeginEdgeOffset={300}
-                  onInfiniteLoad={infiniteLoader}
-                  useWindowAsScrollContainer
-                  displayBottomUpwards>
-          {divs}
-        </Infinite>,
-        renderNode
-      );
+    const listenerTriggered = new Promise((resolve, reject) => {
+      window.addEventListener = function(event, f) {
+        if (event === 'scroll') {
+          resolve(f);
+        }
+      };
     });
 
-    waitsFor(function() {
-      return !!scrollListener;
-    });
+    ReactDOM.render(
+      <Infinite elementHeight={100}
+                infiniteLoadBeginEdgeOffset={300}
+                onInfiniteLoad={infiniteLoader}
+                useWindowAsScrollContainer
+                displayBottomUpwards>
+        {divs}
+      </Infinite>,
+      renderNode
+    );
 
-    runs(function() {
+    return listenerTriggered.then((listener) => {
       window.pageYOffset = 298;
-      scrollListener();
+      listener();
+
       expect(infiniteLoader.mock.calls.length).toEqual(1);
 
-      rootNode = ReactDOM.render(
+      ReactDOM.render(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}
@@ -402,7 +346,7 @@ describe('The Infinite Loading Scroll Maintenance Behavior of the Bottom Upwards
         renderNode
       );
 
-      rootNode = ReactDOM.render(
+      ReactDOM.render(
         <Infinite elementHeight={100}
                   infiniteLoadBeginEdgeOffset={300}
                   onInfiniteLoad={infiniteLoader}

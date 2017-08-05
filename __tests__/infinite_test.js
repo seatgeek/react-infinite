@@ -3,9 +3,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 import renderer from 'react-test-renderer';
-import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
-import TestUtils from 'react-dom/test-utils';
 import Infinite from '../src/react-infinite.jsx';
 import {mountToJson} from 'enzyme-to-json';
 import renderHelpers from './helpers/renderHelpers';
@@ -48,7 +46,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
   });
 
   it('applies the provided class name to the root node', function() {
-    const infinite = TestUtils.renderIntoDocument(
+    const infinite = renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"correct-class-name"}>
