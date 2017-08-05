@@ -5,6 +5,7 @@ node_js:
 cache:
   directories:
     - node_modules
+    - /home/travis/.cypress/Cypress
 env:
   - TEST=1
   - TYPECHECK=1
