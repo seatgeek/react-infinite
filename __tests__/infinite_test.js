@@ -13,7 +13,7 @@ import renderHelpers from './helpers/renderHelpers';
 describe('Rendering the React Infinite Component Wrapper', function() {
   it('does not throw an error when given no children', function() {
     expect(function() {
-      TestUtils.renderIntoDocument(
+      renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"root-scrollable-node"}>
@@ -24,7 +24,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
 
   it('does not throw an error when given only one child', function() {
     expect(function() {
-      TestUtils.renderIntoDocument(
+      renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"root-scrollable-node"}>
@@ -35,7 +35,7 @@ describe('Rendering the React Infinite Component Wrapper', function() {
   });
 
   it('renders itself into the DOM with the correct container styles', function() {
-    var infinite = TestUtils.renderIntoDocument(
+    const infinite = renderer.create(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"root-scrollable-node"}>
@@ -44,15 +44,11 @@ describe('Rendering the React Infinite Component Wrapper', function() {
         </Infinite>
       );
 
-    var rootScrollable = TestUtils.findRenderedDOMComponentWithClass(infinite, 'root-scrollable-node');
-    expect(rootScrollable.style.height).toEqual('800px');
-    expect(rootScrollable.style.overflowX).toEqual('hidden');
-    expect(rootScrollable.style.overflowY).toEqual('scroll');
-    expect(rootScrollable.style.WebkitOverflowScrolling).toEqual('touch');
+    expect(infinite).toMatchSnapshot();
   });
 
   it('applies the provided class name to the root node', function() {
-    var infinite = TestUtils.renderIntoDocument(
+    const infinite = TestUtils.renderIntoDocument(
         <Infinite elementHeight={200}
                   containerHeight={800}
                   className={"correct-class-name"}>
@@ -61,17 +57,21 @@ describe('Rendering the React Infinite Component Wrapper', function() {
         </Infinite>
       );
 
-    expect(infinite.props.className).toEqual('correct-class-name');
+    expect(infinite).toMatchSnapshot();
   });
 
   it('allows preloadBatchSize to be zero', function() {
-    var renderedInfinite = TestUtils.renderIntoDocument(<Infinite elementHeight={[28, 28]} containerHeight={100}
+    const rootNode = mount(<Infinite elementHeight={[28, 28]} containerHeight={100}
                              preloadBatchSize={0}>
                         <li>Test1</li>
                         <li>Test2</li>
                     </Infinite>);
 
-    TestUtils.Simulate.scroll(ReactDOM.findDOMNode(renderedInfinite));
+    const rootDomNode = rootNode.getDOMNode();
+    rootDomNode.scrollTop = 1500;
+    rootNode.simulate('scroll', {
+      target: rootDomNode
+    });
   });
 });
 
@@ -542,10 +542,10 @@ describe('React Infinite when the window is used as the Container', function() {
   });
 
   it('alters the elements displayed when a scroll has occurred', function() {
-    var infiniteSpy = jasmine.createSpy('infiniteSpy');
-    var elementHeight = 200;
+    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const elementHeight = 200;
 
-    var oldAdd = window.addEventListener;
+    const oldAdd = window.addEventListener;
 
     const listenerTriggered = new Promise((resolve, reject) => {
       window.addEventListener = function(event, f) {
@@ -555,7 +555,7 @@ describe('React Infinite when the window is used as the Container', function() {
       };
     });
 
-    var rootNode = mount(
+    const rootNode = mount(
       <Infinite elementHeight={elementHeight}
                 handleScroll={infiniteSpy}
                 timeScrollStateLastsForAfterUserScrolls={10000}
@@ -578,7 +578,7 @@ describe('React Infinite when the window is used as the Container', function() {
 
 describe("Specifying React Infinite's preload amounts", function() {
   it('has correct preload batch size defaults', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={800}
                 className={"correct-class-name"}>
@@ -591,7 +591,7 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 
   it('can use a number to set preload batch size', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={800}
                 preloadBatchSize={742}
@@ -605,7 +605,7 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 
   it('can be used with a preload batch size scale factor', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={800}
                 preloadBatchSize={Infinite.containerHeightScaleFactor(4)}
@@ -619,7 +619,7 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 
   it('has correct preload additional height defaults', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={800}
                 className={"correct-class-name"}>
@@ -632,7 +632,7 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 
   it('can use a number to set preload additional height', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={200}
                 preloadAdditionalHeight={465}
@@ -646,7 +646,7 @@ describe("Specifying React Infinite's preload amounts", function() {
   });
 
   it('can be used with a preload additional height scale factor', function() {
-    var infinite = mount(
+    const infinite = mount(
       <Infinite elementHeight={200}
                 containerHeight={500}
                 preloadAdditionalHeight={Infinite.containerHeightScaleFactor(1.5)}
@@ -700,7 +700,7 @@ describe('Rerendering React Infinite', function() {
 });
 
 describe('Requesting all visible rows', function() {
-  var InfiniteWrapper = createReactClass({
+  const InfiniteWrapper = createReactClass({
     getInitialState() {
       return { currentRows: 0, totalRequests: 0 }
     },
@@ -731,7 +731,7 @@ describe('Requesting all visible rows', function() {
   });
 
   it('will request all possible rows until the scroll height is met', function () {
-    var rootNode = mount(
+    const rootNode = mount(
       <InfiniteWrapper totalRows={50}
                        elementHeight={40}
                        containerHeight={400} />
@@ -742,7 +742,7 @@ describe('Requesting all visible rows', function() {
   });
 
   it('will stop requesting when no further rows are provided', function () {
-    var rootNode = mount(
+    const rootNode = mount(
       <InfiniteWrapper totalRows={3}
                        elementHeight={40}
                        containerHeight={400} />
@@ -753,7 +753,7 @@ describe('Requesting all visible rows', function() {
   });
 
   it('will work when no possible rows can be loaded', function () {
-    var rootNode = mount(
+    const rootNode = mount(
       <InfiniteWrapper totalRows={0}
                        elementHeight={40}
                        containerHeight={400} />
