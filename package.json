@@ -27,7 +27,12 @@
     "typecheck": "flow version && flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
     "preversion": "npm run verify",
-    "prepublish": "gulp release"
+    "prepublish": "gulp release",
+    "lint-staged": "lint-staged",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "npm run fix"
   },
   "jest": {
     "transform": {
@@ -62,9 +67,9 @@
     "enzyme": "2.9.1",
     "enzyme-to-json": "1.5.1",
     "eslint": "4.3.0",
-    "eslint-plugin-flowtype": "2.35.0",
     "eslint-config-seatgeek-react-standard": "4.0.0",
     "eslint-config-seatgeek-standard": "5.0.0",
+    "eslint-plugin-flowtype": "2.35.0",
     "eslint-plugin-react": "7.1.0",
     "flow-bin": "0.52.0",
     "gulp": "^3.8.8",
@@ -74,7 +79,9 @@
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
     "gulp-webserver": "^0.9.1",
+    "husky": "0.14.3",
     "jest-cli": "20.0.4",
+    "lint-staged": "4.0.2",
     "moment": "^2.10.6",
     "react-test-renderer": "15.5.4",
     "uglifyify": "3.0.1",
@@ -85,13 +92,9 @@
     "yargs": "^1.3.2"
   },
   "dependencies": {
-    "create-react-class": "15.6.0",
     "lodash.isarray": "3.0.4",
     "lodash.isfinite": "3.2.0",
-    "object-assign": "4.0.1",
-    "prop-types": "15.5.10",
-    "react": "15.6.1",
-    "react-dom": "15.6.1"
+    "object-assign": "4.0.1"
   },
   "peerDependencies": {
     "react": "^15.5.0",
