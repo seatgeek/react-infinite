@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 if [ "$TEST" = 1 ]; then
     npm install react react-dom prop-types && npm install
