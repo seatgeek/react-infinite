@@ -85,7 +85,7 @@ exports[`Maintaining React Infinite's internal scroll state has does not have po
 `;
 
 exports[`Maintaining React Infinite's internal scroll state has pointer-events: none upon scroll 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   containerHeight={800}
   displayBottomUpwards={false}
@@ -183,11 +183,11 @@ exports[`Maintaining React Infinite's internal scroll state has pointer-events: 
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`React Infinite when the window is used as the Container alters the elements displayed when a scroll has occurred 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   displayBottomUpwards={false}
   elementHeight={200}
@@ -273,11 +273,11 @@ exports[`React Infinite when the window is used as the Container alters the elem
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`React Infinite when the window is used as the Container alters the elements displayed when a scroll has occurred 2`] = `
-<Component
+<Infinite
   className="correct-class-name"
   displayBottomUpwards={false}
   elementHeight={200}
@@ -399,7 +399,7 @@ exports[`React Infinite when the window is used as the Container alters the elem
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`React Infinite when the window is used as the Container does not attach a scrollable style 1`] = `
@@ -480,7 +480,7 @@ exports[`React Infinite when the window is used as the Container does not attach
 `;
 
 exports[`React Infinite when the window is used as the Container hides DOM elements that are below the visible range of the window 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   displayBottomUpwards={false}
   elementHeight={200}
@@ -566,7 +566,7 @@ exports[`React Infinite when the window is used as the Container hides DOM eleme
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`Rendering the React Infinite Component Wrapper applies the provided class name to the root node 1`] = `
@@ -646,7 +646,7 @@ exports[`Rendering the React Infinite Component Wrapper renders itself into the 
 `;
 
 exports[`The Behavior of the Variable Height React Infinite Component functions correctly at the end of its range 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   containerHeight={400}
   displayBottomUpwards={false}
@@ -780,7 +780,7 @@ exports[`The Behavior of the Variable Height React Infinite Component functions 
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`The Behavior of the Variable Height React Infinite Component hides elements when the user has not yet scrolled 1`] = `
@@ -908,7 +908,7 @@ exports[`The Behavior of the Variable Height React Infinite Component hides elem
 `;
 
 exports[`The Behavior of the Variable Height React Infinite Component hides visible elements when the user scrolls sufficiently 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   containerHeight={400}
   displayBottomUpwards={false}
@@ -1090,7 +1090,7 @@ exports[`The Behavior of the Variable Height React Infinite Component hides visi
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`The Children of the React Infinite Component renders its children when no hiding behavior is required 1`] = `
@@ -1412,7 +1412,7 @@ exports[`The Children of the React Infinite Component renders more children when
 `;
 
 exports[`The Scrolling Behavior of the Constant Height React Infinite Component functions correctly at the end of its range 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   containerHeight={800}
   displayBottomUpwards={false}
@@ -1510,11 +1510,11 @@ exports[`The Scrolling Behavior of the Constant Height React Infinite Component 
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
 
 exports[`The Scrolling Behavior of the Constant Height React Infinite Component hides visible elements when the user scrolls sufficiently 1`] = `
-<Component
+<Infinite
   className="correct-class-name"
   containerHeight={800}
   displayBottomUpwards={false}
@@ -1644,5 +1644,5 @@ exports[`The Scrolling Behavior of the Constant Height React Infinite Component 
       />
     </div>
   </div>
-</Component>
+</Infinite>
 `;
