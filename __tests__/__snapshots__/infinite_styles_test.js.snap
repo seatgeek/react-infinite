@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Infinite Styles Override: can override styles on the scrollable container will be able to override styles on the scrollable container 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+    />
+    <div
+      className="test-div-1"
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
