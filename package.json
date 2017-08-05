@@ -26,7 +26,6 @@
     "fix": "eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
     "typecheck": "flow version && flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
-    "develop": "gulp develop",
     "preversion": "npm run verify",
     "prepublish": "gulp release",
     "lint-staged": "lint-staged",

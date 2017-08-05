@@ -10,9 +10,6 @@ env:
   - TYPECHECK=1
   - LINT=1
   - BROWSER=1
-before_install:
-  - npm install -g cypress-cli
 script:
   - ./config/travis/test.sh
-before_install: npm install react react-dom prop-types && npm install
 after_success: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
