@@ -73,6 +73,7 @@
     "eslint-config-seatgeek-standard": "5.0.0",
     "eslint-plugin-flowtype": "2.35.0",
     "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-standard": "3.0.1",
     "flow-bin": "0.52.0",
     "gulp": "^3.8.8",
     "gulp-babel": "6.1.2",
