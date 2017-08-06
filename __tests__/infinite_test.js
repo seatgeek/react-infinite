@@ -3,7 +3,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Infinite from '../src/react-infinite.jsx';
 import { mountToJson } from 'enzyme-to-json';
 import renderHelpers from './helpers/renderHelpers';
@@ -469,7 +469,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
 describe("Maintaining React Infinite's internal scroll state", function() {
   it('has does not have pointer-events: none by default', function() {
     const elementHeight = 200;
-    const rootNode = renderer.create(
+    const rootNode = shallow(
       <Infinite
         elementHeight={elementHeight}
         containerHeight={800}
@@ -480,7 +480,10 @@ describe("Maintaining React Infinite's internal scroll state", function() {
       </Infinite>
     );
 
-    expect(rootNode).toMatchSnapshot();
+    expect(
+      rootNode.find('.correct-class-name').childAt(0).props().style
+        .pointerEvents
+    ).toBeUndefined();
   });
 
   it('has pointer-events: none upon scroll', function() {
@@ -502,7 +505,10 @@ describe("Maintaining React Infinite's internal scroll state", function() {
       target: rootDomNode
     });
 
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(
+      rootNode.find('.correct-class-name').childAt(0).props().style
+        .pointerEvents
+    ).toEqual('none');
   });
 });
 
