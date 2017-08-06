@@ -204,8 +204,6 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
     //  1600 pixels: blockEnd, end of block that scrollTop of 1500 pixels is in
     //  2400 pixels: windowBottom, end of first displayed element
     //  4000 pixels: end of bottomSpacer element
-    // expect(rootNode.topSpacer._style._values.height).toEqual('400px');
-    // expect(rootNode.bottomSpacer._style._values.height).toEqual('1600px');
     expect(mountToJson(rootNode)).toMatchSnapshot();
   });
 
@@ -370,7 +368,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
 
 describe("React Infinite's Infinite Scroll Capabilities", function() {
   it('infiniteLoadBeginEdgeOffset does not always trigger infinite load on scroll', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
     const rootNode = mount(
       <Infinite
@@ -394,7 +392,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
   });
 
   it('triggers the onInfiniteLoad function when scrolling past infiniteLoadBeginEdgeOffset', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
     const rootNode = mount(
       <Infinite
@@ -418,7 +416,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
   });
 
   it('does not always display the loadingSpinnerDelegate', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
     const rootNode = mount(
       <Infinite
@@ -443,7 +441,7 @@ describe("React Infinite's Infinite Scroll Capabilities", function() {
   });
 
   it('displays the loadingSpinnerDelegate when isInfiniteLoading', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
     const rootNode = mount(
       <Infinite
@@ -510,7 +508,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
 
 describe('Handling infinite scrolling', function() {
   it('triggers an infinite scroll the first time the component mounts if the elements do not fill the container', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
     mount(
       <Infinite
@@ -527,7 +525,7 @@ describe('Handling infinite scrolling', function() {
   });
 
   it('considers a scroll to have occurred when the container itself is scrolled', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
 
     const rootNode = mount(
@@ -552,7 +550,7 @@ describe('Handling infinite scrolling', function() {
   });
 
   it('does not consider an infinite scroll to have occurred when one of its children scrolls', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
 
     const rootNode = mount(
@@ -595,7 +593,7 @@ describe('React Infinite when the window is used as the Container', function() {
   });
 
   it('considers a scroll to have occurred when the window is scrolled', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
 
     const oldAdd = window.addEventListener;
@@ -647,7 +645,7 @@ describe('React Infinite when the window is used as the Container', function() {
   });
 
   it('alters the elements displayed when a scroll has occurred', function() {
-    const infiniteSpy = jasmine.createSpy('infiniteSpy');
+    const infiniteSpy = jest.fn();
     const elementHeight = 200;
 
     const oldAdd = window.addEventListener;

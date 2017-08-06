@@ -22,8 +22,8 @@
   "browser": "build/react-infinite.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint ./src --ext .jsx --ext .js",
-    "fix": "eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline",
+    "lint": "eslint --ext .jsx --ext .js ./src ./__tests__ ./pipeline ./cypress",
+    "fix": "eslint --fix --ext .jsx --ext .js ./src ./__tests__ ./pipeline ./cypress",
     "typecheck": "flow version && flow check",
     "verify": "npm test && npm run typecheck && npm run lint",
     "preversion": "npm run verify",
