@@ -80,7 +80,8 @@ module.exports = function(shouldWatch, envObject, files) {
         })
       )
       .exclude('react')
-      .exclude('react-dom');
+      .exclude('react-dom')
+      .exclude('prop-types');
 
     if (envObject.production || envObject.release) {
       root = root.transform('uglifyify');
