@@ -3,6 +3,7 @@
 .*/build/.*
 .*/dist/.*
 .*/y18n/.*
+.*/babel-plugin-transform-react-remove-prop-types/.*
 .*json
 
 [include]
