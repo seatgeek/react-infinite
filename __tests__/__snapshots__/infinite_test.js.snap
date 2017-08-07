@@ -383,6 +383,199 @@ exports[`React Infinite when the window is used as the Container hides DOM eleme
 </Infinite>
 `;
 
+exports[`React Infinite when the window is used as the Container reacts to window scroll events when useWindowAsScrollContainer is enabled after the initial render 1`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={700}
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 700,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={Object {}}
+    >
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-0"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-1"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`React Infinite when the window is used as the Container reacts to window scroll events when useWindowAsScrollContainer is enabled after the initial render 2`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={700}
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={true}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-0"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-1"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
 exports[`Rendering the React Infinite Component Wrapper applies the provided class name to the root node 1`] = `
 <div
   className="correct-class-name"
