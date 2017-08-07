@@ -17,7 +17,7 @@ class InfiniteComputer {
 
   /* eslint-disable no-unused-vars */
   getDisplayIndexStart(windowTop) {
-  /* eslint-enable no-unused-vars */
+    /* eslint-enable no-unused-vars */
     if (process.env.NODE_ENV === 'development') {
       throw new Error('getDisplayIndexStart not implemented.');
     }
@@ -25,7 +25,7 @@ class InfiniteComputer {
 
   /* eslint-disable no-unused-vars */
   getDisplayIndexEnd(windowBottom) {
-  /* eslint-enable no-unused-vars */
+    /* eslint-enable no-unused-vars */
     if (process.env.NODE_ENV === 'development') {
       throw new Error('getDisplayIndexEnd not implemented.');
     }
@@ -35,7 +35,7 @@ class InfiniteComputer {
   // the above details.
   /* eslint-disable no-unused-vars */
   getTopSpacerHeight(displayIndexStart) {
-  /* eslint-enable no-unused-vars */
+    /* eslint-enable no-unused-vars */
     if (process.env.NODE_ENV === 'development') {
       throw new Error('getTopSpacerHeight not implemented.');
     }
@@ -43,7 +43,7 @@ class InfiniteComputer {
 
   /* eslint-disable no-unused-vars */
   getBottomSpacerHeight(displayIndexEnd) {
-  /* eslint-enable no-unused-vars */
+    /* eslint-enable no-unused-vars */
     if (process.env.NODE_ENV === 'development') {
       throw new Error('getBottomSpacerHeight not implemented.');
     }

@@ -3,10 +3,9 @@
 jest.dontMock('../src/utils/binaryIndexSearch.js');
 
 var bs = require('../src/utils/binaryIndexSearch.js'),
-    binaryIndexSearch = bs.binaryIndexSearch;
+  binaryIndexSearch = bs.binaryIndexSearch;
 
 describe('Binary Index Search', function() {
-
   describe('arrays of length 0', function() {
     var array;
 
@@ -67,47 +66,107 @@ describe('Binary Index Search', function() {
     });
 
     it('is able to find the closest lower element, or the element itself', function() {
-      expect(binaryIndexSearch(evenArray, 27, bs.opts.CLOSEST_LOWER)).toBeUndefined();
-      expect(binaryIndexSearch(evenArray, 47, bs.opts.CLOSEST_LOWER)).toEqual(0);
-      expect(binaryIndexSearch(evenArray, 49, bs.opts.CLOSEST_LOWER)).toEqual(1);
-      expect(binaryIndexSearch(evenArray, 200, bs.opts.CLOSEST_LOWER)).toEqual(2);
-      expect(binaryIndexSearch(evenArray, 3049, bs.opts.CLOSEST_LOWER)).toEqual(3);
+      expect(
+        binaryIndexSearch(evenArray, 27, bs.opts.CLOSEST_LOWER)
+      ).toBeUndefined();
+      expect(binaryIndexSearch(evenArray, 47, bs.opts.CLOSEST_LOWER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(evenArray, 49, bs.opts.CLOSEST_LOWER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(evenArray, 200, bs.opts.CLOSEST_LOWER)).toEqual(
+        2
+      );
+      expect(binaryIndexSearch(evenArray, 3049, bs.opts.CLOSEST_LOWER)).toEqual(
+        3
+      );
 
-      expect(binaryIndexSearch(evenArray, 28, bs.opts.CLOSEST_LOWER)).toEqual(0);
-      expect(binaryIndexSearch(evenArray, 48, bs.opts.CLOSEST_LOWER)).toEqual(1);
-      expect(binaryIndexSearch(evenArray, 192, bs.opts.CLOSEST_LOWER)).toEqual(2);
-      expect(binaryIndexSearch(evenArray, 2048, bs.opts.CLOSEST_LOWER)).toEqual(3);
+      expect(binaryIndexSearch(evenArray, 28, bs.opts.CLOSEST_LOWER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(evenArray, 48, bs.opts.CLOSEST_LOWER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(evenArray, 192, bs.opts.CLOSEST_LOWER)).toEqual(
+        2
+      );
+      expect(binaryIndexSearch(evenArray, 2048, bs.opts.CLOSEST_LOWER)).toEqual(
+        3
+      );
 
-      expect(binaryIndexSearch(oddArray, 5, bs.opts.CLOSEST_LOWER)).toBeUndefined();
-      expect(binaryIndexSearch(oddArray, 200, bs.opts.CLOSEST_LOWER)).toEqual(0);
-      expect(binaryIndexSearch(oddArray, 204, bs.opts.CLOSEST_LOWER)).toEqual(1);
-      expect(binaryIndexSearch(oddArray, 10192, bs.opts.CLOSEST_LOWER)).toEqual(2);
+      expect(
+        binaryIndexSearch(oddArray, 5, bs.opts.CLOSEST_LOWER)
+      ).toBeUndefined();
+      expect(binaryIndexSearch(oddArray, 200, bs.opts.CLOSEST_LOWER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(oddArray, 204, bs.opts.CLOSEST_LOWER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(oddArray, 10192, bs.opts.CLOSEST_LOWER)).toEqual(
+        2
+      );
 
       expect(binaryIndexSearch(oddArray, 11, bs.opts.CLOSEST_LOWER)).toEqual(0);
-      expect(binaryIndexSearch(oddArray, 203, bs.opts.CLOSEST_LOWER)).toEqual(1);
-      expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_LOWER)).toEqual(2);
+      expect(binaryIndexSearch(oddArray, 203, bs.opts.CLOSEST_LOWER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_LOWER)).toEqual(
+        2
+      );
     });
 
     it('is able to find the closest higher element, or the element itself', function() {
-      expect(binaryIndexSearch(evenArray, 0, bs.opts.CLOSEST_HIGHER)).toEqual(0);
-      expect(binaryIndexSearch(evenArray, 40, bs.opts.CLOSEST_HIGHER)).toEqual(1);
-      expect(binaryIndexSearch(evenArray, 100, bs.opts.CLOSEST_HIGHER)).toEqual(2);
-      expect(binaryIndexSearch(evenArray, 2000, bs.opts.CLOSEST_HIGHER)).toEqual(3);
-      expect(binaryIndexSearch(evenArray, 4823, bs.opts.CLOSEST_HIGHER)).toBeUndefined();
+      expect(binaryIndexSearch(evenArray, 0, bs.opts.CLOSEST_HIGHER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(evenArray, 40, bs.opts.CLOSEST_HIGHER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(evenArray, 100, bs.opts.CLOSEST_HIGHER)).toEqual(
+        2
+      );
+      expect(
+        binaryIndexSearch(evenArray, 2000, bs.opts.CLOSEST_HIGHER)
+      ).toEqual(3);
+      expect(
+        binaryIndexSearch(evenArray, 4823, bs.opts.CLOSEST_HIGHER)
+      ).toBeUndefined();
 
-      expect(binaryIndexSearch(evenArray, 28, bs.opts.CLOSEST_HIGHER)).toEqual(0);
-      expect(binaryIndexSearch(evenArray, 48, bs.opts.CLOSEST_HIGHER)).toEqual(1);
-      expect(binaryIndexSearch(evenArray, 192, bs.opts.CLOSEST_HIGHER)).toEqual(2);
-      expect(binaryIndexSearch(evenArray, 2048, bs.opts.CLOSEST_HIGHER)).toEqual(3);
+      expect(binaryIndexSearch(evenArray, 28, bs.opts.CLOSEST_HIGHER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(evenArray, 48, bs.opts.CLOSEST_HIGHER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(evenArray, 192, bs.opts.CLOSEST_HIGHER)).toEqual(
+        2
+      );
+      expect(
+        binaryIndexSearch(evenArray, 2048, bs.opts.CLOSEST_HIGHER)
+      ).toEqual(3);
 
       expect(binaryIndexSearch(oddArray, 2, bs.opts.CLOSEST_HIGHER)).toEqual(0);
-      expect(binaryIndexSearch(oddArray, 100, bs.opts.CLOSEST_HIGHER)).toEqual(1);
-      expect(binaryIndexSearch(oddArray, 300, bs.opts.CLOSEST_HIGHER)).toEqual(2);
-      expect(binaryIndexSearch(oddArray, 692, bs.opts.CLOSEST_HIGHER)).toBeUndefined();
+      expect(binaryIndexSearch(oddArray, 100, bs.opts.CLOSEST_HIGHER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(oddArray, 300, bs.opts.CLOSEST_HIGHER)).toEqual(
+        2
+      );
+      expect(
+        binaryIndexSearch(oddArray, 692, bs.opts.CLOSEST_HIGHER)
+      ).toBeUndefined();
 
-      expect(binaryIndexSearch(oddArray, 11, bs.opts.CLOSEST_HIGHER)).toEqual(0);
-      expect(binaryIndexSearch(oddArray, 203, bs.opts.CLOSEST_HIGHER)).toEqual(1);
-      expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_HIGHER)).toEqual(2);
+      expect(binaryIndexSearch(oddArray, 11, bs.opts.CLOSEST_HIGHER)).toEqual(
+        0
+      );
+      expect(binaryIndexSearch(oddArray, 203, bs.opts.CLOSEST_HIGHER)).toEqual(
+        1
+      );
+      expect(binaryIndexSearch(oddArray, 482, bs.opts.CLOSEST_HIGHER)).toEqual(
+        2
+      );
     });
   });
 });

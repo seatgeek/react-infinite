@@ -1,7 +1,7 @@
 /* @flow */
 
 var InfiniteComputer = require('./infiniteComputer.js'),
-    bs = require('../utils/binaryIndexSearch.js');
+  bs = require('../utils/binaryIndexSearch.js');
 
 class ArrayInfiniteComputer extends InfiniteComputer {
   prefixHeightData: Array<number>;
@@ -32,12 +32,20 @@ class ArrayInfiniteComputer extends InfiniteComputer {
   }
 
   getDisplayIndexStart(windowTop: number): number {
-    var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowTop, bs.opts.CLOSEST_HIGHER);
+    var foundIndex = bs.binaryIndexSearch(
+      this.prefixHeightData,
+      windowTop,
+      bs.opts.CLOSEST_HIGHER
+    );
     return this.maybeIndexToIndex(foundIndex);
   }
 
   getDisplayIndexEnd(windowBottom: number): number {
-    var foundIndex = bs.binaryIndexSearch(this.prefixHeightData, windowBottom, bs.opts.CLOSEST_HIGHER);
+    var foundIndex = bs.binaryIndexSearch(
+      this.prefixHeightData,
+      windowBottom,
+      bs.opts.CLOSEST_HIGHER
+    );
     return this.maybeIndexToIndex(foundIndex);
   }
 
@@ -50,7 +58,9 @@ class ArrayInfiniteComputer extends InfiniteComputer {
     if (displayIndexEnd === -1) {
       return 0;
     }
-    return this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd];
+    return (
+      this.getTotalScrollableHeight() - this.prefixHeightData[displayIndexEnd]
+    );
   }
 }
 

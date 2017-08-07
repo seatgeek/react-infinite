@@ -15,49 +15,73 @@ function transformBundle(root, envObject) {
   root = root.bundle();
 
   if (envObject.development) {
-    root.pipe(sourcestream('react-infinite.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init())
-        .pipe(sourcemaps.write('.'))
-        .pipe(size({
+    root
+      .pipe(sourcestream('react-infinite.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init())
+      .pipe(sourcemaps.write('.'))
+      .pipe(
+        size({
           title: 'Development bundle'
-        }))
-        .pipe(gulp.dest('dist'));
+        })
+      )
+      .pipe(gulp.dest('dist'));
   }
   if (envObject.production || envObject.release) {
-    root.pipe(sourcestream('react-infinite.min.js'))
-        .pipe(buffer())
-        .pipe(uglify())
-        .pipe(size({
+    root
+      .pipe(sourcestream('react-infinite.min.js'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(
+        size({
           title: 'Release minified bundle'
-        }))
-        .pipe(gulp.dest('dist'));
+        })
+      )
+      .pipe(gulp.dest('dist'));
   }
   if (envObject.release) {
-    root.pipe(sourcestream('react-infinite.js'))
+    root
+      .pipe(sourcestream('react-infinite.js'))
       .pipe(buffer())
-      .pipe(size({
-        title: 'Release unminified bundle'
-      }))
+      .pipe(
+        size({
+          title: 'Release unminified bundle'
+        })
+      )
       .pipe(gulp.dest('dist'));
   }
 }
 
 module.exports = function(shouldWatch, envObject, files) {
-  var watchFunction = shouldWatch ? watchify : function(x) { return x; };
+  var watchFunction = shouldWatch
+    ? watchify
+    : function(x) {
+        return x;
+      };
   var watchArgs = shouldWatch ? watchify.args : undefined;
 
   return function() {
-    var root = watchFunction(browserify({
-      entries: files,
-      standalone: 'Infinite'
-    }, watchArgs))
+    var root = watchFunction(
+      browserify(
+        {
+          entries: files,
+          standalone: 'Infinite'
+        },
+        watchArgs
+      )
+    )
       .transform(babelify)
-      .transform(envify({
-        NODE_ENV: envObject.production || envObject.release ? 'production' : 'development'
-      }))
+      .transform(
+        envify({
+          NODE_ENV:
+            envObject.production || envObject.release
+              ? 'production'
+              : 'development'
+        })
+      )
       .exclude('react')
-      .exclude('react-dom');
+      .exclude('react-dom')
+      .exclude('prop-types');
 
     if (envObject.production || envObject.release) {
       root = root.transform('uglifyify');

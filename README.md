@@ -124,9 +124,6 @@ When working with the window as the scroll container, it is sometimes useful to 
 #### **Function** `handleScroll(DOMNode node)`
 Defaults to `function(){}`. A function that is called when the container is scrolled, i.e. when the `onScroll` event of the infinite scrolling container is fired. The only argument passed to it is the native DOM [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node) of the scrolling container.
 
-#### **Number** `infiniteLoadBeginBottomOffset`
-**Deprecated as of 0.6.0. Please use `infiniteLoadBeginEdgeOffset`, which is identical but renamed.**
-
 #### **Number** `infiniteLoadBeginEdgeOffset`
 Defaults to `undefined`, which means that infinite loading is disabled. To disable infinite loading, do not provide this property or set it to undefined.
 

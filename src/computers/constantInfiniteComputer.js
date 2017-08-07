@@ -25,7 +25,10 @@ class ConstantInfiniteComputer extends InfiniteComputer {
 
   getBottomSpacerHeight(displayIndexEnd: number): number {
     var nonZeroIndex = displayIndexEnd + 1;
-    return Math.max(0, (this.numberOfChildren - nonZeroIndex) * this.heightData);
+    return Math.max(
+      0,
+      (this.numberOfChildren - nonZeroIndex) * this.heightData
+    );
   }
 }
 

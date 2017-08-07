@@ -31,22 +31,30 @@ describe('Array Infinite Computer', () => {
 
   describe('getDisplayIndexStart()', () => {
     it('computes the correct display index when precisely at element border', () => {
-      var aic = new ArrayInfiniteComputer([20, 30, 40, 50, 60, 70, 80, 90, 100], 8);
+      var aic = new ArrayInfiniteComputer(
+        [20, 30, 40, 50, 60, 70, 80, 90, 100],
+        8
+      );
       expect(aic.getDisplayIndexStart(200)).toEqual(4);
     });
 
     it('computes the correct display index when not precisely at element border', () => {
-      var aic = new ArrayInfiniteComputer([20, 30, 40, 50, 60, 70, 80, 90, 100], 8);
+      var aic = new ArrayInfiniteComputer(
+        [20, 30, 40, 50, 60, 70, 80, 90, 100],
+        8
+      );
       expect(aic.getDisplayIndexStart(130)).toEqual(3);
     });
 
     it('computes a zero display index correctly', () => {
-      var aic = new ArrayInfiniteComputer([20, 30, 40, 50, 60, 70, 80, 90, 100], 8);
+      var aic = new ArrayInfiniteComputer(
+        [20, 30, 40, 50, 60, 70, 80, 90, 100],
+        8
+      );
       expect(aic.getDisplayIndexStart(0)).toEqual(0);
     });
 
-
-    it('computes a zero display index correctly', () => {
+    it('computes a zero display index correctly with one array element', () => {
       var aic = new ArrayInfiniteComputer([20], 1);
       expect(aic.getDisplayIndexStart(10)).toEqual(0);
     });
@@ -82,8 +90,7 @@ describe('Array Infinite Computer', () => {
       expect(aic.getDisplayIndexEnd(0)).toEqual(-1);
     });
 
-    xit('computes indexes correctly with zero-height elements', () => {
-    });
+    // xit('computes indexes correctly with zero-height elements', () => {});
   });
 
   describe('getTopSpacerHeight()', () => {

@@ -1,0 +1,1462 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`React Infinite when the window is used as the Container alters the elements displayed when a scroll has occurred 1`] = `
+<Infinite
+  className="correct-class-name"
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={true}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={Object {}}
+  >
+    <div
+      style={Object {}}
+    >
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-0"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-1"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`React Infinite when the window is used as the Container alters the elements displayed when a scroll has occurred 2`] = `
+<Infinite
+  className="correct-class-name"
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={true}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 400,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-6"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-7"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-8"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-9"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-10"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-11"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 1600,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`React Infinite when the window is used as the Container does not attach a scrollable style 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={Object {}}
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 2800,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`React Infinite when the window is used as the Container hides DOM elements that are below the visible range of the window 1`] = `
+<Infinite
+  className="correct-class-name"
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={10000}
+  useWindowAsScrollContainer={true}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={Object {}}
+  >
+    <div
+      style={Object {}}
+    >
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-0"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-1"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`Rendering the React Infinite Component Wrapper applies the provided class name to the root node 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div />
+    <div />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Rendering the React Infinite Component Wrapper renders itself into the DOM with the correct container styles 1`] = `
+<div
+  className="root-scrollable-node"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div />
+    <div />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Behavior of the Variable Height React Infinite Component functions correctly at the end of its range 1`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={400}
+  displayBottomUpwards={false}
+  elementHeight={
+    Array [
+      20,
+      20,
+      160,
+      100,
+      50,
+      150,
+      25,
+      25,
+      25,
+      25,
+      125,
+      80,
+      75,
+      20,
+      150,
+      250,
+      100,
+    ]
+  }
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={150}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 400,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 575,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-9"
+        style={
+          Object {
+            "height": 25,
+          }
+        }
+      />
+      <div
+        className="test-div-10"
+        style={
+          Object {
+            "height": 125,
+          }
+        }
+      />
+      <div
+        className="test-div-11"
+        style={
+          Object {
+            "height": 80,
+          }
+        }
+      />
+      <div
+        className="test-div-12"
+        style={
+          Object {
+            "height": 75,
+          }
+        }
+      />
+      <div
+        className="test-div-13"
+        style={
+          Object {
+            "height": 20,
+          }
+        }
+      />
+      <div
+        className="test-div-14"
+        style={
+          Object {
+            "height": 150,
+          }
+        }
+      />
+      <div
+        className="test-div-15"
+        style={
+          Object {
+            "height": 250,
+          }
+        }
+      />
+      <div
+        className="test-div-16"
+        style={
+          Object {
+            "height": 100,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`The Behavior of the Variable Height React Infinite Component hides elements when the user has not yet scrolled 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 420,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 20,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 20,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 160,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 100,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 50,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 150,
+        }
+      }
+    />
+    <div
+      className="test-div-6"
+      style={
+        Object {
+          "height": 25,
+        }
+      }
+    />
+    <div
+      className="test-div-7"
+      style={
+        Object {
+          "height": 25,
+        }
+      }
+    />
+    <div
+      className="test-div-8"
+      style={
+        Object {
+          "height": 25,
+        }
+      }
+    />
+    <div
+      className="test-div-9"
+      style={
+        Object {
+          "height": 25,
+        }
+      }
+    />
+    <div
+      className="test-div-10"
+      style={
+        Object {
+          "height": 125,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 675,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Behavior of the Variable Height React Infinite Component hides visible elements when the user scrolls sufficiently 1`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={400}
+  displayBottomUpwards={false}
+  elementHeight={
+    Array [
+      20,
+      20,
+      160,
+      100,
+      50,
+      150,
+      25,
+      25,
+      25,
+      25,
+      125,
+      80,
+      75,
+      20,
+      150,
+      250,
+      100,
+    ]
+  }
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={150}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 400,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 40,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 160,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 100,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 50,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 150,
+          }
+        }
+      />
+      <div
+        className="test-div-6"
+        style={
+          Object {
+            "height": 25,
+          }
+        }
+      />
+      <div
+        className="test-div-7"
+        style={
+          Object {
+            "height": 25,
+          }
+        }
+      />
+      <div
+        className="test-div-8"
+        style={
+          Object {
+            "height": 25,
+          }
+        }
+      />
+      <div
+        className="test-div-9"
+        style={
+          Object {
+            "height": 25,
+          }
+        }
+      />
+      <div
+        className="test-div-10"
+        style={
+          Object {
+            "height": 125,
+          }
+        }
+      />
+      <div
+        className="test-div-11"
+        style={
+          Object {
+            "height": 80,
+          }
+        }
+      />
+      <div
+        className="test-div-12"
+        style={
+          Object {
+            "height": 75,
+          }
+        }
+      />
+      <div
+        className="test-div-13"
+        style={
+          Object {
+            "height": 20,
+          }
+        }
+      />
+      <div
+        className="test-div-14"
+        style={
+          Object {
+            "height": 150,
+          }
+        }
+      />
+      <div
+        className="test-div-15"
+        style={
+          Object {
+            "height": 250,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 100,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`The Children of the React Infinite Component renders its children when no hiding behavior is required 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+    />
+    <div
+      className="test-div-1"
+    />
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Children of the React Infinite Component renders its children when some DOM nodes are hidden 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 800,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Children of the React Infinite Component renders more children when preloadAdditionalHeight is increased beyond its default 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-6"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 600,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Children of the React Infinite Component renders more children when preloadBatchSize is increased beyond its default 1`] = `
+<div
+  className="correct-class-name"
+  onScroll={[Function]}
+  style={
+    Object {
+      "WebkitOverflowScrolling": "touch",
+      "height": 800,
+      "overflowX": "hidden",
+      "overflowY": "scroll",
+    }
+  }
+>
+  <div
+    style={Object {}}
+  >
+    <div
+      style={
+        Object {
+          "height": 0,
+          "width": "100%",
+        }
+      }
+    />
+    <div
+      className="test-div-0"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-1"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-2"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-3"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-4"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-5"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-6"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      className="test-div-7"
+      style={
+        Object {
+          "height": 200,
+        }
+      }
+    />
+    <div
+      style={
+        Object {
+          "height": 400,
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`The Scrolling Behavior of the Constant Height React Infinite Component functions correctly at the end of its range 1`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={800}
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={150}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 800,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 2800,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-14"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-15"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-16"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-17"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-18"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-19"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 0,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;
+
+exports[`The Scrolling Behavior of the Constant Height React Infinite Component hides visible elements when the user scrolls sufficiently 1`] = `
+<Infinite
+  className="correct-class-name"
+  containerHeight={800}
+  displayBottomUpwards={false}
+  elementHeight={200}
+  handleScroll={[Function]}
+  isInfiniteLoading={false}
+  loadingSpinnerDelegate={<div />}
+  onInfiniteLoad={[Function]}
+  styles={Object {}}
+  timeScrollStateLastsForAfterUserScrolls={150}
+  useWindowAsScrollContainer={false}
+>
+  <div
+    className="correct-class-name"
+    onScroll={[Function]}
+    style={
+      Object {
+        "WebkitOverflowScrolling": "touch",
+        "height": 800,
+        "overflowX": "hidden",
+        "overflowY": "scroll",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "pointerEvents": "none",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "height": 400,
+            "width": "100%",
+          }
+        }
+      />
+      <div
+        className="test-div-2"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-3"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-4"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-5"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-6"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-7"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-8"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-9"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-10"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        className="test-div-11"
+        style={
+          Object {
+            "height": 200,
+          }
+        }
+      />
+      <div
+        style={
+          Object {
+            "height": 1600,
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </div>
+</Infinite>
+`;

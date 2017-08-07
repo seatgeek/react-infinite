@@ -6,7 +6,6 @@ jest.dontMock('../src/computers/infiniteComputer.js');
 var ConstantInfiniteComputer = require('../src/computers/constantInfiniteComputer.js');
 
 describe('Constant Infinite Computer', () => {
-
   describe('getTotalScrollableHeight()', () => {
     it('provides the correct sum of its children', () => {
       var cic = new ConstantInfiniteComputer(26, 92);
@@ -54,23 +53,14 @@ describe('Constant Infinite Computer', () => {
   });
 
   describe('getTopSpacerHeight()', () => {
-    it('correctly computes a zero top spacer height', () => {
+    it('correctly computes a zero top spacer height', () => {});
 
-    });
-
-    it('correctly computes a regular top spacer height', () => {
-
-    });
+    it('correctly computes a regular top spacer height', () => {});
   });
 
   describe('getBottomSpacerHeight()', () => {
-    it('correctly computes a zero bottom spacer height', () => {
+    it('correctly computes a zero bottom spacer height', () => {});
 
-    });
-
-    it('correctly computes a regular bottom spacer height', () => {
-
-    });
+    it('correctly computes a regular bottom spacer height', () => {});
   });
-
 });
