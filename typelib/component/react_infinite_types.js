@@ -1,12 +1,14 @@
 import type React from 'react';
 
-type PreloadType = number | {|
-  type: string,
-  amount: number
-|};
+type PreloadType =
+  | number
+  | {|
+      type: string,
+      amount: number
+    |};
 type ElementHeight = number | Array<number>;
 
-type CSSStyle = {[key: string]: string | number};
+type CSSStyle = { [key: string]: string | number };
 
 type ReactInfiniteUtilityFunctions = {
   getLoadingSpinnerHeight: () => number,
@@ -37,7 +39,7 @@ type ReactInfiniteProvidedDefaultProps = {
   styles: {
     scrollableStyle?: Object
   }
-}
+};
 
 type ReactInfiniteProps = {
   children: any,
