@@ -68,6 +68,7 @@ function generateComputedProps(
     preloadAdditionalHeight,
     handleScroll,
     onInfiniteLoad,
+    styles,
     ...oldProps
   } = props;
 
@@ -119,6 +120,10 @@ function generateComputedProps(
   } else {
     newProps.preloadAdditionalHeight = 0;
   }
+
+  newProps.styles = {
+    scrollableStyle: styles.scrollableStyle || {}
+  };
 
   return Object.assign(oldProps, newProps);
 }

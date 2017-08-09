@@ -88,7 +88,7 @@ type ReactInfiniteComputedProps = {
 
   className?: string,
   styles: {
-    scrollableStyle?: CSSStyle
+    scrollableStyle: CSSStyle
   }
 };
 
