@@ -8,6 +8,11 @@ import Infinite from '../src/react-infinite.jsx';
 import { mountToJson } from 'enzyme-to-json';
 import renderHelpers from './helpers/renderHelpers';
 
+const enzymeToJsonOpts = {
+  noKey: true,
+  deep: false
+};
+
 describe('Rendering the React Infinite Component Wrapper', function() {
   it('does not throw an error when given no children', function() {
     expect(function() {
@@ -204,7 +209,7 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
     //  1600 pixels: blockEnd, end of block that scrollTop of 1500 pixels is in
     //  2400 pixels: windowBottom, end of first displayed element
     //  4000 pixels: end of bottomSpacer element
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
   });
 
   it('functions correctly at the end of its range', function() {
@@ -226,7 +231,7 @@ describe('The Scrolling Behavior of the Constant Height React Infinite Component
       target: rootDomNode
     });
 
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
   });
 });
 
@@ -315,7 +320,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     //  800 pixels: blockEnd, end of the block that the scrollTop of 700 pixels is in
     //  1200 pixels: windowBottom, end of displayed element
     //  1400 pixels: end of bottomSpacer element
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
   });
 
   it('functions correctly at the end of its range', function() {
@@ -362,7 +367,7 @@ describe('The Behavior of the Variable Height React Infinite Component', functio
     //  1000 pixels: start of block
     //  1400 pixels: end of block
     //  1400 pixels: end of windowBottom
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
   });
 });
 
@@ -647,7 +652,7 @@ describe('React Infinite when the window is used as the Container', function() {
       </Infinite>
     );
 
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
   });
 
   it('alters the elements displayed when a scroll has occurred', function() {
@@ -676,12 +681,12 @@ describe('React Infinite when the window is used as the Container', function() {
       </Infinite>
     );
 
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
 
     return listenerTriggered.then(listener => {
       window.pageYOffset = 1500;
       listener();
-      expect(mountToJson(rootNode)).toMatchSnapshot();
+      expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
       window.addEventListener = oldAdd;
     });
   });
@@ -712,7 +717,7 @@ describe('React Infinite when the window is used as the Container', function() {
       </Infinite>
     );
 
-    expect(mountToJson(rootNode)).toMatchSnapshot();
+    expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
 
     rootNode.setProps({
       useWindowAsScrollContainer: true
@@ -721,7 +726,7 @@ describe('React Infinite when the window is used as the Container', function() {
     return listenerTriggered.then(listener => {
       window.pageYOffset = 200;
       listener();
-      expect(mountToJson(rootNode)).toMatchSnapshot();
+      expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
       window.addEventListener = oldAdd;
     });
   });
