@@ -315,6 +315,10 @@ class Infinite extends React.Component<
         this.utils.setScrollTop(lowestScrollTop);
       }
     }
+
+    if (this.props.getScrollable) {
+      this.props.getScrollable(this.scrollable)
+    }
   }
 
   componentWillUnmount() {
