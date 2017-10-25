@@ -2,8 +2,11 @@
 
 exports[`Infinite Styles Override: can override styles on the scrollable container will be able to override styles on the scrollable container 1`] = `
 <div
+  aria-busy={false}
+  aria-setsize="-1"
   className="correct-class-name"
   onScroll={[Function]}
+  role="feed"
   style={
     Object {
       "WebkitOverflowScrolling": "touch",
@@ -14,30 +17,26 @@ exports[`Infinite Styles Override: can override styles on the scrollable contain
   }
 >
   <div
-    style={Object {}}
-  >
-    <div
-      style={
-        Object {
-          "height": 0,
-          "width": "100%",
-        }
+    style={
+      Object {
+        "height": 0,
+        "width": "100%",
       }
-    />
-    <div
-      className="test-div-0"
-    />
-    <div
-      className="test-div-1"
-    />
-    <div
-      style={
-        Object {
-          "height": 0,
-          "width": "100%",
-        }
+    }
+  />
+  <div
+    className="test-div-0"
+  />
+  <div
+    className="test-div-1"
+  />
+  <div
+    style={
+      Object {
+        "height": 0,
+        "width": "100%",
       }
-    />
-  </div>
+    }
+  />
 </div>
 `;

@@ -132,7 +132,6 @@ class Infinite extends React.Component<
   scrollable: HTMLDivElement;
   topSpacer: HTMLDivElement;
   bottomSpacer: HTMLDivElement;
-  smoothScrollingWrapper: HTMLDivElement;
   loadingSpinner: HTMLDivElement;
 
   generateComputedUtilityFunctions = (
@@ -467,31 +466,31 @@ class Infinite extends React.Component<
         ref={c => {
           this.scrollable = c;
         }}
-        style={this.utils.buildScrollableStyle()}
+        style={Object.assign(
+          {},
+          this.utils.buildScrollableStyle(),
+          infiniteScrollStyles
+        )}
         onScroll={this.utils.nodeScrollListener}
+        role="feed"
+        aria-setsize="-1"
+        aria-busy={this.state.isInfiniteLoading}
       >
         <div
           ref={c => {
-            this.smoothScrollingWrapper = c;
+            this.topSpacer = c;
           }}
-          style={infiniteScrollStyles}
-        >
-          <div
-            ref={c => {
-              this.topSpacer = c;
-            }}
-            style={infiniteHelpers.buildHeightStyle(topSpacerHeight)}
-          />
-          {this.computedProps.displayBottomUpwards && loadingSpinner}
-          {displayables}
-          {!this.computedProps.displayBottomUpwards && loadingSpinner}
-          <div
-            ref={c => {
-              this.bottomSpacer = c;
-            }}
-            style={infiniteHelpers.buildHeightStyle(bottomSpacerHeight)}
-          />
-        </div>
+          style={infiniteHelpers.buildHeightStyle(topSpacerHeight)}
+        />
+        {this.computedProps.displayBottomUpwards && loadingSpinner}
+        {displayables}
+        {!this.computedProps.displayBottomUpwards && loadingSpinner}
+        <div
+          ref={c => {
+            this.bottomSpacer = c;
+          }}
+          style={infiniteHelpers.buildHeightStyle(bottomSpacerHeight)}
+        />
       </div>
     );
   }

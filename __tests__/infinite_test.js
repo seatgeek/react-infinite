@@ -506,8 +506,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
     });
 
     expect(
-      rootNode.find('.correct-class-name').childAt(0).props().style
-        .pointerEvents
+      rootNode.find('.correct-class-name').props().style.pointerEvents
     ).toEqual('none');
   });
 });
