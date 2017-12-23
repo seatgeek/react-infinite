@@ -511,7 +511,7 @@ describe("Maintaining React Infinite's internal scroll state", function() {
     });
 
     expect(
-      rootNode.find('.correct-class-name').childAt(0).props().style
+      rootNode.find('div.correct-class-name').childAt(0).props().style
         .pointerEvents
     ).toEqual('none');
   });
@@ -551,7 +551,7 @@ describe('Handling infinite scrolling', function() {
       </Infinite>
     );
 
-    const properDiv = rootNode.find('.correct-class-name').getDOMNode();
+    const properDiv = rootNode.find('div.correct-class-name').getDOMNode();
     properDiv.scrollTop = 100;
     rootNode.simulate('scroll', {
       target: properDiv
