@@ -1,9 +1,20 @@
 {
-  "presets": ["es2015", "flow", "react"],
-  "plugins": ["transform-class-properties", "transform-object-rest-spread"],
-  "env": {
-    "production": {
-      "plugins": ["transform-react-remove-prop-types"]
+    "presets": [
+        "es2015",
+        "flow",
+        "react",
+        "stage-0"
+    ],
+    "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread"
+    ],
+    "env": {
+        "production": {
+            "plugins": [
+                "transform-react-remove-prop-types",
+                "transform-runtime"
+            ]
+        }
     }
-  }
 }
