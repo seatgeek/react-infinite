@@ -154,7 +154,13 @@ class Infinite extends React.Component<
         window.removeEventListener('scroll', this.infiniteHandleScroll);
       };
       utilities.nodeScrollListener = () => {};
-      utilities.getScrollTop = () => window.pageYOffset;
+      utilities.getScrollTop = () => {
+        if (this.computedProps && this.computedProps.displayBottomUpwards) {
+          return window.pageYOffset;
+        }
+
+        return this.scrollable ? Math.max(0, -this.scrollable.getBoundingClientRect().top) : 0;
+      }
       utilities.setScrollTop = top => {
         window.scroll(window.pageXOffset, top);
       };
