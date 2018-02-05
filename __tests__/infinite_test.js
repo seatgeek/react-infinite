@@ -686,7 +686,7 @@ describe('React Infinite when the window is used as the Container', function() {
         top: -1500,
         left: 0,
         right: 1440,
-        bottom: 2500,
+        bottom: 2500
       });
       listener();
       expect(mountToJson(rootNode)).toMatchSnapshot();
