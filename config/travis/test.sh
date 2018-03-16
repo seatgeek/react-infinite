@@ -18,7 +18,7 @@ if [ "$LINT" = 1 ]; then
 fi;
 
 if [ "$BROWSER" = 1 ]; then
-    npm install -g cypress-cli http-server
+    npm install -g cypress http-server
     npm install react react-dom create-react-class prop-types gulp
     gulp examples
     http-server --silent &
