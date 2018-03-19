@@ -405,7 +405,7 @@ exports[`React Infinite when the window is used as the Container reacts to windo
         "WebkitOverflowScrolling": "touch",
         "height": 700,
         "overflowX": "hidden",
-        "overflowY": "scroll",
+        "overflowY": "auto",
       }
     }
   >
@@ -585,7 +585,7 @@ exports[`Rendering the React Infinite Component Wrapper applies the provided cla
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -623,7 +623,7 @@ exports[`Rendering the React Infinite Component Wrapper renders itself into the 
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -694,7 +694,7 @@ exports[`The Behavior of the Variable Height React Infinite Component functions 
         "WebkitOverflowScrolling": "touch",
         "height": 400,
         "overflowX": "hidden",
-        "overflowY": "scroll",
+        "overflowY": "auto",
       }
     }
   >
@@ -799,7 +799,7 @@ exports[`The Behavior of the Variable Height React Infinite Component hides elem
       "WebkitOverflowScrolling": "touch",
       "height": 420,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -956,7 +956,7 @@ exports[`The Behavior of the Variable Height React Infinite Component hides visi
         "WebkitOverflowScrolling": "touch",
         "height": 400,
         "overflowX": "hidden",
-        "overflowY": "scroll",
+        "overflowY": "auto",
       }
     }
   >
@@ -1109,7 +1109,7 @@ exports[`The Children of the React Infinite Component renders its children when 
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -1151,7 +1151,7 @@ exports[`The Children of the React Infinite Component renders its children when 
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -1235,7 +1235,7 @@ exports[`The Children of the React Infinite Component renders more children when
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -1327,7 +1327,7 @@ exports[`The Children of the React Infinite Component renders more children when
       "WebkitOverflowScrolling": "touch",
       "height": 800,
       "overflowX": "hidden",
-      "overflowY": "scroll",
+      "overflowY": "auto",
     }
   }
 >
@@ -1440,7 +1440,7 @@ exports[`The Scrolling Behavior of the Constant Height React Infinite Component 
         "WebkitOverflowScrolling": "touch",
         "height": 800,
         "overflowX": "hidden",
-        "overflowY": "scroll",
+        "overflowY": "auto",
       }
     }
   >
@@ -1542,7 +1542,7 @@ exports[`The Scrolling Behavior of the Constant Height React Infinite Component 
         "WebkitOverflowScrolling": "touch",
         "height": 800,
         "overflowX": "hidden",
-        "overflowY": "scroll",
+        "overflowY": "auto",
       }
     }
   >
