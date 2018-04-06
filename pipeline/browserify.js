@@ -93,7 +93,7 @@ module.exports = function(shouldWatch, envObject, files) {
       });
 
       root.on('log', function() {
-        console.log('[' + moment().format() + '] Browserify bundle refreshed');
+        console.log(`[${moment().format()}] Browserify bundle refreshed`);
       });
     }
 

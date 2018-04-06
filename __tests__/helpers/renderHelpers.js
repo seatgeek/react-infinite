@@ -5,7 +5,7 @@ module.exports = {
     var divArray = [];
     for (var i = 0; i < number; i++) {
       divArray.push(
-        <div className={'test-div-' + i} key={i} style={{ height: height }} />
+        <div className={`test-div-${i}`} key={i} style={{ height: height }} />
       );
     }
 
@@ -16,7 +16,7 @@ module.exports = {
     for (var i = 0; i < heights.length; i++) {
       divArray.push(
         <div
-          className={'test-div-' + i}
+          className={`test-div-${i}`}
           key={i}
           style={{ height: heights[i] }}
         />
