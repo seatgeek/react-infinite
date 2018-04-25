@@ -685,6 +685,14 @@ describe('React Infinite when the window is used as the Container', function() {
 
     return listenerTriggered.then(listener => {
       window.pageYOffset = 1500;
+      rootNode.node.scrollable.getBoundingClientRect = () => ({
+        width: 1440,
+        height: 4000,
+        top: -1500,
+        left: 0,
+        right: 1440,
+        bottom: 2500
+      });
       listener();
       rootNode.update();
       expect(mountToJson(rootNode, enzymeToJsonOpts)).toMatchSnapshot();
